@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Menu Studio — Build your digital menu</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Playfair+Display:wght@500;600;700;800;900&family=DM+Serif+Display&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles/admin.css" />
+</head>
+<body>
+<div class="bg-orb orb1"></div>
+<div class="bg-orb orb2"></div>
+<div class="bg-orb orb3"></div>
+
+<header class="topbar">
+  <div class="brand">
+    <div class="brand-mark"></div>
+    <span>Menu<b>Studio</b></span>
+  </div>
+  <div class="topbar-actions">
+    <button class="ghost-btn" id="resetBtn">Reset</button>
+    <button class="primary-btn" id="previewBtn">Open Menu →</button>
+  </div>
+</header>
+
+<main class="studio">
+  <section class="panel config-panel">
+    <div class="panel-header">
+      <h1>Design your menu</h1>
+      <p>Configure your cafe, pick a theme, then share the QR.</p>
+    </div>
+
+    <div class="field-group">
+      <label>Place name</label>
+      <input type="text" id="placeName" placeholder="Aurora Coffee House" />
+    </div>
+
+    <div class="field-group">
+      <label>Tagline</label>
+      <input type="text" id="placeTagline" placeholder="Slow-brewed since 2019" />
+    </div>
+
+    <div class="field-group">
+      <label>Address</label>
+      <textarea id="placeAddress" rows="2" placeholder="42 Linden Street, Brooklyn NY"></textarea>
+    </div>
+
+    <div class="field-row">
+      <div class="field-group">
+        <label>Phone</label>
+        <input type="text" id="placePhone" placeholder="+1 (555) 010-2024" />
+      </div>
+      <div class="field-group">
+        <label>Currency</label>
+        <input type="text" id="placeCurrency" placeholder="₹" maxlength="3" />
+      </div>
+    </div>
+
+    <div class="field-group">
+      <label>Logo</label>
+      <div class="logo-uploader" id="logoDrop">
+        <input type="file" id="logoInput" accept="image/*" hidden />
+        <div class="logo-preview" id="logoPreview"><span>Drop or click to upload</span></div>
+        <button type="button" class="ghost-btn" id="logoPick">Choose image</button>
+        <button type="button" class="ghost-btn danger" id="logoClear">Clear</button>
+      </div>
+    </div>
+
+    <div class="field-group">
+      <label>Theme</label>
+      <div class="theme-grid" id="themeGrid">
+        <button class="theme-card" data-theme="cafe">
+          <div class="theme-swatch swatch-cafe"></div>
+          <div class="theme-meta"><b>Cafe</b><span>Warm · Serif · Cozy</span></div>
+        </button>
+        <button class="theme-card" data-theme="restaurant">
+          <div class="theme-swatch swatch-restaurant"></div>
+          <div class="theme-meta"><b>Restaurant</b><span>Dark · Gold · Luxe</span></div>
+        </button>
+        <button class="theme-card" data-theme="bistro">
+          <div class="theme-swatch swatch-bistro"></div>
+          <div class="theme-meta"><b>Bistro</b><span>Fresh · Mint · Clean</span></div>
+        </button>
+        <button class="theme-card" data-theme="urban">
+          <div class="theme-swatch swatch-urban"></div>
+          <div class="theme-meta"><b>Urban</b><span>Bold · Coral · Modern</span></div>
+        </button>
+        <button class="theme-card" data-theme="humm">
+          <div class="theme-swatch swatch-humm"></div>
+          <div class="theme-meta"><b>Humm</b><span>Sage · Pink · Elegant</span></div>
+        </button>
+        <button class="theme-card" data-theme="modern">
+          <div class="theme-swatch swatch-modern"></div>
+          <div class="theme-meta"><b>Modern</b><span>White · Orange · App</span></div>
+        </button>
+        <button class="theme-card" data-theme="artisan">
+          <div class="theme-swatch swatch-artisan"></div>
+          <div class="theme-meta"><b>Artisan</b><span>Cream · Peach · Serif</span></div>
+        </button>
+        <button class="theme-card" data-theme="burma">
+          <div class="theme-swatch swatch-burma"></div>
+          <div class="theme-meta"><b>Burma</b><span>Bold · Amber · Tradition</span></div>
+        </button>
+        <button class="theme-card" data-theme="luscious">
+          <div class="theme-swatch swatch-luscious"></div>
+          <div class="theme-meta"><b>Luscious</b><span>Slate · Coral · Dark</span></div>
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <section class="panel menu-panel">
+    <div class="panel-header">
+      <h2>Menu items</h2>
+      <button class="primary-btn small" id="addCategory">+ Category</button>
+    </div>
+    <div id="categoriesList" class="categories-list"></div>
+  </section>
+
+  <aside class="panel qr-panel">
+    <div class="qr-wrap">
+      <div class="qr-frame">
+        <img id="qrImg" width="260" height="260" alt="QR code" />
+      </div>
+      <h3 id="qrName">Your Menu</h3>
+      <p class="muted">Scan to view on phone</p>
+      <div class="qr-actions">
+        <button class="primary-btn" id="downloadQR">Download QR</button>
+        <button class="ghost-btn" id="copyLink">Copy link</button>
+      </div>
+      <div class="link-box" id="linkBox"></div>
+    </div>
+
+    <div class="phone-preview">
+      <div class="phone-shell">
+        <div class="phone-notch"></div>
+        <div class="phone-screen">
+          <iframe id="phoneFrame" title="Menu preview"></iframe>
+        </div>
+      </div>
+      <p class="muted center">Live preview</p>
+    </div>
+  </aside>
+</main>
+
+<template id="categoryTemplate">
+  <div class="category-block" data-id="">
+    <div class="category-head">
+      <input type="text" class="category-name" placeholder="Category name (e.g. Espresso)" />
+      <button class="icon-btn add-item">+ Item</button>
+      <button class="icon-btn danger remove-category" title="Remove">×</button>
+    </div>
+    <div class="items-list"></div>
+  </div>
+</template>
+
+<template id="itemTemplate">
+  <div class="item-row" data-id="">
+    <div class="item-thumb">
+      <input type="file" class="item-image-input" accept="image/*" hidden />
+      <div class="thumb-preview"><span>+</span></div>
+    </div>
+    <div class="item-fields">
+      <input type="text" class="item-name" placeholder="Item name" />
+      <input type="text" class="item-desc" placeholder="Short description" />
+      <div class="item-meta">
+        <input type="text" class="item-price" placeholder="9.50" />
+        <label class="chip"><input type="checkbox" class="item-pop" /> Popular</label>
+      </div>
+      <div class="item-tags">
+        <label class="tag-pill"><input type="checkbox" data-tag="veg" /> Veg</label>
+        <label class="tag-pill"><input type="checkbox" data-tag="vegan" /> Vegan</label>
+        <label class="tag-pill"><input type="checkbox" data-tag="gf" /> GF</label>
+        <label class="tag-pill"><input type="checkbox" data-tag="df" /> DF</label>
+        <label class="tag-pill"><input type="checkbox" data-tag="spicy" /> Spicy</label>
+      </div>
+    </div>
+    <button class="icon-btn danger remove-item">×</button>
+  </div>
+</template>
+
+<script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/lz-string@1.5.0/libs/lz-string.min.js"></script>
+<script src="js/admin.js"></script>
+</body>
+</html>
