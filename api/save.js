@@ -39,6 +39,7 @@ export default async function handler(req, res) {
   const id = typeof data._id === 'string' && ID_RE.test(data._id) ? data._id : newId();
   const { _id, ...doc } = data;
 
+  console.log('Saving menu:', id, 'Token:', process.env.BLOB_READ_WRITE_TOKEN ? 'set' : 'NOT SET');
   try {
     await put(`menus/${id}.json`, JSON.stringify(doc), {
       access: 'public',
@@ -47,6 +48,7 @@ export default async function handler(req, res) {
       contentType: 'application/json',
     });
   } catch (e) {
+    console.error('Blob put failed:', e);
     return res.status(500).json({ error: 'store failed', detail: String((e && e.message) || e) });
   }
 
