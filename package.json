@@ -1,0 +1,10 @@
+{
+  "name": "digital-menu",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "QR menu builder — static admin + customer view, with Vercel Blob storage for shareable short links.",
+  "dependencies": {
+    "@vercel/blob": "^0.27.0"
+  }
+}

@@ -1,0 +1,4 @@
+server.py
+menus/
+__pycache__/
+*.pyc
