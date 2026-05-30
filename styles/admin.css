@@ -197,6 +197,10 @@ input[type="text"]:focus, textarea:focus {
 .swatch-artisan { background: linear-gradient(135deg, #faf3ec 0%, #f4e0d0 50%, #f59e6f 100%); }
 .swatch-burma { background: linear-gradient(135deg, #f5c640 0%, #e8862c 55%, #6e3a1a 100%); }
 .swatch-luscious { background: linear-gradient(135deg, #1f1f24 0%, #0e0e10 55%, #e85a4f 100%); }
+.swatch-fresh { background: linear-gradient(135deg, #ffffff 0%, #d4eddf 55%, #1E6B45 100%); }
+.swatch-gallery { background: linear-gradient(135deg, #f0ebe3 0%, #c8553d 60%, #5a2218 100%); }
+.swatch-editorial { background: linear-gradient(135deg, #f4f0e6 0%, #2b2722 55%, #c1431f 100%); }
+.swatch-maison { background: linear-gradient(135deg, #f3ede1 0%, #c9a24a 58%, #221d14 100%); }
 .theme-meta { display: flex; flex-direction: column; }
 .theme-meta b { font-size: 14px; font-weight: 600; }
 .theme-meta span { font-size: 11px; color: #8b8e9b; margin-top: 2px; }

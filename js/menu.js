@@ -10,6 +10,9 @@ const THEME_DEFS = [
   { id: 'burma', label: 'Burma', sw: 'linear-gradient(135deg, #f5c640, #e8862c 60%, #6e3a1a)' },
   { id: 'luscious', label: 'Luscious', sw: 'linear-gradient(135deg, #1f1f24, #0e0e10 55%, #e85a4f)' },
   { id: 'fresh',    label: 'Fresh',    sw: 'linear-gradient(135deg, #FFFFFF, #d4eddf 55%, #1E6B45)' },
+  { id: 'gallery',  label: 'Gallery',  sw: 'linear-gradient(135deg, #f0ebe3, #c8553d 60%, #5a2218)' },
+  { id: 'editorial',label: 'Editorial',sw: 'linear-gradient(135deg, #f4f0e6, #2b2722 55%, #c1431f)' },
+  { id: 'maison',   label: 'Maison',   sw: 'linear-gradient(135deg, #f3ede1, #c9a24a 58%, #221d14)' },
 ];
 
 const TAG_DEFS = [
@@ -295,6 +298,67 @@ const THEME_DEMO_DATA = {
       ]},
     ],
   },
+  gallery: {
+    name: 'Ember & Oak', tagline: 'Wood-fired, fire-kissed, unforgettable',
+    address: 'Jubilee Hills, Hyderabad', phone: '+91 40 4567 1234',
+    categories: [
+      { id: 'ga1', name: 'From the Fire', items: [
+        { id: 'ga1a', name: 'Flame-Grilled Ribeye', desc: 'Oak-smoked, bone marrow butter, charred shallot', price: '1290', pop: true, image: RIMG('grilled ribeye steak'), tags: ['gf'] },
+        { id: 'ga1b', name: 'Charred Octopus', desc: 'Smoked paprika, salsa verde, confit potato', price: '890', pop: true, image: RIMG('grilled octopus char'), tags: ['gf','df'] },
+        { id: 'ga1c', name: 'Wood-Fired Cauliflower', desc: 'Whole roasted, tahini, pomegranate, dukkah', price: '540', pop: false, image: RIMG('roasted cauliflower whole'), tags: ['veg','vegan','gf','df'] },
+        { id: 'ga1d', name: 'Smoked Lamb Chops', desc: 'Rosemary embers, mint chimichurri', price: '1190', pop: false, image: RIMG('grilled lamb chops'), tags: ['gf','df'] },
+      ]},
+      { id: 'ga2', name: 'Sides', items: [
+        { id: 'ga2a', name: 'Ember Corn', desc: 'Charred cob, chipotle butter, cotija', price: '320', pop: true, image: RIMG('grilled corn cob'), tags: ['veg','gf'] },
+        { id: 'ga2b', name: 'Burnt Leeks', desc: 'Romesco, toasted almond, sherry', price: '340', pop: false, image: RIMG('charred leeks plate'), tags: ['veg','vegan','df'] },
+        { id: 'ga2c', name: 'Fire Potatoes', desc: 'Triple-cooked, smoked aioli', price: '290', pop: false, image: RIMG('crispy roast potatoes'), tags: ['veg','gf'] },
+      ]},
+      { id: 'ga3', name: 'Sweet', items: [
+        { id: 'ga3a', name: 'Grilled Peach', desc: 'Vanilla mascarpone, honeycomb, basil', price: '380', pop: true, image: RIMG('grilled peach dessert'), tags: ['veg','gf'] },
+        { id: 'ga3b', name: 'Smoked Chocolate Tart', desc: 'Ember-smoked ganache, sea salt', price: '420', pop: false, image: RIMG('chocolate tart slice'), tags: ['veg'] },
+      ]},
+    ],
+  },
+  editorial: {
+    name: 'The Daily Press', tagline: 'Coffee, plates & quiet mornings',
+    address: 'Indiranagar, Bengaluru', phone: '+91 80 2345 6789',
+    categories: [
+      { id: 'ed1', name: 'The Roast', items: [
+        { id: 'ed1a', name: 'Single-Origin Pour Over', desc: 'Rotating micro-lot, brewed to order, served black to taste the terroir.', price: '260', pop: true, image: RIMG('pour over coffee'), tags: ['veg','vegan','gf','df'] },
+        { id: 'ed1b', name: 'Brown Butter Latte', desc: 'Espresso, browned-butter syrup, steamed whole milk.', price: '290', pop: false, image: RIMG('latte coffee art'), tags: ['veg'] },
+        { id: 'ed1c', name: 'Cold Brew Negroni', desc: 'Slow-steeped cold brew, orange bitters, tonic. Zero proof.', price: '280', pop: true, image: RIMG('cold brew coffee glass'), tags: ['vegan','df','gf'] },
+      ]},
+      { id: 'ed2', name: 'The Plates', items: [
+        { id: 'ed2a', name: 'Slow Eggs & Sourdough', desc: 'Cloud-soft scramble, cultured butter, chive, naturally leavened toast.', price: '480', pop: true, image: RIMG('scrambled eggs toast'), tags: ['veg'] },
+        { id: 'ed2b', name: 'Heirloom Tomato Toast', desc: 'Whipped ricotta, basil oil, flaked salt on grilled levain.', price: '420', pop: false, image: RIMG('tomato toast ricotta'), tags: ['veg'] },
+        { id: 'ed2c', name: 'Mushroom & Miso Bowl', desc: 'Roasted maitake, soft grains, miso butter, soft egg.', price: '520', pop: false, image: RIMG('mushroom grain bowl'), tags: ['veg'] },
+      ]},
+      { id: 'ed3', name: 'The Bakery', items: [
+        { id: 'ed3a', name: 'Morning Bun', desc: 'Laminated, orange sugar, flaky to the last crumb.', price: '220', pop: true, image: RIMG('morning bun pastry'), tags: ['veg'] },
+        { id: 'ed3b', name: 'Dark Rye Cookie', desc: 'Brown butter, sea salt, 70% chocolate.', price: '180', pop: false, image: RIMG('chocolate cookie'), tags: ['veg'] },
+      ]},
+    ],
+  },
+  maison: {
+    name: 'Maison Lumière', tagline: 'A seasonal tasting in five movements',
+    address: 'Worli Sea Face, Mumbai', phone: '+91 22 6655 4400',
+    categories: [
+      { id: 'ma1', name: 'Hors-d\u2019\u0153uvre', items: [
+        { id: 'ma1a', name: 'Oyster & Champagne', desc: 'Fine de claire, champagne mignonette, finger lime', price: '1200', pop: true, image: RIMG('oyster champagne plate'), tags: ['gf','df'] },
+        { id: 'ma1b', name: 'Foie Gras au Torchon', desc: 'Sauternes gelée, toasted brioche, fig', price: '1650', pop: false, image: RIMG('foie gras plated'), tags: [] },
+        { id: 'ma1c', name: 'Heirloom Beet', desc: 'Goat curd, walnut, aged balsamic pearls', price: '980', pop: false, image: RIMG('beetroot fine dining'), tags: ['veg','gf'] },
+      ]},
+      { id: 'ma2', name: 'Le Plat', items: [
+        { id: 'ma2a', name: 'Butter-Poached Lobster', desc: 'Vanilla beurre blanc, leek, caviar', price: '3200', pop: true, image: RIMG('lobster fine dining plate'), tags: ['gf'] },
+        { id: 'ma2b', name: 'Duck à l\u2019Orange', desc: 'Aged breast, bitter orange, salsify, jus', price: '2400', pop: false, image: RIMG('duck breast plated'), tags: ['gf','df'] },
+        { id: 'ma2c', name: 'Wild Mushroom Tortellini', desc: 'Brown butter, parmesan foam, black truffle', price: '1900', pop: true, image: RIMG('tortellini truffle plate'), tags: ['veg'] },
+      ]},
+      { id: 'ma3', name: 'Dessert', items: [
+        { id: 'ma3a', name: 'Grand Cru Soufflé', desc: 'Valrhona 72%, crème anglaise, gold leaf', price: '880', pop: true, image: RIMG('chocolate souffle fine'), tags: ['veg'] },
+        { id: 'ma3b', name: 'Tarte au Citron', desc: 'Amalfi lemon, torched meringue, basil', price: '780', pop: false, image: RIMG('lemon tart fine dining'), tags: ['veg'] },
+      ]},
+    ],
+  },
 };
 
 async function readData() {
@@ -425,7 +489,7 @@ function renderItemUrban(it, i) {
     ${favIcon(it.id)}
     ${itemImage(it)}
     <div class="item-info">
-      <h3 class="item-name">${escapeHTML(it.name)}${tagDots(it)}${it.pop ? '<span class="pop-badge">˜</span>':''}</h3>
+      <h3 class="item-name">${escapeHTML(it.name)}${tagDots(it)}${it.pop ? '<span class="pop-badge">🔥 Popular</span>':''}</h3>
       ${it.desc ? `<p class="item-desc">${escapeHTML(it.desc)}</p>` : ''}
     </div>
     <div class="item-price-row">
@@ -453,12 +517,13 @@ function itemRendererFor(theme) {
     cafe:renderItemCafe, restaurant:renderItemRestaurant, bistro:renderItemBistro, urban:renderItemUrban,
     humm:renderItemHumm, modern:renderItemUrban, artisan:renderItemCafe, burma:renderItemBistro, luscious:renderItemRestaurant,
     fresh:renderItemFresh,
+    gallery:renderItemGallery, editorial:renderItemEditorial, maison:renderItemMaison,
   })[theme] || renderItemCafe;
 }
 
 function renderCategories() {
   const render = itemRendererFor(data.theme);
-  const sub = { cafe: '— Selected with care —', restaurant: "Today's picks", bistro: 'Fresh today', urban: 'Tap to explore', humm: 'Click and check what we serve', modern: 'Pick your favourite', artisan: 'Crafted daily', burma: 'A taste of tradition', luscious: 'Hand-picked for you', fresh: 'Good for you' }[data.theme] || '';
+  const sub = { cafe: '— Selected with care —', restaurant: "Today's picks", bistro: 'Fresh today', urban: 'Tap to explore', humm: 'Click and check what we serve', modern: 'Pick your favourite', artisan: 'Crafted daily', burma: 'A taste of tradition', luscious: 'Hand-picked for you', fresh: 'Good for you', gallery: 'Tap any dish to feast', editorial: 'Considered, seasonal, small-batch', maison: 'Served as a course' }[data.theme] || '';
   let anyVisible = false;
   const html = data.categories.map(cat => {
     const items = (cat.items || []).filter(passesFilter);
@@ -540,7 +605,7 @@ function renderHeroBistro() {
       <h1 class="place-name">${escapeHTML(data.name)}</h1>
       <p class="place-tagline">${escapeHTML(data.tagline)}</p>
       <div class="place-meta-row">
-        ${data.address ? `<div class="meta-pill">ðŸ◍ ${escapeHTML(data.address)}</div>` : ''}
+        ${data.address ? `<div class="meta-pill">📍 ${escapeHTML(data.address)}</div>` : ''}
       </div>
     </div>
   </section>`;
@@ -559,7 +624,7 @@ function renderHeroUrban() {
       <h1 class="place-name">${escapeHTML(data.name)}</h1>
       <p class="place-tagline">${escapeHTML(data.tagline)}</p>
       <div class="place-meta-row">
-        ${data.address ? `<div>ðŸ◍ ${escapeHTML(data.address)}</div>` : ''}
+        ${data.address ? `<div>📍 ${escapeHTML(data.address)}</div>` : ''}
       </div>
     </div>
   </section>`;
@@ -712,11 +777,110 @@ function renderItemFresh(it, i) {
   </div>`;
 }
 
-function heroFor(theme) {
-  return ({
+// ===== New theme renderers: Gallery / Editorial / Maison =====
+function renderItemGallery(it, i) {
+  return `<div class="item reveal delay-${Math.min(i,3)}" data-iid="${it.id}">
+    ${favIcon(it.id)}
+    ${itemImage(it)}
+    ${it.pop ? '<span class="pop-badge">Signature</span>' : ''}
+    <div class="gallery-cap">
+      <div class="gallery-cap-row">
+        <h3 class="item-name">${escapeHTML(it.name)}</h3>
+        <div class="item-price">${escapeHTML(priceStr(it.price))}</div>
+      </div>
+      <div class="gallery-cap-sub">
+        ${it.desc ? `<span class="gallery-desc">${escapeHTML(it.desc)}</span>` : '<span></span>'}
+        ${tagDots(it)}
+      </div>
+    </div>
+  </div>`;
+}
+
+function renderItemEditorial(it, i) {
+  const num = String(i + 1).padStart(2, '0');
+  return `<div class="item reveal delay-${Math.min(i,3)}" data-iid="${it.id}">
+    ${favIcon(it.id)}
+    ${itemImage(it, 'item-image ed-photo')}
+    <div class="ed-text">
+      <span class="ed-num">${num}</span>
+      <div class="ed-head">
+        <h3 class="item-name">${escapeHTML(it.name)}${it.pop ? '<span class="pop-badge">Editor\u2019s Pick</span>' : ''}</h3>
+        <span class="ed-leader"></span>
+        <span class="item-price">${escapeHTML(priceStr(it.price))}</span>
+      </div>
+      ${it.desc ? `<p class="item-desc">${escapeHTML(it.desc)}</p>` : ''}
+      ${tagDots(it)}
+    </div>
+  </div>`;
+}
+
+function renderItemMaison(it, i) {
+  return `<div class="item reveal delay-${Math.min(i,3)}" data-iid="${it.id}">
+    ${favIcon(it.id)}
+    ${it.image ? `<div class="m-photo" style="background-image:url(${it.image})"></div>` : ''}
+    <div class="m-head">
+      <h3 class="item-name">${escapeHTML(it.name)}</h3>
+      <span class="m-leader"></span>
+      <span class="item-price">${escapeHTML(priceStr(it.price))}</span>
+    </div>
+    ${it.desc ? `<p class="item-desc">${escapeHTML(it.desc)}</p>` : ''}
+    ${tagDots(it)}
+    ${it.pop ? '<span class="pop-badge">Signature</span>' : ''}
+  </div>`;
+}
+
+function renderHeroGallery() {
+  return `<section class="hero">
+    <div class="top-row">
+      ${logoHTML('logo-mark')}
+      <div class="top-meta">${escapeHTML(data.phone || '')}</div>
+    </div>
+    <div class="hero-content">
+      <div class="eyebrow">— The Menu —</div>
+      <h1 class="place-name">${escapeHTML(data.name)}</h1>
+      <p class="place-tagline">${escapeHTML(data.tagline)}</p>
+      ${data.address ? `<div class="gallery-meta">📍 ${escapeHTML(data.address)}</div>` : ''}
+    </div>
+  </section>`;
+}
+
+function renderHeroEditorial() {
+  let dateStr = '';
+  try { dateStr = new Date().toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' }); } catch (e) {}
+  return `<section class="hero">
+    <div class="ed-masthead-top">
+      <span>Established</span>
+      <span>${escapeHTML(dateStr)}</span>
+      <span>Vol. I</span>
+    </div>
+    <h1 class="place-name">${escapeHTML(data.name)}</h1>
+    <div class="ed-rule"></div>
+    <p class="place-tagline">${escapeHTML(data.tagline)}</p>
+  </section>`;
+}
+
+function renderHeroMaison() {
+  const heroImg = (data.categories && data.categories[0] && (data.categories[0].items || []).find(it => it.image) || {}).image;
+  return `<section class="hero">
+    ${heroImg ? `<div class="m-hero-photo" style="background-image:url(${heroImg})"></div>` : ''}
+    <div class="m-hero-inner">
+      ${logoHTML('logo-mark')}
+      <div class="eyebrow">Menu Dégustation</div>
+      <h1 class="place-name">${escapeHTML(data.name)}</h1>
+      <p class="place-tagline">${escapeHTML(data.tagline)}</p>
+      <div class="m-meta">
+        ${data.address ? `<span>${escapeHTML(data.address)}</span>` : ''}
+        ${data.phone ? `<span>${escapeHTML(data.phone)}</span>` : ''}
+      </div>
+    </div>
+  </section>`;
+}
+
+function heroFor(theme) {  return ({
     cafe:renderHeroCafe, restaurant:renderHeroRestaurant, bistro:renderHeroBistro, urban:renderHeroUrban,
     humm:renderHeroCafe, modern:renderHeroModern, artisan:renderHeroCafe, burma:renderHeroBurma, luscious:renderHeroLuscious,
     fresh:renderHeroFresh,
+    gallery:renderHeroGallery, editorial:renderHeroEditorial, maison:renderHeroMaison,
   })[theme] || renderHeroCafe;
 }
 function footerFor(theme) {
@@ -731,6 +895,9 @@ function footerFor(theme) {
     burma: `<footer class="footer">${escapeHTML(data.address || data.tagline || '')}</footer>`,
     luscious: `<footer class="footer">${escapeHTML(data.tagline || 'Welcome back')}</footer>`,
     fresh: `<footer class="footer">${escapeHTML(data.tagline || 'Eat well, live well')} · ${escapeHTML(data.address || '')}</footer>`,
+    gallery: `<footer class="footer">${escapeHTML(data.address || '')} · ${escapeHTML(data.phone || '')}</footer>`,
+    editorial: `<footer class="footer">— Fin —</footer>`,
+    maison: `<footer class="footer">${escapeHTML(data.tagline || 'Merci')}</footer>`,
   })[theme] || '';
 }
 
@@ -988,8 +1155,8 @@ function openDetail(iid) {
       ${tagsHTML ? `<div class="detail-tags">${tagsHTML}</div>` : ''}
       <p class="detail-desc">${escapeHTML(it.desc || 'No description.')}</p>
       <div class="detail-actions">
-        <button class="detail-btn ghost" id="detailFav">${favorites.has(it.id) ? '™¥ Saved' : '™¡ Save'}</button>
-        <button class="detail-btn primary ${inCart?'added':''}" id="detailAdd">${inCart ? 'œ Added' : 'Add to order'}</button>
+        <button class="detail-btn ghost" id="detailFav">${favorites.has(it.id) ? '♥ Saved' : '♡ Save'}</button>
+        <button class="detail-btn primary ${inCart?'added':''}" id="detailAdd">${inCart ? '✓ Added' : 'Add to order'}</button>
       </div>
     </div>
   `;
@@ -1008,17 +1175,18 @@ function openDetail(iid) {
   sheet.querySelector('#detailFav').addEventListener('click', () => {
     toggleFav(it.id);
     const btn = sheet.querySelector('#detailFav');
-    btn.textContent = favorites.has(it.id) ? '™¥ Saved' : '™¡ Save';
+    btn.textContent = favorites.has(it.id) ? '♥ Saved' : '♡ Save';
     // Update card heart too
     const card = document.querySelector(`.item[data-iid="${it.id}"] .fav-btn`);
     if (card) card.classList.toggle('on', favorites.has(it.id));
   });
   sheet.querySelector('#detailAdd').addEventListener('click', () => {
-    addToCart(it.id);
     const btn = sheet.querySelector('#detailAdd');
+    addToCart(it.id);
+    flyToCart(btn);
     btn.classList.add('added');
-    btn.textContent = 'œ Added';
-    setTimeout(closeDetail, 350);
+    btn.textContent = '✓ Added';
+    setTimeout(closeDetail, 480);
   });
 }
 
@@ -1164,6 +1332,38 @@ function updateCartFab() {
   fab.classList.toggle('show', totalCount > 0);
 }
 
+// Bounce the cart FAB to confirm an add
+function bumpCartFab() {
+  const fab = document.getElementById('cartFab');
+  if (!fab) return;
+  fab.classList.remove('bump');
+  void fab.offsetWidth;
+  fab.classList.add('bump');
+}
+
+// Animate a dot flying from an element into the cart FAB
+function flyToCart(fromEl) {
+  const fab = document.getElementById('cartFab');
+  if (!fab || !fromEl || typeof fromEl.getBoundingClientRect !== 'function') { bumpCartFab(); return; }
+  if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) { bumpCartFab(); return; }
+  const from = fromEl.getBoundingClientRect();
+  const to = fab.getBoundingClientRect();
+  const dot = document.createElement('div');
+  dot.className = 'fly-dot';
+  const startX = from.left + from.width / 2;
+  const startY = from.top + from.height / 2;
+  dot.style.left = startX + 'px';
+  dot.style.top = startY + 'px';
+  document.body.appendChild(dot);
+  const dx = (to.left + to.width / 2) - startX;
+  const dy = (to.top + to.height / 2) - startY;
+  requestAnimationFrame(() => {
+    dot.style.transform = `translate(${dx}px, ${dy}px) scale(0.25)`;
+    dot.style.opacity = '0.3';
+  });
+  setTimeout(() => { dot.remove(); bumpCartFab(); }, 560);
+}
+
 function openCart() {
   let sheet = document.getElementById('cartSheet');
   let backdrop = document.getElementById('cartBackdrop');
@@ -1214,7 +1414,7 @@ function renderCartContent(sheet) {
               <p>${cur}${(priceNum(it.price) * qty).toFixed(2)}</p>
             </div>
             <div class="cart-qty">
-              <button data-act="dec">ˆ</button>
+              <button data-act="dec">−</button>
               <span>${qty}</span>
               <button data-act="inc">+</button>
             </div>
@@ -1241,12 +1441,49 @@ function renderCartContent(sheet) {
   });
   const showBtn = sheet.querySelector('#cartShow');
   if (showBtn) {
-    showBtn.addEventListener('click', () => {
-      // Fullscreen large display so waiter can read across the table
-      const items = entries.map(({it, qty}) => `${qty} ${it.name}`).join('\n');
-      alert(`Show this to your server:\n\n${items}\n\nTotal: ${cur}${total.toFixed(2)}`);
-    });
+    showBtn.addEventListener('click', () => openWaiterView(entries, total, cur));
   }
+}
+
+// ===== "Show to waiter" full-screen order ticket =====
+function openWaiterView(entries, total, cur) {
+  let ov = document.getElementById('waiterView');
+  if (ov) ov.remove();
+  ov = document.createElement('div');
+  ov.id = 'waiterView';
+  ov.className = 'waiter-view';
+  const count = entries.reduce((a, e) => a + e.qty, 0);
+  ov.innerHTML = `
+    <div class="waiter-card">
+      <button class="waiter-close" id="waiterClose" aria-label="Close">×</button>
+      <div class="waiter-head">
+        <span class="waiter-eyebrow">Show this to your server</span>
+        <h2 class="waiter-place">${escapeHTML(data.name || 'Your order')}</h2>
+      </div>
+      <ul class="waiter-list">
+        ${entries.map(({it, qty}) => `
+          <li class="waiter-row">
+            <span class="waiter-qty">${qty}<span>×</span></span>
+            <span class="waiter-name">${escapeHTML(it.name)}</span>
+            <span class="waiter-line-price">${cur}${(priceNum(it.price) * qty).toFixed(0)}</span>
+          </li>`).join('')}
+      </ul>
+      <div class="waiter-total">
+        <span>${count} item${count !== 1 ? 's' : ''}</span>
+        <b>${cur}${total.toFixed(0)}</b>
+      </div>
+      <p class="waiter-note">Not a paid order — staff will confirm at your table.</p>
+    </div>`;
+  document.body.appendChild(ov);
+  document.body.style.overflow = 'hidden';
+  requestAnimationFrame(() => ov.classList.add('open'));
+  const close = () => {
+    ov.classList.remove('open');
+    document.body.style.overflow = '';
+    setTimeout(() => ov.remove(), 300);
+  };
+  ov.querySelector('#waiterClose').addEventListener('click', close);
+  ov.addEventListener('click', (e) => { if (e.target === ov) close(); });
 }
 
 // ===== Theme switcher FAB =====
