@@ -37,7 +37,7 @@ const FALLBACK_DATA = {
   _demo: true,
   categories: [
     { id: '1', name: 'Signature Espresso', items: [
-      { id: 'a', name: 'Velvet Latte', desc: 'Double shot, oat milk, vanilla bean', price: '280', pop: true, image: IMG('velvet-latte'), tags: ['veg','df'] },
+      { id: 'a', name: 'Velvet Latte', desc: 'Double shot, oat milk, vanilla bean', price: '280', pop: true, image: IMG('velvet-latte'), images: [IMG('velvet-latte'), IMG('latte-closeup'), IMG('coffee-art')], tags: ['veg','df'] },
       { id: 'b', name: 'Honey Cortado', desc: 'Equal parts espresso & milk, raw honey', price: '240', pop: false, image: IMG('honey-cortado'), tags: ['veg'] },
       { id: 'c', name: 'Iced Brown Sugar Shaken', desc: 'Cold espresso, brown sugar syrup, cinnamon', price: '260', pop: true, image: IMG('iced-brown-sugar'), tags: ['veg','vegan','df'] },
       { id: 'd', name: 'Flat White', desc: 'Velvety microfoam over a ristretto double', price: '220', pop: false, image: IMG('flat-white'), tags: ['veg'] },
@@ -942,11 +942,44 @@ function openDetail(iid) {
     return def ? `<span class="detail-tag">${def.label}</span>` : '';
   }).join('');
   const inCart = cart.has(it.id);
+
+  // Prepare images: use images array if available, fall back to single image
+  const images = (it.images && it.images.length > 0) ? it.images : (it.image ? [it.image] : []);
+  const hasMultipleImages = images.length > 1;
+
+  let heroHTML;
+  if (images.length > 0) {
+    if (hasMultipleImages) {
+      // Carousel for multiple images
+      heroHTML = `
+        <div class="carousel-container" id="carouselContainer">
+          <div class="carousel-track" id="carouselTrack">
+            ${images.map(img => `<img class="carousel-image" src="${escapeHTML(img)}" alt="Dish image"/>`).join('')}
+          </div>
+          ${images.length > 1 ? `
+            <div class="carousel-nav">
+              <button class="carousel-prev" id="carouselPrev">‹</button>
+              <div class="carousel-dots">
+                ${images.map((_, i) => `<span class="carousel-dot ${i===0?'active':''}" id="dot-${i}"></span>`).join('')}
+              </div>
+              <button class="carousel-next" id="carouselNext">›</button>
+            </div>
+          ` : ''}
+          <button class="detail-close" id="detailClose">×</button>
+        </div>
+      `;
+    } else {
+      // Single image
+      heroHTML = `<div class="detail-hero" style="background-image:url(${escapeHTML(images[0])})"><button class="detail-close" id="detailClose">×</button></div>`;
+    }
+  } else {
+    // Placeholder
+    heroHTML = `<div class="detail-hero placeholder">◍<button class="detail-close" id="detailClose">×</button></div>`;
+  }
+
   sheet.innerHTML = `
     <div class="detail-grabber"></div>
-    ${it.image
-      ? `<div class="detail-hero" style="background-image:url(${it.image})"><button class="detail-close" id="detailClose">×</button></div>`
-      : `<div class="detail-hero placeholder">◍<button class="detail-close" id="detailClose">×</button></div>`}
+    ${heroHTML}
     <div class="detail-body">
       <div class="detail-name-row">
         <h2 class="detail-name">${escapeHTML(it.name)}</h2>
@@ -966,6 +999,11 @@ function openDetail(iid) {
   });
   document.body.style.overflow = 'hidden';
 
+  // Setup carousel if multiple images
+  if (hasMultipleImages) {
+    setupCarousel(sheet, images);
+  }
+
   sheet.querySelector('#detailClose').addEventListener('click', closeDetail);
   sheet.querySelector('#detailFav').addEventListener('click', () => {
     toggleFav(it.id);
@@ -981,6 +1019,100 @@ function openDetail(iid) {
     btn.classList.add('added');
     btn.textContent = 'œ Added';
     setTimeout(closeDetail, 350);
+  });
+}
+
+function setupCarousel(sheet, images) {
+  const container = sheet.querySelector('#carouselContainer');
+  const track = sheet.querySelector('#carouselTrack');
+  const prevBtn = sheet.querySelector('#carouselPrev');
+  const nextBtn = sheet.querySelector('#carouselNext');
+  if (!container || !track) return;
+
+  let currentIndex = 0;
+  let touchStartX = 0;
+  let touchStartTime = 0;
+
+  function updateCarousel() {
+    track.style.transform = `translateX(-${currentIndex * 100}%)`;
+    // Update dots
+    sheet.querySelectorAll('.carousel-dot').forEach((dot, i) => {
+      dot.classList.toggle('active', i === currentIndex);
+    });
+  }
+
+  function moveToImage(index) {
+    currentIndex = (index + images.length) % images.length;
+    updateCarousel();
+  }
+
+  // Arrow buttons
+  if (prevBtn) prevBtn.addEventListener('click', () => moveToImage(currentIndex - 1));
+  if (nextBtn) nextBtn.addEventListener('click', () => moveToImage(currentIndex + 1));
+
+  // Touch swipe (passive for performance)
+  container.addEventListener('touchstart', (e) => {
+    touchStartX = e.touches[0].clientX;
+    touchStartTime = Date.now();
+  }, { passive: true });
+
+  container.addEventListener('touchend', (e) => {
+    const touchEndX = e.changedTouches[0].clientX;
+    const distance = touchStartX - touchEndX;
+    const time = Date.now() - touchStartTime;
+    const minDistance = 30;
+    const minTime = 500; // max time for a "swipe"
+
+    // Swipe right (show previous) or swipe left (show next)
+    if (Math.abs(distance) > minDistance && time < minTime) {
+      if (distance > 0) moveToImage(currentIndex + 1); // swipe left
+      else moveToImage(currentIndex - 1); // swipe right
+    }
+  }, { passive: true });
+
+  // Mouse drag for desktop testing
+  let mouseDown = false;
+  container.addEventListener('mousedown', (e) => {
+    mouseDown = true;
+    touchStartX = e.clientX;
+    touchStartTime = Date.now();
+  });
+
+  container.addEventListener('mousemove', (e) => {
+    if (!mouseDown) return;
+    const distance = touchStartX - e.clientX;
+    if (Math.abs(distance) > 10) {
+      track.style.transition = 'none';
+      track.style.transform = `translateX(calc(-${currentIndex * 100}% - ${distance}px))`;
+    }
+  });
+
+  container.addEventListener('mouseup', (e) => {
+    if (!mouseDown) return;
+    mouseDown = false;
+    const touchEndX = e.clientX;
+    const distance = touchStartX - touchEndX;
+    const minDistance = 30;
+
+    track.style.transition = 'transform 0.3s ease-out';
+    if (Math.abs(distance) > minDistance) {
+      if (distance > 0) moveToImage(currentIndex + 1);
+      else moveToImage(currentIndex - 1);
+    } else {
+      updateCarousel();
+    }
+  });
+
+  container.addEventListener('mouseleave', () => {
+    if (!mouseDown) return;
+    mouseDown = false;
+    track.style.transition = 'transform 0.3s ease-out';
+    updateCarousel();
+  });
+
+  // Dot clicks
+  sheet.querySelectorAll('.carousel-dot').forEach((dot, i) => {
+    dot.addEventListener('click', () => moveToImage(i));
   });
 }
 
