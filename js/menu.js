@@ -1195,6 +1195,30 @@ function openDetail(iid) {
       </div>
       ${tagsHTML ? `<div class="detail-tags">${tagsHTML}</div>` : ''}
       <p class="detail-desc">${escapeHTML(detailDesc || 'No description.')}</p>
+      ${(() => {
+        const pairs = (it.pairsWith || []);
+        if (!pairs.length) return '';
+        const pairItems = pairs.map(name => {
+          for (const cat of data.categories) {
+            const found = (cat.items||[]).find(i => i.name === name);
+            if (found) return found;
+          }
+          return null;
+        }).filter(Boolean);
+        if (!pairItems.length) return '';
+        return `<div class="detail-pairs-section">
+          <div class="detail-pairs-label">🔗 Pairs well with</div>
+          <div class="pairs-scroll">
+            ${pairItems.map(p => `
+              <div class="pair-chip" data-pair-id="${p.id}">
+                ${p.image ? `<div class="pair-chip-img" style="background-image:url(${escapeHTML(p.image)})"></div>` : `<div class="pair-chip-img"></div>`}
+                <div class="pair-chip-name">${escapeHTML(getTranslation(p,'name'))}</div>
+                <div class="pair-chip-price">${escapeHTML(priceStr(p.price))}</div>
+                <div class="pair-chip-add">+ Add</div>
+              </div>`).join('')}
+          </div>
+        </div>`;
+      })()}
       <div class="detail-actions">
         <button class="detail-btn ghost" id="detailFav">${favorites.has(it.id) ? '♥ Saved' : '♡ Save'}</button>
         <button class="detail-btn primary ${inCart?'added':''}" id="detailAdd">${inCart ? '✓ Added' : 'Add to order'}</button>
@@ -1213,6 +1237,18 @@ function openDetail(iid) {
   }
 
   sheet.querySelector('#detailClose').addEventListener('click', closeDetail);
+
+  // Pair chips — add to cart
+  sheet.querySelectorAll('.pair-chip[data-pair-id]').forEach(chip => {
+    chip.addEventListener('click', () => {
+      const pid = chip.dataset.pairId;
+      addToCart(pid);
+      trackOrder(pid);
+      chip.classList.add('pair-added');
+      chip.querySelector('.pair-chip-add').textContent = '✓ Added';
+    });
+  });
+
   sheet.querySelector('#detailFav').addEventListener('click', () => {
     toggleFav(it.id);
     const btn = sheet.querySelector('#detailFav');
@@ -1594,6 +1630,49 @@ function renderThemeFab() {
   });
 }
 
+// ===== NEW: Availability badge helper =====
+function availBadgeHTML(it) {
+  if (!it) return '';
+  if (it.avail === 'soldout') return '<span class="item-avail-badge avail-soldout-badge">Sold Out</span>';
+  if (it.avail === 'limited') return '<span class="item-avail-badge avail-limited-badge">⚡ Limited</span>';
+  return '';
+}
+
+// ===== NEW: Post-process items for availability overlays =====
+function postProcessItems() {
+  const itemMap = {};
+  (data.categories || []).forEach(cat => (cat.items || []).forEach(it => { itemMap[it.id] = it; }));
+  document.querySelectorAll('.item[data-iid]').forEach(el => {
+    const it = itemMap[el.dataset.iid];
+    if (!it) return;
+    if (it.avail === 'soldout') {
+      el.classList.add('item-soldout-dim');
+    } else if (it.avail === 'limited') {
+      if (!el.querySelector('.item-avail-badge')) {
+        const badge = document.createElement('span');
+        badge.className = 'item-avail-badge avail-limited-badge';
+        badge.textContent = '⚡ Limited';
+        const nameEl = el.querySelector('.item-name');
+        if (nameEl) nameEl.appendChild(badge);
+      }
+    }
+  });
+}
+
+// ===== NEW: Promo banner =====
+function injectPromoBanner() {
+  document.getElementById('promoBannerStrip')?.remove();
+  const promos = (data.promos || []).filter(p => p.active);
+  if (!promos.length) return;
+  const strip = document.createElement('div');
+  strip.id = 'promoBannerStrip';
+  strip.innerHTML = promos.map(p => `<div class="promo-strip-item"><span class="promo-strip-icon">${p.icon}</span><span>${p.msg}</span></div>`).join('') +
+    `<button class="promo-strip-close" aria-label="Close">×</button>`;
+  strip.querySelector('.promo-strip-close').addEventListener('click', () => strip.remove());
+  const app = document.getElementById('app');
+  if (app) app.prepend(strip);
+}
+
 function observeReveal() {
   const els = document.querySelectorAll('.reveal:not(.in)');
   const io = new IntersectionObserver((entries) => {
@@ -1612,6 +1691,8 @@ window.addEventListener('DOMContentLoaded', async () => {
   menuId = new URLSearchParams(location.search).get('id') || (data.name || 'local').toLowerCase().replace(/\s+/g,'-');
   loadFavCart();
   applyTheme();
+  injectPromoBanner();
+  postProcessItems();
   document.getElementById('app').classList.remove('hidden');
   const loader = document.getElementById('loader');
   loader.style.opacity = '0';
