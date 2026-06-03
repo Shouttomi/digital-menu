@@ -1,4 +1,24 @@
 // Menu — customer view
+
+// ===== Language & Analytics Support =====
+let currentLanguage = localStorage.getItem('menuLanguage') || 'en';
+const LANGUAGE_NAMES = { en: 'English', hi: 'हिन्दी' };
+
+function getTranslation(item, field) {
+  if (!item) return '';
+  if (item.i18n && item.i18n[currentLanguage] && item.i18n[currentLanguage][field]) {
+    return item.i18n[currentLanguage][field];
+  }
+  return item[field] || '';
+}
+
+function trackOrder(itemId, quantity = 1) {
+  const orders = JSON.parse(localStorage.getItem('orderAnalytics') || '[]');
+  orders.push({ itemId, quantity, timestamp: new Date().toISOString() });
+  if (orders.length > 10000) orders.shift();
+  localStorage.setItem('orderAnalytics', JSON.stringify(orders));
+}
+
 const THEME_DEFS = [
   { id: 'cafe', label: 'Cafe', sw: 'linear-gradient(135deg, #f3ead7, #c08762 60%, #5b3a2a)' },
   { id: 'restaurant', label: 'Restaurant', sw: 'linear-gradient(135deg, #0D0D0D, #1A1A1A 50%, #F5A800)' },
@@ -40,9 +60,9 @@ const FALLBACK_DATA = {
   _demo: true,
   categories: [
     { id: '1', name: 'Signature Espresso', items: [
-      { id: 'a', name: 'Velvet Latte', desc: 'Double shot, oat milk, vanilla bean', price: '280', pop: true, image: IMG('velvet-latte'), images: [IMG('velvet-latte'), IMG('latte-closeup'), IMG('coffee-art')], tags: ['veg','df'] },
-      { id: 'b', name: 'Honey Cortado', desc: 'Equal parts espresso & milk, raw honey', price: '240', pop: false, image: IMG('honey-cortado'), tags: ['veg'] },
-      { id: 'c', name: 'Iced Brown Sugar Shaken', desc: 'Cold espresso, brown sugar syrup, cinnamon', price: '260', pop: true, image: IMG('iced-brown-sugar'), tags: ['veg','vegan','df'] },
+      { id: 'a', name: 'Velvet Latte', desc: 'Double shot, oat milk, vanilla bean', price: '280', pop: true, image: IMG('velvet-latte'), images: [IMG('velvet-latte'), IMG('latte-closeup'), IMG('coffee-art')], tags: ['veg','df'], i18n: { hi: { name: 'मखमली लट्टे', desc: 'डबल शॉट, ओट दूध, वनीला बीन' } } },
+      { id: 'b', name: 'Honey Cortado', desc: 'Equal parts espresso & milk, raw honey', price: '240', pop: false, image: IMG('honey-cortado'), tags: ['veg'], i18n: { hi: { name: 'शहद कॉर्टाडो', desc: 'एस्प्रेसो और दूध समान भाग, कच्चा शहद' } } },
+      { id: 'c', name: 'Iced Brown Sugar Shaken', desc: 'Cold espresso, brown sugar syrup, cinnamon', price: '260', pop: true, image: IMG('iced-brown-sugar'), tags: ['veg','vegan','df'], i18n: { hi: { name: 'आइस्ड ब्राउन शुगर शेकन', desc: 'ठंडी एस्प्रेसो, ब्राउन शुगर सिरप, दालचीनी' } } },
       { id: 'd', name: 'Flat White', desc: 'Velvety microfoam over a ristretto double', price: '220', pop: false, image: IMG('flat-white'), tags: ['veg'] },
       { id: 'd2', name: 'Caramel Macchiato', desc: 'Steamed milk, vanilla, caramel drizzle', price: '290', pop: false, image: IMG('caramel-macchiato'), tags: ['veg'] },
       { id: 'd3', name: 'Spanish Latte', desc: 'Condensed milk, espresso, silky finish', price: '270', pop: true, image: IMG('spanish-latte'), tags: ['veg'] },
@@ -450,23 +470,27 @@ function passesFilter(it) {
 
 // ===== Per-theme item renderers =====
 function renderItemCafe(it, i) {
+  const name = getTranslation(it, 'name');
+  const desc = getTranslation(it, 'desc');
   return `<div class="item reveal tilt delay-${Math.min(i,3)}" data-iid="${it.id}">
     ${favIcon(it.id)}
     <div class="item-info">
-      <h3 class="item-name">${escapeHTML(it.name)}${tagDots(it)}${it.pop ? '<span class="pop-badge">Popular</span>':''}</h3>
-      ${it.desc ? `<p class="item-desc">${escapeHTML(it.desc)}</p>` : ''}
+      <h3 class="item-name">${escapeHTML(name)}${tagDots(it)}${it.pop ? '<span class="pop-badge">Popular</span>':''}</h3>
+      ${desc ? `<p class="item-desc">${escapeHTML(desc)}</p>` : ''}
       <div class="item-price">${escapeHTML(priceStr(it.price))}</div>
     </div>
     ${itemImage(it)}
   </div>`;
 }
 function renderItemRestaurant(it, i) {
+  const name = getTranslation(it, 'name');
+  const desc = getTranslation(it, 'desc');
   return `<div class="item reveal delay-${Math.min(i,3)}" data-iid="${it.id}">
     ${favIcon(it.id)}
     ${itemImage(it)}
     <div class="item-body">
-      <h3 class="item-name">${escapeHTML(it.name)}${it.pop ? '<span class="pop-badge">HOT</span>':''}</h3>
-      ${it.desc ? `<p class="item-desc">${escapeHTML(it.desc)}</p>` : ''}
+      <h3 class="item-name">${escapeHTML(name)}${it.pop ? '<span class="pop-badge">HOT</span>':''}</h3>
+      ${desc ? `<p class="item-desc">${escapeHTML(desc)}</p>` : ''}
       <div class="item-footer-row">
         ${tagDots(it)}
         <div class="item-price">${escapeHTML(priceStr(it.price))}</div>
@@ -475,22 +499,26 @@ function renderItemRestaurant(it, i) {
   </div>`;
 }
 function renderItemBistro(it, i) {
+  const name = getTranslation(it, 'name');
+  const desc = getTranslation(it, 'desc');
   return `<div class="item reveal tilt delay-${Math.min(i,3)}" data-iid="${it.id}">
     ${favIcon(it.id)}
     ${itemImage(it)}
-    <h3 class="item-name">${escapeHTML(it.name)}${tagDots(it)}</h3>
-    <p class="item-desc">${escapeHTML(it.desc || '')}</p>
+    <h3 class="item-name">${escapeHTML(name)}${tagDots(it)}</h3>
+    <p class="item-desc">${escapeHTML(desc || '')}</p>
     <div class="item-price">${escapeHTML(priceStr(it.price))}</div>
     ${it.pop ? '<span class="pop-badge">Hot</span>' : ''}
   </div>`;
 }
 function renderItemUrban(it, i) {
+  const name = getTranslation(it, 'name');
+  const desc = getTranslation(it, 'desc');
   return `<div class="item reveal tilt delay-${Math.min(i,3)}" data-iid="${it.id}">
     ${favIcon(it.id)}
     ${itemImage(it)}
     <div class="item-info">
-      <h3 class="item-name">${escapeHTML(it.name)}${tagDots(it)}${it.pop ? '<span class="pop-badge">🔥 Popular</span>':''}</h3>
-      ${it.desc ? `<p class="item-desc">${escapeHTML(it.desc)}</p>` : ''}
+      <h3 class="item-name">${escapeHTML(name)}${tagDots(it)}${it.pop ? '<span class="pop-badge">🔥 Popular</span>':''}</h3>
+      ${desc ? `<p class="item-desc">${escapeHTML(desc)}</p>` : ''}
     </div>
     <div class="item-price-row">
       <div class="item-price">${escapeHTML(priceStr(it.price))}</div>
@@ -499,14 +527,16 @@ function renderItemUrban(it, i) {
 }
 
 function renderItemHumm(it, i) {
+  const name = getTranslation(it, 'name');
+  const desc = getTranslation(it, 'desc');
   return `<div class="item humm-item reveal delay-${Math.min(i,3)}" data-iid="${it.id}">
     ${favIcon(it.id)}
     <div class="humm-item-body">
       <div class="humm-item-top">
-        <h3 class="item-name">${escapeHTML(it.name)}${it.pop ? '<span class="pop-badge">★</span>':''}</h3>
+        <h3 class="item-name">${escapeHTML(name)}${it.pop ? '<span class="pop-badge">★</span>':''}</h3>
         <div class="item-price">${escapeHTML(priceStr(it.price))}</div>
       </div>
-      ${it.desc ? `<p class="item-desc">${escapeHTML(it.desc)}</p>` : ''}
+      ${desc ? `<p class="item-desc">${escapeHTML(desc)}</p>` : ''}
       ${tagDots(it)}
     </div>
   </div>`;
@@ -762,13 +792,15 @@ function renderHeroFresh() {
   </section>`;
 }
 function renderItemFresh(it, i) {
+  const name = getTranslation(it, 'name');
+  const desc = getTranslation(it, 'desc');
   return `<div class="item reveal delay-${Math.min(i,3)}" data-iid="${it.id}">
     ${favIcon(it.id)}
     <div class="fresh-card-img-wrap">${itemImage(it)}</div>
     <div class="fresh-card-body">
       ${it.pop ? '<span class="pop-badge">★ Popular</span>' : ''}
-      <h3 class="item-name">${escapeHTML(it.name)}</h3>
-      ${it.desc ? `<p class="item-desc">${escapeHTML(it.desc)}</p>` : ''}
+      <h3 class="item-name">${escapeHTML(name)}</h3>
+      ${desc ? `<p class="item-desc">${escapeHTML(desc)}</p>` : ''}
       <div class="fresh-card-footer">
         ${tagDots(it)}
         <span class="item-price">${escapeHTML(priceStr(it.price))}</span>
@@ -779,17 +811,19 @@ function renderItemFresh(it, i) {
 
 // ===== New theme renderers: Gallery / Editorial / Maison =====
 function renderItemGallery(it, i) {
+  const name = getTranslation(it, 'name');
+  const desc = getTranslation(it, 'desc');
   return `<div class="item reveal delay-${Math.min(i,3)}" data-iid="${it.id}">
     ${favIcon(it.id)}
     ${itemImage(it)}
     ${it.pop ? '<span class="pop-badge">Signature</span>' : ''}
     <div class="gallery-cap">
       <div class="gallery-cap-row">
-        <h3 class="item-name">${escapeHTML(it.name)}</h3>
+        <h3 class="item-name">${escapeHTML(name)}</h3>
         <div class="item-price">${escapeHTML(priceStr(it.price))}</div>
       </div>
       <div class="gallery-cap-sub">
-        ${it.desc ? `<span class="gallery-desc">${escapeHTML(it.desc)}</span>` : '<span></span>'}
+        ${desc ? `<span class="gallery-desc">${escapeHTML(desc)}</span>` : '<span></span>'}
         ${tagDots(it)}
       </div>
     </div>
@@ -798,32 +832,36 @@ function renderItemGallery(it, i) {
 
 function renderItemEditorial(it, i) {
   const num = String(i + 1).padStart(2, '0');
+  const name = getTranslation(it, 'name');
+  const desc = getTranslation(it, 'desc');
   return `<div class="item reveal delay-${Math.min(i,3)}" data-iid="${it.id}">
     ${favIcon(it.id)}
     ${itemImage(it, 'item-image ed-photo')}
     <div class="ed-text">
       <span class="ed-num">${num}</span>
       <div class="ed-head">
-        <h3 class="item-name">${escapeHTML(it.name)}${it.pop ? '<span class="pop-badge">Editor\u2019s Pick</span>' : ''}</h3>
+        <h3 class="item-name">${escapeHTML(name)}${it.pop ? '<span class="pop-badge">Editor\u2019s Pick</span>' : ''}</h3>
         <span class="ed-leader"></span>
         <span class="item-price">${escapeHTML(priceStr(it.price))}</span>
       </div>
-      ${it.desc ? `<p class="item-desc">${escapeHTML(it.desc)}</p>` : ''}
+      ${desc ? `<p class="item-desc">${escapeHTML(desc)}</p>` : ''}
       ${tagDots(it)}
     </div>
   </div>`;
 }
 
 function renderItemMaison(it, i) {
+  const name = getTranslation(it, 'name');
+  const desc = getTranslation(it, 'desc');
   return `<div class="item reveal delay-${Math.min(i,3)}" data-iid="${it.id}">
     ${favIcon(it.id)}
     ${it.image ? `<div class="m-photo" style="background-image:url(${it.image})"></div>` : ''}
     <div class="m-head">
-      <h3 class="item-name">${escapeHTML(it.name)}</h3>
+      <h3 class="item-name">${escapeHTML(name)}</h3>
       <span class="m-leader"></span>
       <span class="item-price">${escapeHTML(priceStr(it.price))}</span>
     </div>
-    ${it.desc ? `<p class="item-desc">${escapeHTML(it.desc)}</p>` : ''}
+    ${desc ? `<p class="item-desc">${escapeHTML(desc)}</p>` : ''}
     ${tagDots(it)}
     ${it.pop ? '<span class="pop-badge">Signature</span>' : ''}
   </div>`;
@@ -940,6 +978,7 @@ function applyTheme() {
     </div>`;
   }
   renderThemeFab();
+  renderLanguageFab();
   renderCartFab();
   attachInteractions();
   observeReveal();
@@ -1144,16 +1183,18 @@ function openDetail(iid) {
     heroHTML = `<div class="detail-hero placeholder">◍<button class="detail-close" id="detailClose">×</button></div>`;
   }
 
+  const detailName = getTranslation(it, 'name');
+  const detailDesc = getTranslation(it, 'desc');
   sheet.innerHTML = `
     <div class="detail-grabber"></div>
     ${heroHTML}
     <div class="detail-body">
       <div class="detail-name-row">
-        <h2 class="detail-name">${escapeHTML(it.name)}</h2>
+        <h2 class="detail-name">${escapeHTML(detailName)}</h2>
         <div class="detail-price">${escapeHTML(priceStr(it.price))}</div>
       </div>
       ${tagsHTML ? `<div class="detail-tags">${tagsHTML}</div>` : ''}
-      <p class="detail-desc">${escapeHTML(it.desc || 'No description.')}</p>
+      <p class="detail-desc">${escapeHTML(detailDesc || 'No description.')}</p>
       <div class="detail-actions">
         <button class="detail-btn ghost" id="detailFav">${favorites.has(it.id) ? '♥ Saved' : '♡ Save'}</button>
         <button class="detail-btn primary ${inCart?'added':''}" id="detailAdd">${inCart ? '✓ Added' : 'Add to order'}</button>
@@ -1183,6 +1224,7 @@ function openDetail(iid) {
   sheet.querySelector('#detailAdd').addEventListener('click', () => {
     const btn = sheet.querySelector('#detailAdd');
     addToCart(it.id);
+    trackOrder(it.id);
     flyToCart(btn);
     btn.classList.add('added');
     btn.textContent = '✓ Added';
@@ -1410,7 +1452,7 @@ function renderCartContent(sheet) {
           <div class="cart-row" data-iid="${it.id}">
             <div class="cart-thumb" style="${it.image ? `background-image:url(${it.image})` : ''}"></div>
             <div class="cart-info">
-              <h4>${escapeHTML(it.name)}</h4>
+              <h4>${escapeHTML(getTranslation(it, 'name'))}</h4>
               <p>${cur}${(priceNum(it.price) * qty).toFixed(2)}</p>
             </div>
             <div class="cart-qty">
@@ -1464,7 +1506,7 @@ function openWaiterView(entries, total, cur) {
         ${entries.map(({it, qty}) => `
           <li class="waiter-row">
             <span class="waiter-qty">${qty}<span>×</span></span>
-            <span class="waiter-name">${escapeHTML(it.name)}</span>
+            <span class="waiter-name">${escapeHTML(getTranslation(it, 'name'))}</span>
             <span class="waiter-line-price">${cur}${(priceNum(it.price) * qty).toFixed(0)}</span>
           </li>`).join('')}
       </ul>
@@ -1484,6 +1526,25 @@ function openWaiterView(entries, total, cur) {
   };
   ov.querySelector('#waiterClose').addEventListener('click', close);
   ov.addEventListener('click', (e) => { if (e.target === ov) close(); });
+}
+
+// ===== Language switcher FAB =====
+function renderLanguageFab() {
+  let fab = document.getElementById('langFab');
+  if (fab) return;
+  fab = document.createElement('button');
+  fab.id = 'langFab';
+  fab.className = 'lang-fab';
+  fab.setAttribute('aria-label','Switch language');
+  fab.innerHTML = currentLanguage === 'en' ? '🇬🇧' : '🇮🇳';
+  document.body.appendChild(fab);
+
+  fab.addEventListener('click', () => {
+    currentLanguage = currentLanguage === 'en' ? 'hi' : 'en';
+    localStorage.setItem('menuLanguage', currentLanguage);
+    fab.innerHTML = currentLanguage === 'en' ? '🇬🇧' : '🇮🇳';
+    applyTheme();
+  });
 }
 
 // ===== Theme switcher FAB =====

@@ -976,6 +976,25 @@ body.theme-urban .footer {
   transition: transform .2s ease;
 }
 .theme-fab:hover { transform: scale(1.08); }
+
+/* Language switcher FAB */
+.lang-fab {
+  position: fixed;
+  bottom: 80px; right: 20px;
+  z-index: 100;
+  width: 52px; height: 52px;
+  border-radius: 50%;
+  background: rgba(0,0,0,0.75);
+  backdrop-filter: blur(12px);
+  border: none;
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 26px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+  transition: transform .2s ease;
+}
+.lang-fab:hover { transform: scale(1.08); }
+
 .theme-sheet {
   position: fixed;
   bottom: 0; left: 0; right: 0;

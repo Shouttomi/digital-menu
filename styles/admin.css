@@ -342,3 +342,48 @@ input[type="text"]:focus, textarea:focus {
   transform-origin: top left;
   display: block;
 }
+
+/* Analytics panel */
+.analytics-panel {
+  margin: 16px 0;
+  padding: 16px;
+  background: rgba(107,92,255,0.08);
+  border: 1px solid rgba(107,92,255,0.3);
+  border-radius: 12px;
+  color: #e9eaf0;
+}
+.analytics-panel h4 {
+  margin: 0 0 12px;
+  font-size: 14px;
+  font-weight: 700;
+  color: #6b5cff;
+}
+.analytics-stat {
+  margin: 0 0 12px;
+  font-size: 13px;
+  color: #b0b3c0;
+}
+.analytics-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.analytics-item {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  padding: 8px 10px;
+  background: rgba(255,255,255,0.04);
+  border-radius: 8px;
+  font-size: 13px;
+}
+.analytics-item span:first-child {
+  color: #6b5cff;
+  font-weight: 700;
+  min-width: 20px;
+}
+.analytics-item .qty {
+  margin-left: auto;
+  color: #18b08a;
+  font-weight: 600;
+}

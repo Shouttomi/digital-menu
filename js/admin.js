@@ -323,6 +323,71 @@ $('resetBtn').addEventListener('click', () => {
   state = defaultData(); hydrate(); saveToServer().then(() => { buildLink(); renderQR(); });
 });
 
+// ===== Analytics Dashboard =====
+function getOrderAnalytics() {
+  const orders = JSON.parse(localStorage.getItem('orderAnalytics') || '[]');
+  const counts = {};
+  orders.forEach(o => {
+    counts[o.itemId] = (counts[o.itemId] || 0) + o.quantity;
+  });
+
+  const itemMap = {};
+  for (const cat of state.categories) {
+    for (const item of (cat.items || [])) {
+      itemMap[item.id] = item;
+    }
+  }
+
+  const sorted = Object.entries(counts)
+    .map(([id, qty]) => ({ id, qty, name: itemMap[id]?.name || 'Unknown' }))
+    .sort((a, b) => b.qty - a.qty)
+    .slice(0, 10);
+
+  return { orders, sorted, total: orders.length };
+}
+
+function renderAnalytics() {
+  const btn = $('analyticsBtn');
+  if (!btn) return;
+
+  const { orders, sorted, total } = getOrderAnalytics();
+
+  let html = '<div class="analytics-panel">';
+  html += `<h4>Order Analytics</h4>`;
+  html += `<p class="analytics-stat">Total orders: <b>${total}</b></p>`;
+
+  if (sorted.length === 0) {
+    html += '<p class="muted">No orders tracked yet. Customers will appear here as they order.</p>';
+  } else {
+    html += '<div class="analytics-list">';
+    sorted.forEach((item, i) => {
+      html += `<div class="analytics-item"><span>${i+1}.</span> <strong>${item.name}</strong> <span class="qty">${item.qty}×</span></div>`;
+    });
+    html += '</div>';
+  }
+
+  const btn2 = document.createElement('button');
+  btn2.className = 'ghost-btn small';
+  btn2.textContent = 'Clear analytics';
+  btn2.onclick = () => {
+    if (confirm('Clear all order analytics?')) {
+      localStorage.removeItem('orderAnalytics');
+      renderAnalytics();
+    }
+  };
+
+  html += '</div>';
+  const parent = btn.parentElement;
+  const existing = parent.querySelector('.analytics-panel');
+  if (existing) existing.remove();
+  const container = document.createElement('div');
+  container.innerHTML = html;
+  container.appendChild(btn2);
+  parent.insertBefore(container.firstElementChild, btn.nextSibling);
+}
+
+$('analyticsBtn')?.addEventListener('click', renderAnalytics);
+
 hydrate();
 // Kick off initial save so QR uses a short link from the start
 saveToServer().then(() => { buildLink(); renderQR(); });
