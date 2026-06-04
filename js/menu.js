@@ -983,7 +983,7 @@ function applyTheme() {
     </div>`;
   }
   renderThemeFab();
-  renderLanguageFab();
+  // renderLanguageFab(); // TODO: debug language switching
   renderCartFab();
   attachInteractions();
   observeReveal();
