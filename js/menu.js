@@ -1584,18 +1584,23 @@ function sendOrderViaWhatsApp(entries, total, cur, menuData) {
 }
 
 function showOrderConfirmation(cafeName, message) {
+  // Create backdrop
+  const backdrop = document.createElement('div');
+  backdrop.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:9999;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(8px)';
+
+  // Create dialog
   const dialog = document.createElement('div');
-  dialog.className = 'order-confirmation-dialog';
+  dialog.style.cssText = 'background:#fff;border-radius:20px;padding:28px;max-width:380px;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,0.3)';
+
   dialog.innerHTML = `
-    <div class="order-confirmation-content">
-      <h3>✓ Order Sent to WhatsApp</h3>
-      <p>Chef at <strong>${escapeHTML(cafeName)}</strong> will receive your order and confirm the preparation time.</p>
-      <p style="font-size:12px;color:#8b8e9b;margin-top:12px;">You can close this menu and they'll contact you if needed.</p>
-      <button class="detail-btn primary" onclick="this.closest('.order-confirmation-dialog').remove()">Got it</button>
-    </div>
+    <h3 style="margin:0 0 14px;font-size:20px;font-weight:700;color:#25D366">✓ Order Received</h3>
+    <p style="margin:0 0 12px;font-size:14px;line-height:1.5">Your order has been sent to ${escapeHTML(cafeName)}</p>
+    <p style="margin:0;font-size:12px;color:#888">The chef will confirm your order shortly</p>
+    <button onclick="this.closest('div').parentElement.remove()" style="margin-top:16px;padding:12px 20px;background:#25D366;color:#fff;border:none;border-radius:8px;cursor:pointer;font-size:14px;font-weight:600">Close</button>
   `;
-  document.body.appendChild(dialog);
-  setTimeout(() => { dialog.classList.add('show'); }, 50);
+
+  backdrop.appendChild(dialog);
+  document.body.appendChild(backdrop);
 }
 
 // ===== "Show to waiter" full-screen order ticket =====
