@@ -56,7 +56,34 @@ class Handler(SimpleHTTPRequestHandler):
 
     def do_POST(self):
         path = urlparse(self.path).path
-        if path == "/api/save":
+        if path == "/api/send-whatsapp":
+            length = int(self.headers.get("Content-Length", "0"))
+            if length <= 0 or length > 100_000:
+                return self._send_json(400, {"error": "bad size"})
+            raw = self.rfile.read(length)
+            try:
+                data = json.loads(raw.decode("utf-8"))
+            except Exception:
+                return self._send_json(400, {"error": "bad json"})
+
+            # For now, just log the order (in production, use Twilio/WhatsApp API)
+            wa_number = data.get("whatsappNumber", "unknown")
+            message = data.get("message", "")
+            cafe_name = data.get("cafeName", "")
+
+            # Log the order
+            log_file = os.path.join(ROOT, "orders.log")
+            with open(log_file, "a", encoding="utf-8") as f:
+                f.write(f"\n{'='*60}\n")
+                f.write(f"[{__import__('datetime').datetime.now().isoformat()}]\n")
+                f.write(f"Cafe: {cafe_name}\n")
+                f.write(f"WhatsApp: {wa_number}\n")
+                f.write(f"Message:\n{message}\n")
+
+            print(f"[whatsapp] Order logged for {wa_number}")
+            # In production, integrate with Twilio or WhatsApp Business API here
+            return self._send_json(200, {"success": True, "message": "Order sent successfully"})
+        elif path == "/api/save":
             length = int(self.headers.get("Content-Length", "0"))
             if length <= 0 or length > 2_000_000:
                 return self._send_json(400, {"error": "bad size"})

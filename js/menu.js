@@ -1567,14 +1567,26 @@ function sendOrderViaWhatsApp(entries, total, cur, menuData) {
   lines.push('🕐 Ordered: ' + new Date().toLocaleTimeString('en-IN'));
 
   const message = lines.join('\n');
-  const encoded = encodeURIComponent(message);
-  const waLink = `https://wa.me/${number}?text=${encoded}`;
 
-  // Open WhatsApp
-  window.open(waLink, '_blank');
+  // Send to backend (silent, no redirect)
+  sendOrderToServer(number, message, menuData.name).then(() => {
+    closeCart();
+    showOrderConfirmation(menuData.name, message);
+    cart.clear();
+    saveCart();
+  }).catch(err => {
+    alert('Failed to send order: ' + err.message);
+  });
+}
 
-  // Show confirmation
-  showOrderConfirmation(menuData.name, message);
+async function sendOrderToServer(whatsappNumber, message, cafeName) {
+  const res = await fetch('/api/send-whatsapp', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ whatsappNumber, message, cafeName })
+  });
+  if (!res.ok) throw new Error('Failed to send order');
+  return res.json();
 }
 
 function showOrderConfirmation(cafeName, message) {
@@ -1637,21 +1649,29 @@ function openWaiterView(entries, total, cur) {
 function renderLanguageFab() {
   let fab = document.getElementById('langFab');
   if (fab) fab.remove();
+
   fab = document.createElement('button');
   fab.id = 'langFab';
   fab.className = 'lang-fab';
-  fab.setAttribute('aria-label', `Switch language (${LANGUAGE_NAMES[currentLanguage]})`);
   fab.innerHTML = LANGUAGE_FLAGS[currentLanguage];
   fab.title = `Language: ${LANGUAGE_NAMES[currentLanguage]}`;
-  document.body.appendChild(fab);
+  fab.setAttribute('aria-label', `Switch language`);
 
   fab.addEventListener('click', (e) => {
+    e.preventDefault();
     e.stopPropagation();
-    const currentIdx = LANGUAGES.indexOf(currentLanguage);
-    currentLanguage = LANGUAGES[(currentIdx + 1) % LANGUAGES.length];
+    const idx = LANGUAGES.indexOf(currentLanguage);
+    const nextIdx = (idx + 1) % LANGUAGES.length;
+    currentLanguage = LANGUAGES[nextIdx];
     localStorage.setItem('menuLanguage', currentLanguage);
-    applyTheme();
+    // Manually re-render categories with new language
+    rerenderCategories();
+    // Update FAB icon
+    fab.innerHTML = LANGUAGE_FLAGS[currentLanguage];
+    fab.title = `Language: ${LANGUAGE_NAMES[currentLanguage]}`;
   });
+
+  document.body.appendChild(fab);
 }
 
 // ===== Theme switcher FAB =====
