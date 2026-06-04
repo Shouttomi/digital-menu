@@ -298,7 +298,21 @@
       return '';
     }
 
-    function updateOrders() {
+    async function updateOrders() {
+      try {
+        // Try to fetch from server first (Vercel)
+        const res = await fetch('/api/orders');
+        if (res.ok) {
+          const data = await res.json();
+          orders = data;
+          renderOrders();
+          return;
+        }
+      } catch (e) {
+        // Fallback to localStorage (local development)
+      }
+
+      // Fallback: use localStorage
       const stored = localStorage.getItem('whatsappOrders');
       const newOrders = stored ? JSON.parse(stored) : [];
 
@@ -380,16 +394,16 @@
 
               <div class="order-actions">
                 ${order.status === 'new' ? `
-                  <button class="btn-start" onclick="startCooking('${order.id}')">Start Cooking</button>
+                  <button class="btn-start" data-action="start" data-order="${order.id}">Start Cooking</button>
                 ` : ''}
 
                 ${order.status === 'cooking' ? `
-                  <button class="btn-done" onclick="markReady('${order.id}')">Ready</button>
-                  <button class="btn-delay" onclick="delay('${order.id}')">Delay</button>
+                  <button class="btn-done" data-action="ready" data-order="${order.id}">Ready</button>
+                  <button class="btn-delay" data-action="delay" data-order="${order.id}">Delay</button>
                 ` : ''}
 
                 ${order.status === 'ready' ? `
-                  <button class="btn-done" onclick="clearOrder('${order.id}')">Picked Up</button>
+                  <button class="btn-done" data-action="pickup" data-order="${order.id}">Picked Up</button>
                 ` : ''}
               </div>
             </div>
@@ -426,33 +440,63 @@
       document.getElementById('countReady').textContent = statusMap.ready;
     }
 
-    function startCooking(orderId) {
+    async function startCooking(orderId) {
       if (orders[orderId]) {
         orders[orderId].status = 'cooking';
         orders[orderId].startTime = new Date().toISOString();
+        await updateServer(orderId, 'cooking');
         renderOrders();
       }
     }
 
-    function markReady(orderId) {
+    async function markReady(orderId) {
       if (orders[orderId]) {
         orders[orderId].status = 'ready';
+        await updateServer(orderId, 'ready');
         playNotificationSound();
         renderOrders();
       }
     }
 
-    function delay(orderId) {
+    async function delay(orderId) {
       if (orders[orderId]) {
         orders[orderId].status = 'new';
+        await updateServer(orderId, 'new');
         renderOrders();
       }
     }
 
-    function clearOrder(orderId) {
+    async function clearOrder(orderId) {
       delete orders[orderId];
+      await updateServer(orderId, 'cleared');
       renderOrders();
     }
+
+    async function updateServer(orderId, status) {
+      try {
+        await fetch('/api/orders', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ orderId, status })
+        });
+      } catch (e) {
+        // Fallback: just update locally if server unavailable
+      }
+    }
+
+    // Event delegation for buttons
+    document.addEventListener('click', (e) => {
+      const btn = e.target.closest('button[data-action]');
+      if (!btn) return;
+
+      const action = btn.dataset.action;
+      const orderId = btn.dataset.order;
+
+      if (action === 'start') startCooking(orderId);
+      else if (action === 'ready') markReady(orderId);
+      else if (action === 'delay') delay(orderId);
+      else if (action === 'pickup') clearOrder(orderId);
+    });
 
     // Update timers every second (smooth, no flicker)
     let lastOrderCount = 0;

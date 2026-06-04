@@ -1568,13 +1568,23 @@ function sendOrderViaWhatsApp(entries, total, cur, menuData) {
 
   const message = lines.join('\n');
 
-  // Log order locally (no server needed)
+  // Log order locally + send to server
   const orders = JSON.parse(localStorage.getItem('whatsappOrders') || '[]');
-  orders.push({
+  const newOrder = {
     number, message, cafeName: menuData.name,
-    timestamp: new Date().toISOString()
-  });
+    timestamp: new Date().toISOString(),
+    status: 'new'
+  };
+  orders.push(newOrder);
   localStorage.setItem('whatsappOrders', JSON.stringify(orders));
+
+  // Also save to server for kitchen display
+  const orderId = `ORDER-${orders.length - 1}`;
+  fetch('/api/orders', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ orderId, status: 'new', order: newOrder })
+  }).catch(() => {}); // Fail silently if server unavailable
 
   // Show success and close cart
   closeCart();

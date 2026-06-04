@@ -54,9 +54,55 @@ class Handler(SimpleHTTPRequestHandler):
             return self._send_json(200, data)
         return super().do_GET()
 
+    def do_GET(self):
+        path = urlparse(self.path).path
+        if path == "/api/orders":
+            # Return all orders with their statuses
+            orders_file = os.path.join(ROOT, "kitchen_orders.json")
+            data = {}
+            if os.path.exists(orders_file):
+                try:
+                    with open(orders_file, "r", encoding="utf-8") as f:
+                        data = json.load(f)
+                except:
+                    data = {}
+            return self._send_json(200, data)
+        return super().do_GET()
+
     def do_POST(self):
         path = urlparse(self.path).path
-        if path == "/api/send-whatsapp":
+        if path == "/api/orders":
+            length = int(self.headers.get("Content-Length", "0"))
+            if length <= 0 or length > 10_000:
+                return self._send_json(400, {"error": "bad size"})
+            raw = self.rfile.read(length)
+            try:
+                data = json.loads(raw.decode("utf-8"))
+            except:
+                return self._send_json(400, {"error": "bad json"})
+
+            orderId = data.get("orderId", "")
+            status = data.get("status", "")
+
+            # Load existing orders
+            orders_file = os.path.join(ROOT, "kitchen_orders.json")
+            orders = {}
+            if os.path.exists(orders_file):
+                try:
+                    with open(orders_file, "r", encoding="utf-8") as f:
+                        orders = json.load(f)
+                except:
+                    orders = {}
+
+            # Update order status
+            if orderId in orders:
+                orders[orderId]["status"] = status
+                with open(orders_file, "w", encoding="utf-8") as f:
+                    json.dump(orders, f)
+
+            print(f"[kitchen] Order {orderId} → {status}")
+            return self._send_json(200, {"success": True})
+        elif path == "/api/send-whatsapp":
             length = int(self.headers.get("Content-Length", "0"))
             if length <= 0 or length > 100_000:
                 return self._send_json(400, {"error": "bad size"})
