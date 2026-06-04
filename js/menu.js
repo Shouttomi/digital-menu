@@ -1544,7 +1544,7 @@ function sendOrderViaWhatsApp(entries, total, cur, menuData) {
     number = '91' + number;
   }
 
-  // Build order message
+  // Build order message (always in English)
   const lines = [
     `🍽️ *${escapeHTML(menuData.name || 'Order')}*`,
     '',
@@ -1552,7 +1552,7 @@ function sendOrderViaWhatsApp(entries, total, cur, menuData) {
   ];
 
   entries.forEach(({it, qty}) => {
-    const itemName = getTranslation(it, 'name');
+    const itemName = it.name; // Always use English name
     const itemPrice = priceNum(it.price) * qty;
     lines.push(`• ${itemName} × ${qty} — ${cur}${itemPrice.toFixed(0)}`);
   });
