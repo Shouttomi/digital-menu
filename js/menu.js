@@ -1503,8 +1503,9 @@ function renderCartContent(sheet) {
       </div>
       <div class="cart-foot">
         <div class="cart-total"><span>Total</span><b>${cur}${total.toFixed(2)}</b></div>
-        <button class="detail-btn primary" id="cartShow">Show to waiter</button>
-        <p class="show-waiter-note">Not a paid order — show your phone at the counter to order these items.</p>
+        ${data.chefWhatsApp ? `<button class="detail-btn primary whatsapp-btn" id="cartWhatsApp">📱 Order via WhatsApp</button>` : ''}
+        <button class="detail-btn ${data.chefWhatsApp ? 'ghost' : 'primary'}" id="cartShow">Show to waiter</button>
+        <p class="show-waiter-note">Not a paid order — ${data.chefWhatsApp ? 'order via WhatsApp or s' : 's'}how your phone at the counter to order these items.</p>
       </div>
     `;
   }
@@ -1523,6 +1524,69 @@ function renderCartContent(sheet) {
   if (showBtn) {
     showBtn.addEventListener('click', () => openWaiterView(entries, total, cur));
   }
+  const whatsappBtn = sheet.querySelector('#cartWhatsApp');
+  if (whatsappBtn && data.chefWhatsApp) {
+    whatsappBtn.addEventListener('click', () => sendOrderViaWhatsApp(entries, total, cur, data));
+  }
+}
+
+// ===== WhatsApp Order Integration =====
+function sendOrderViaWhatsApp(entries, total, cur, menuData) {
+  if (!menuData.chefWhatsApp) {
+    alert('WhatsApp number not configured');
+    return;
+  }
+
+  // Format: remove spaces, +, hyphens; normalize to country code + number
+  let number = menuData.chefWhatsApp.replace(/[\s\-\+]/g, '');
+  if (!number.startsWith('91')) {
+    // If no country code, assume +91 (India)
+    number = '91' + number;
+  }
+
+  // Build order message
+  const lines = [
+    `🍽️ *${escapeHTML(menuData.name || 'Order')}*`,
+    '',
+    '*Items:*'
+  ];
+
+  entries.forEach(({it, qty}) => {
+    const itemName = getTranslation(it, 'name');
+    const itemPrice = priceNum(it.price) * qty;
+    lines.push(`• ${itemName} × ${qty} — ${cur}${itemPrice.toFixed(0)}`);
+  });
+
+  lines.push('');
+  lines.push(`*Total: ${cur}${total.toFixed(0)}*`);
+  lines.push('');
+  lines.push('📍 ' + (menuData.address || 'Location'));
+  lines.push('🕐 Ordered: ' + new Date().toLocaleTimeString('en-IN'));
+
+  const message = lines.join('\n');
+  const encoded = encodeURIComponent(message);
+  const waLink = `https://wa.me/${number}?text=${encoded}`;
+
+  // Open WhatsApp
+  window.open(waLink, '_blank');
+
+  // Show confirmation
+  showOrderConfirmation(menuData.name, message);
+}
+
+function showOrderConfirmation(cafeName, message) {
+  const dialog = document.createElement('div');
+  dialog.className = 'order-confirmation-dialog';
+  dialog.innerHTML = `
+    <div class="order-confirmation-content">
+      <h3>✓ Order Sent to WhatsApp</h3>
+      <p>Chef at <strong>${escapeHTML(cafeName)}</strong> will receive your order and confirm the preparation time.</p>
+      <p style="font-size:12px;color:#8b8e9b;margin-top:12px;">You can close this menu and they'll contact you if needed.</p>
+      <button class="detail-btn primary" onclick="this.closest('.order-confirmation-dialog').remove()">Got it</button>
+    </div>
+  `;
+  document.body.appendChild(dialog);
+  setTimeout(() => { dialog.classList.add('show'); }, 50);
 }
 
 // ===== "Show to waiter" full-screen order ticket =====

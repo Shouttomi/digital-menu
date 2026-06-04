@@ -106,6 +106,7 @@ function hydrate() {
   $('placeAddress').value = state.address || '';
   $('placePhone').value = state.phone || '';
   $('placeCurrency').value = state.currency || '₹';
+  $('chefWhatsApp').value = state.chefWhatsApp || '';
   setLogoPreview(state.logo);
   setActiveTheme(state.theme);
   renderCategories();
@@ -114,10 +115,11 @@ function hydrate() {
   refreshPreview();
 }
 
-['placeName','placeTagline','placeAddress','placePhone','placeCurrency'].forEach(id => {
+['placeName','placeTagline','placeAddress','placePhone','placeCurrency','chefWhatsApp'].forEach(id => {
   const el = $(id);
+  if (!el) return;
   el.addEventListener('input', () => {
-    state[ {placeName:'name',placeTagline:'tagline',placeAddress:'address',placePhone:'phone',placeCurrency:'currency'}[id] ] = el.value;
+    state[ {placeName:'name',placeTagline:'tagline',placeAddress:'address',placePhone:'phone',placeCurrency:'currency',chefWhatsApp:'chefWhatsApp'}[id] ] = el.value;
     persist();
   });
 });
