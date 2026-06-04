@@ -1665,13 +1665,16 @@ function renderLanguageFab() {
   fab.innerHTML = LANGUAGE_FLAGS[currentLanguage];
   fab.title = `Language: ${LANGUAGE_NAMES[currentLanguage]}`;
   fab.setAttribute('aria-label', `Switch language`);
+  fab.type = 'button'; // Explicit button type
 
   fab.addEventListener('click', (e) => {
     e.preventDefault();
     e.stopPropagation();
+    console.log('Language button clicked! Current:', currentLanguage);
     const idx = LANGUAGES.indexOf(currentLanguage);
     const nextIdx = (idx + 1) % LANGUAGES.length;
     currentLanguage = LANGUAGES[nextIdx];
+    console.log('Language switched to:', currentLanguage);
     localStorage.setItem('menuLanguage', currentLanguage);
     // Manually re-render categories with new language
     rerenderCategories();
@@ -1681,6 +1684,7 @@ function renderLanguageFab() {
   });
 
   document.body.appendChild(fab);
+  console.log('Language FAB created:', LANGUAGE_FLAGS[currentLanguage]);
 }
 
 // ===== Theme switcher FAB =====
