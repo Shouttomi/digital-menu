@@ -1506,7 +1506,7 @@ function renderCartContent(sheet) {
       </div>
       <div class="cart-foot">
         <div class="cart-total"><span>Total</span><b>${cur}${total.toFixed(2)}</b></div>
-        ${data.chefWhatsApp ? `<button class="detail-btn primary whatsapp-btn" id="cartWhatsApp">📱 Order via WhatsApp</button>` : ''}
+        ${data.chefWhatsApp ? `<button class="detail-btn primary whatsapp-btn" id="cartWhatsApp">📱 Order Now</button>` : ''}
         <button class="detail-btn ${data.chefWhatsApp ? 'ghost' : 'primary'}" id="cartShow">Show to waiter</button>
         <p class="show-waiter-note">Not a paid order — ${data.chefWhatsApp ? 'order via WhatsApp or s' : 's'}how your phone at the counter to order these items.</p>
       </div>

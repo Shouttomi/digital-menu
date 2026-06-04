@@ -94,11 +94,21 @@ class Handler(SimpleHTTPRequestHandler):
                 except:
                     orders = {}
 
-            # Update order status
+            # Update or create order
             if orderId in orders:
                 orders[orderId]["status"] = status
-                with open(orders_file, "w", encoding="utf-8") as f:
-                    json.dump(orders, f)
+            else:
+                # Create new order from request
+                order_data = data.get("order", {})
+                orders[orderId] = {
+                    **order_data,
+                    "status": status,
+                    "id": orderId
+                }
+
+            # Save to file
+            with open(orders_file, "w", encoding="utf-8") as f:
+                json.dump(orders, f)
 
             print(f"[kitchen] Order {orderId} → {status}")
             return self._send_json(200, {"success": True})
