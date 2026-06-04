@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kitchen Display System</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+      background: #0a0a0a;
+      color: #fff;
+      overflow: hidden;
+      height: 100vh;
+    }
+
+    header {
+      background: #1a1a1a;
+      padding: 16px;
+      border-bottom: 2px solid #ff6b3d;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    h1 { font-size: 24px; font-weight: 700; }
+
+    .stats {
+      display: flex;
+      gap: 20px;
+      font-size: 13px;
+    }
+
+    .stat {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .stat-dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+    }
+
+    .dot-new { background: #ff4444; }
+    .dot-cooking { background: #ffaa00; }
+    .dot-ready { background: #44ff44; }
+
+    .container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+      gap: 16px;
+      padding: 16px;
+      height: calc(100vh - 80px);
+      overflow-y: auto;
+      background: #0a0a0a;
+    }
+
+    .order-card {
+      border-radius: 12px;
+      padding: 16px;
+      border-left: 6px solid;
+      position: relative;
+      animation: slideIn 0.3s ease;
+    }
+
+    @keyframes slideIn {
+      from { transform: translateX(-20px); opacity: 0; }
+      to { transform: translateX(0); opacity: 1; }
+    }
+
+    .order-card.new {
+      background: rgba(255, 68, 68, 0.15);
+      border-color: #ff4444;
+      box-shadow: 0 0 20px rgba(255, 68, 68, 0.3);
+    }
+
+    .order-card.cooking {
+      background: rgba(255, 170, 0, 0.15);
+      border-color: #ffaa00;
+    }
+
+    .order-card.ready {
+      background: rgba(68, 255, 68, 0.15);
+      border-color: #44ff44;
+    }
+
+    .order-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: start;
+      margin-bottom: 12px;
+    }
+
+    .order-id {
+      font-size: 18px;
+      font-weight: 700;
+      color: #ff6b3d;
+    }
+
+    .order-type {
+      font-size: 11px;
+      padding: 4px 8px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 4px;
+    }
+
+    .order-time {
+      font-size: 12px;
+      color: #aaa;
+      margin-bottom: 12px;
+    }
+
+    .order-items {
+      margin-bottom: 16px;
+    }
+
+    .item {
+      display: flex;
+      justify-content: space-between;
+      padding: 8px 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      font-size: 14px;
+    }
+
+    .item:last-child {
+      border-bottom: none;
+    }
+
+    .item-qty {
+      background: rgba(255, 255, 255, 0.1);
+      padding: 2px 8px;
+      border-radius: 3px;
+      font-weight: 600;
+    }
+
+    .order-timer {
+      font-size: 24px;
+      font-weight: 700;
+      color: #44ff44;
+      margin-bottom: 12px;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .order-timer.warn { color: #ffaa00; }
+    .order-timer.critical { color: #ff4444; }
+
+    .order-actions {
+      display: flex;
+      gap: 8px;
+    }
+
+    button {
+      flex: 1;
+      padding: 12px;
+      border: none;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .btn-start {
+      background: #ffaa00;
+      color: #000;
+    }
+
+    .btn-start:hover {
+      background: #ffbb22;
+      transform: scale(1.02);
+    }
+
+    .btn-done {
+      background: #44ff44;
+      color: #000;
+    }
+
+    .btn-done:hover {
+      background: #66ff66;
+      transform: scale(1.02);
+    }
+
+    .btn-delay {
+      background: #ff4444;
+      color: #fff;
+    }
+
+    .btn-delay:hover {
+      background: #ff6666;
+      transform: scale(1.02);
+    }
+
+    .empty-state {
+      grid-column: 1 / -1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 300px;
+      color: #666;
+    }
+
+    .empty-state h2 { font-size: 24px; margin-bottom: 8px; }
+  </style>
+</head>
+<body>
+  <header>
+    <div>
+      <h1>🍳 Kitchen Display</h1>
+    </div>
+    <div class="stats">
+      <div class="stat">
+        <div class="stat-dot dot-new"></div>
+        <span id="countNew">0</span> New
+      </div>
+      <div class="stat">
+        <div class="stat-dot dot-cooking"></div>
+        <span id="countCooking">0</span> Cooking
+      </div>
+      <div class="stat">
+        <div class="stat-dot dot-ready"></div>
+        <span id="countReady">0</span> Ready
+      </div>
+    </div>
+  </header>
+
+  <div class="container" id="ordersContainer">
+    <div class="empty-state">
+      <h2>No orders yet</h2>
+      <p>Waiting for kitchen orders...</p>
+    </div>
+  </div>
+
+  <script>
+    let orders = {};
+    let audioContext = null;
+
+    // Initialize audio context on first interaction
+    document.body.addEventListener('click', () => {
+      if (!audioContext) {
+        audioContext = new (window.AudioContext || window.webkitAudioContext)();
+      }
+    }, { once: true });
+
+    function playNotificationSound() {
+      if (!audioContext) return;
+
+      const now = audioContext.currentTime;
+      const osc = audioContext.createOscillator();
+      const gain = audioContext.createGain();
+
+      osc.connect(gain);
+      gain.connect(audioContext.destination);
+
+      osc.frequency.setValueAtTime(800, now);
+      osc.frequency.setValueAtTime(600, now + 0.1);
+      gain.gain.setValueAtTime(0.3, now);
+      gain.gain.setValueAtTime(0, now + 0.2);
+
+      osc.start(now);
+      osc.stop(now + 0.2);
+    }
+
+    function formatTime(isoString) {
+      const date = new Date(isoString);
+      return date.toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit' });
+    }
+
+    function getElapsedSeconds(isoString) {
+      const orderTime = new Date(isoString).getTime();
+      const now = Date.now();
+      return Math.floor((now - orderTime) / 1000);
+    }
+
+    function formatTimer(seconds) {
+      const mins = Math.floor(seconds / 60);
+      const secs = seconds % 60;
+      return `${mins}:${secs.toString().padStart(2, '0')}`;
+    }
+
+    function getStatusClass(status, seconds) {
+      if (status === 'new') return 'new';
+      if (status === 'ready') return 'ready';
+      if (status === 'cooking') {
+        if (seconds > 600) return 'cooking critical';
+        if (seconds > 300) return 'cooking warn';
+        return 'cooking';
+      }
+      return status;
+    }
+
+    function getTimerClass(seconds) {
+      if (seconds > 600) return 'critical';
+      if (seconds > 300) return 'warn';
+      return '';
+    }
+
+    function updateOrders() {
+      const stored = localStorage.getItem('whatsappOrders');
+      const newOrders = stored ? JSON.parse(stored) : [];
+
+      // Create order map with status
+      const orderMap = {};
+      newOrders.forEach((order, idx) => {
+        const id = `ORDER-${idx}`;
+        orderMap[id] = {
+          ...order,
+          id,
+          status: orders[id]?.status || 'new',
+          startTime: orders[id]?.startTime || null
+        };
+      });
+
+      orders = orderMap;
+      renderOrders();
+    }
+
+    function renderOrders() {
+      const container = document.getElementById('ordersContainer');
+      const statusMap = { new: 0, cooking: 0, ready: 0 };
+
+      // Sort orders: new first, then cooking, then ready
+      const sorted = Object.values(orders).sort((a, b) => {
+        const statusOrder = { new: 0, cooking: 1, ready: 2 };
+        return statusOrder[a.status] - statusOrder[b.status];
+      });
+
+      if (sorted.length === 0) {
+        container.innerHTML = `
+          <div class="empty-state">
+            <h2>No orders yet</h2>
+            <p>Waiting for kitchen orders...</p>
+          </div>
+        `;
+        updateStats(statusMap);
+        return;
+      }
+
+      let html = '';
+      const now = Date.now();
+
+      sorted.forEach(order => {
+        statusMap[order.status]++;
+        const elapsed = getElapsedSeconds(order.timestamp);
+        const timerText = formatTimer(elapsed);
+        const timerClass = getTimerClass(elapsed);
+        const statusClass = getStatusClass(order.status, elapsed);
+
+        const items = order.message
+          .split('\n')
+          .filter(line => line.includes('•'))
+          .map(line => {
+            const match = line.match(/• (.+?) × (\d+)/);
+            return match ? { name: match[1], qty: match[2] } : null;
+          })
+          .filter(Boolean);
+
+        html += `
+          <div class="order-card ${statusClass}">
+            <div class="order-header">
+              <div class="order-id">${order.id}</div>
+              <div class="order-type">${order.status.toUpperCase()}</div>
+            </div>
+            <div class="order-time">📍 ${formatTime(order.timestamp)}</div>
+
+            <div class="order-items">
+              ${items.map(item => `
+                <div class="item">
+                  <span>${item.name}</span>
+                  <span class="item-qty">×${item.qty}</span>
+                </div>
+              `).join('')}
+            </div>
+
+            <div class="order-timer ${timerClass}">⏱️ ${timerText}</div>
+
+            <div class="order-actions">
+              ${order.status === 'new' ? `
+                <button class="btn-start" onclick="startCooking('${order.id}')">Start Cooking</button>
+              ` : ''}
+
+              ${order.status === 'cooking' ? `
+                <button class="btn-done" onclick="markReady('${order.id}')">Ready</button>
+                <button class="btn-delay" onclick="delay('${order.id}')">Delay</button>
+              ` : ''}
+
+              ${order.status === 'ready' ? `
+                <button class="btn-done" onclick="clearOrder('${order.id}')">Picked Up</button>
+              ` : ''}
+            </div>
+          </div>
+        `;
+      });
+
+      container.innerHTML = html;
+      updateStats(statusMap);
+    }
+
+    function updateStats(statusMap) {
+      document.getElementById('countNew').textContent = statusMap.new;
+      document.getElementById('countCooking').textContent = statusMap.cooking;
+      document.getElementById('countReady').textContent = statusMap.ready;
+    }
+
+    function startCooking(orderId) {
+      if (orders[orderId]) {
+        orders[orderId].status = 'cooking';
+        orders[orderId].startTime = new Date().toISOString();
+        renderOrders();
+      }
+    }
+
+    function markReady(orderId) {
+      if (orders[orderId]) {
+        orders[orderId].status = 'ready';
+        playNotificationSound();
+        renderOrders();
+      }
+    }
+
+    function delay(orderId) {
+      if (orders[orderId]) {
+        orders[orderId].status = 'new';
+        renderOrders();
+      }
+    }
+
+    function clearOrder(orderId) {
+      delete orders[orderId];
+      renderOrders();
+    }
+
+    // Update every second
+    setInterval(() => {
+      updateOrders();
+    }, 1000);
+
+    // Initial load
+    updateOrders();
+  </script>
+</body>
+</html>
