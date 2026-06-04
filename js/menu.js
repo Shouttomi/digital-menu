@@ -1712,9 +1712,9 @@ function renderThemeFab() {
   fab = document.createElement('button');
   fab.id = 'themeFab';
   fab.className = 'theme-fab';
-  fab.setAttribute('aria-label','Choose your themes here');
-  fab.innerHTML = 'Choose your<br>themes here';
-  fab.title = 'Choose your themes here';
+  fab.setAttribute('aria-label','Choose your theme');
+  fab.innerHTML = 'Choose your<br>theme';
+  fab.title = 'Choose your theme';
   document.body.appendChild(fab);
 
   const backdrop = document.createElement('div');
