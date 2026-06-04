@@ -41,6 +41,20 @@ class Handler(SimpleHTTPRequestHandler):
 
     def do_GET(self):
         path = urlparse(self.path).path
+
+        # Handle /api/orders — return all kitchen orders
+        if path == "/api/orders":
+            orders_file = os.path.join(ROOT, "kitchen_orders.json")
+            data = {}
+            if os.path.exists(orders_file):
+                try:
+                    with open(orders_file, "r", encoding="utf-8") as f:
+                        data = json.load(f)
+                except:
+                    data = {}
+            return self._send_json(200, data)
+
+        # Handle /api/menu/{id} — return saved menu
         m = re.match(r"^/api/menu/([a-zA-Z0-9]+)$", path)
         if m:
             mid = m.group(1)
@@ -52,21 +66,7 @@ class Handler(SimpleHTTPRequestHandler):
             with open(fp, "r", encoding="utf-8") as f:
                 data = json.load(f)
             return self._send_json(200, data)
-        return super().do_GET()
 
-    def do_GET(self):
-        path = urlparse(self.path).path
-        if path == "/api/orders":
-            # Return all orders with their statuses
-            orders_file = os.path.join(ROOT, "kitchen_orders.json")
-            data = {}
-            if os.path.exists(orders_file):
-                try:
-                    with open(orders_file, "r", encoding="utf-8") as f:
-                        data = json.load(f)
-                except:
-                    data = {}
-            return self._send_json(200, data)
         return super().do_GET()
 
     def do_POST(self):

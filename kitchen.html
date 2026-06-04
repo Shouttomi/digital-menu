@@ -300,19 +300,19 @@
 
     async function updateOrders() {
       try {
-        // Try to fetch from server first (Vercel)
+        // Try to fetch from server first (Vercel) — this is PRIMARY for multi-device sync
         const res = await fetch('/api/orders');
         if (res.ok) {
           const data = await res.json();
-          orders = data;
+          orders = data || {};
           renderOrders();
           return;
         }
       } catch (e) {
-        // Fallback to localStorage (local development)
+        console.log('Server fetch failed (expected on local):', e);
       }
 
-      // Fallback: use localStorage
+      // Fallback: use localStorage (local development only)
       const stored = localStorage.getItem('whatsappOrders');
       const newOrders = stored ? JSON.parse(stored) : [];
 
