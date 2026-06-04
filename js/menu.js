@@ -417,6 +417,7 @@ function cartKey() { return `menu.cart.${menuId}`; }
 function loadFavCart() {
   try { favorites = new Set(JSON.parse(localStorage.getItem(favKey())) || []); } catch {}
   try { cart = new Map(JSON.parse(localStorage.getItem(cartKey())) || []); } catch {}
+  // Note: Cart cleanup happens after data loads in postProcessItems()
 }
 function saveFavs() { localStorage.setItem(favKey(), JSON.stringify([...favorites])); }
 function saveCart() { localStorage.setItem(cartKey(), JSON.stringify([...cart])); }
@@ -1409,7 +1410,11 @@ function renderCartFab() {
 function updateCartFab() {
   const fab = document.getElementById('cartFab');
   if (!fab) return;
-  const totalCount = [...cart.values()].reduce((a,b) => a+b, 0);
+  // Only count items that actually exist in the menu (filter out deleted items)
+  let totalCount = 0;
+  for (const [iid, qty] of cart.entries()) {
+    if (findItem(iid)) totalCount += qty; // Only count if item exists
+  }
   const counter = document.getElementById('cartCount');
   if (counter) counter.textContent = totalCount;
   fab.classList.toggle('show', totalCount > 0);
@@ -1746,6 +1751,14 @@ function availBadgeHTML(it) {
 function postProcessItems() {
   const itemMap = {};
   (data.categories || []).forEach(cat => (cat.items || []).forEach(it => { itemMap[it.id] = it; }));
+
+  // Clean up stale cart items (items no longer in menu)
+  for (const iid of cart.keys()) {
+    if (!itemMap[iid]) cart.delete(iid);
+  }
+  saveCart();
+  updateCartFab();
+
   document.querySelectorAll('.item[data-iid]').forEach(el => {
     const it = itemMap[el.dataset.iid];
     if (!it) return;
