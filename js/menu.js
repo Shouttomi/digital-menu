@@ -57,6 +57,7 @@ const FALLBACK_DATA = {
   address: '42 Linden Street, Brooklyn NY',
   phone: '+1 (555) 010-2024',
   currency: '₹',
+  chefWhatsApp: '+91 86199 25883',
   logo: IMG('logo'),
   theme: 'cafe',
   _demo: true,
@@ -71,8 +72,8 @@ const FALLBACK_DATA = {
     ]},
     { id: '2', name: 'Pastries', items: [
       { id: 'e', name: 'Almond Croissant', desc: 'House-laminated, marzipan filling', price: '220', pop: false, image: IMG('almond-croissant'), tags: ['veg'] },
-      { id: 'f', name: 'Dark Chocolate Babka', desc: 'Twisted, soft, ridiculously rich', price: '250', pop: true, image: IMG('babka'), tags: ['veg'] },
-      { id: 'g', name: 'Cinnamon Roll', desc: 'Brown butter glaze, flaky layers', price: '230', pop: true, image: IMG('cinnamon-roll'), tags: ['veg'] },
+      { id: 'f', name: 'Dark Chocolate Babka', desc: 'Twisted, soft, ridiculously rich', price: '250', pop: true, image: IMG('babka'), tags: ['veg'], i18n: { de: { name: 'Dunkle Schokoladenschnecke', desc: 'Verdreht, weich, unglaublich reichhaltig' }, fr: { name: 'Babka Chocolat Noir', desc: 'Tordu, tendre, incroyablement riche' } } },
+      { id: 'g', name: 'Cinnamon Roll', desc: 'Brown butter glaze, flaky layers', price: '230', pop: true, image: IMG('cinnamon-roll'), tags: ['veg'], i18n: { de: { name: 'Zimtrolle', desc: 'Brauner Butterglasur, blättrig' }, fr: { name: 'Rouleau à la Cannelle', desc: 'Glaçage au beurre brun, feuilleté' } } },
       { id: 'g2', name: 'Pain au Chocolat', desc: 'Twin batons of dark chocolate, buttery layers', price: '200', pop: false, image: IMG('pain-au-chocolat'), tags: ['veg'] },
       { id: 'g3', name: 'Lemon Tart', desc: 'Citrus curd, torched meringue, sablé crust', price: '290', pop: false, image: IMG('lemon-tart'), tags: ['veg'] },
       { id: 'g4', name: 'Blueberry Muffin', desc: 'Bursting berries, crunchy sugar top', price: '180', pop: false, image: IMG('blueberry-muffin'), tags: ['veg'] },
@@ -958,10 +959,12 @@ function renderBackdrop() {
 function applyTheme() {
   if (data._demo && THEME_DEMO_DATA[data.theme]) {
     const d = THEME_DEMO_DATA[data.theme];
+    const savedWhatsApp = data.chefWhatsApp; // Preserve WhatsApp number
     data.name = d.name; data.tagline = d.tagline;
     data.address = d.address; data.phone = d.phone;
     data.categories = d.categories;
     data.currency = '₹';
+    data.chefWhatsApp = savedWhatsApp; // Restore WhatsApp number
   }
   document.body.className = '';
   document.body.classList.add('theme-' + data.theme);
@@ -1689,7 +1692,7 @@ function renderThemeFab() {
     b.addEventListener('click', () => {
       data.theme = b.dataset.theme;
       // Remove existing UI so applyTheme re-attaches correctly
-      ['themeFab','themeBackdrop','themeSheet','cartFab','detailSheet','detailBackdrop','cartSheet','cartBackdrop'].forEach(id => {
+      ['themeFab','themeBackdrop','themeSheet','langFab','cartFab','detailSheet','detailBackdrop','cartSheet','cartBackdrop'].forEach(id => {
         const el = document.getElementById(id); if (el) el.remove();
       });
       applyTheme();
