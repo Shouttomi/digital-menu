@@ -1568,25 +1568,19 @@ function sendOrderViaWhatsApp(entries, total, cur, menuData) {
 
   const message = lines.join('\n');
 
-  // Send to backend (silent, no redirect)
-  sendOrderToServer(number, message, menuData.name).then(() => {
-    closeCart();
-    showOrderConfirmation(menuData.name, message);
-    cart.clear();
-    saveCart();
-  }).catch(err => {
-    alert('Failed to send order: ' + err.message);
+  // Log order locally (no server needed)
+  const orders = JSON.parse(localStorage.getItem('whatsappOrders') || '[]');
+  orders.push({
+    number, message, cafeName: menuData.name,
+    timestamp: new Date().toISOString()
   });
-}
+  localStorage.setItem('whatsappOrders', JSON.stringify(orders));
 
-async function sendOrderToServer(whatsappNumber, message, cafeName) {
-  const res = await fetch('/api/send-whatsapp', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ whatsappNumber, message, cafeName })
-  });
-  if (!res.ok) throw new Error('Failed to send order');
-  return res.json();
+  // Show success and close cart
+  closeCart();
+  showOrderConfirmation(menuData.name, message);
+  cart.clear();
+  saveCart();
 }
 
 function showOrderConfirmation(cafeName, message) {
