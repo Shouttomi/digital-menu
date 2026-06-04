@@ -318,7 +318,7 @@
       renderOrders();
     }
 
-    function renderOrders() {
+    function renderOrders(isInitial = false) {
       const container = document.getElementById('ordersContainer');
       const statusMap = { new: 0, cooking: 0, ready: 0 };
 
@@ -339,9 +339,67 @@
         return;
       }
 
-      let html = '';
-      const now = Date.now();
+      // Only re-render HTML if structure changed (isInitial or different order count)
+      const orderCount = sorted.length;
+      const lastCount = container.dataset.orderCount || '0';
+      const needsRebuild = isInitial || orderCount !== parseInt(lastCount);
 
+      if (needsRebuild) {
+        container.dataset.orderCount = orderCount;
+        let html = '';
+
+        sorted.forEach(order => {
+          statusMap[order.status]++;
+          const items = order.message
+            .split('\n')
+            .filter(line => line.includes('•'))
+            .map(line => {
+              const match = line.match(/• (.+?) × (\d+)/);
+              return match ? { name: match[1], qty: match[2] } : null;
+            })
+            .filter(Boolean);
+
+          html += `
+            <div class="order-card" data-order-id="${order.id}">
+              <div class="order-header">
+                <div class="order-id">${order.id}</div>
+                <div class="order-type" data-status>${order.status.toUpperCase()}</div>
+              </div>
+              <div class="order-time">📍 ${formatTime(order.timestamp)}</div>
+
+              <div class="order-items">
+                ${items.map(item => `
+                  <div class="item">
+                    <span>${item.name}</span>
+                    <span class="item-qty">×${item.qty}</span>
+                  </div>
+                `).join('')}
+              </div>
+
+              <div class="order-timer" data-timer>${'⏱️ 0:00'}</div>
+
+              <div class="order-actions">
+                ${order.status === 'new' ? `
+                  <button class="btn-start" onclick="startCooking('${order.id}')">Start Cooking</button>
+                ` : ''}
+
+                ${order.status === 'cooking' ? `
+                  <button class="btn-done" onclick="markReady('${order.id}')">Ready</button>
+                  <button class="btn-delay" onclick="delay('${order.id}')">Delay</button>
+                ` : ''}
+
+                ${order.status === 'ready' ? `
+                  <button class="btn-done" onclick="clearOrder('${order.id}')">Picked Up</button>
+                ` : ''}
+              </div>
+            </div>
+          `;
+        });
+
+        container.innerHTML = html;
+      }
+
+      // Always update timers and status (no DOM rebuild)
       sorted.forEach(order => {
         statusMap[order.status]++;
         const elapsed = getElapsedSeconds(order.timestamp);
@@ -349,53 +407,16 @@
         const timerClass = getTimerClass(elapsed);
         const statusClass = getStatusClass(order.status, elapsed);
 
-        const items = order.message
-          .split('\n')
-          .filter(line => line.includes('•'))
-          .map(line => {
-            const match = line.match(/• (.+?) × (\d+)/);
-            return match ? { name: match[1], qty: match[2] } : null;
-          })
-          .filter(Boolean);
-
-        html += `
-          <div class="order-card ${statusClass}">
-            <div class="order-header">
-              <div class="order-id">${order.id}</div>
-              <div class="order-type">${order.status.toUpperCase()}</div>
-            </div>
-            <div class="order-time">📍 ${formatTime(order.timestamp)}</div>
-
-            <div class="order-items">
-              ${items.map(item => `
-                <div class="item">
-                  <span>${item.name}</span>
-                  <span class="item-qty">×${item.qty}</span>
-                </div>
-              `).join('')}
-            </div>
-
-            <div class="order-timer ${timerClass}">⏱️ ${timerText}</div>
-
-            <div class="order-actions">
-              ${order.status === 'new' ? `
-                <button class="btn-start" onclick="startCooking('${order.id}')">Start Cooking</button>
-              ` : ''}
-
-              ${order.status === 'cooking' ? `
-                <button class="btn-done" onclick="markReady('${order.id}')">Ready</button>
-                <button class="btn-delay" onclick="delay('${order.id}')">Delay</button>
-              ` : ''}
-
-              ${order.status === 'ready' ? `
-                <button class="btn-done" onclick="clearOrder('${order.id}')">Picked Up</button>
-              ` : ''}
-            </div>
-          </div>
-        `;
+        const card = container.querySelector(`[data-order-id="${order.id}"]`);
+        if (card) {
+          card.className = `order-card ${statusClass}`;
+          const timerEl = card.querySelector('[data-timer]');
+          if (timerEl) timerEl.textContent = `⏱️ ${timerText}`;
+          const statusEl = card.querySelector('[data-status]');
+          if (statusEl) statusEl.textContent = order.status.toUpperCase();
+        }
       });
 
-      container.innerHTML = html;
       updateStats(statusMap);
     }
 
@@ -433,13 +454,31 @@
       renderOrders();
     }
 
-    // Update every second
+    // Update timers every second (smooth, no flicker)
+    let lastOrderCount = 0;
+    setInterval(() => {
+      // Check for new orders every 5 seconds, update timers every second
+      const stored = localStorage.getItem('whatsappOrders');
+      const newOrders = stored ? JSON.parse(stored) : [];
+
+      if (newOrders.length !== lastOrderCount) {
+        // Order count changed, rebuild
+        lastOrderCount = newOrders.length;
+        updateOrders();
+      } else {
+        // Just update timers without rebuilding (no flicker)
+        renderOrders(false);
+      }
+    }, 1000);
+
+    // Check for new orders every 5 seconds
     setInterval(() => {
       updateOrders();
-    }, 1000);
+    }, 5000);
 
     // Initial load
     updateOrders();
+    renderOrders(true);
   </script>
 </body>
 </html>
