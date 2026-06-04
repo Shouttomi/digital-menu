@@ -21,7 +21,8 @@ function trackOrder(itemId, quantity = 1) {
   localStorage.setItem('orderAnalytics', JSON.stringify(orders));
 }
 
-const THEME_DEFS = [
+// All available themes (for demo data reference)
+const ALL_THEMES = [
   { id: 'cafe', label: 'Cafe', sw: 'linear-gradient(135deg, #f3ead7, #c08762 60%, #5b3a2a)' },
   { id: 'restaurant', label: 'Restaurant', sw: 'linear-gradient(135deg, #0D0D0D, #1A1A1A 50%, #F5A800)' },
   { id: 'bistro', label: 'Bistro', sw: 'linear-gradient(135deg, #d3e9e0, #5fae9a 60%, #1f6f5c)' },
@@ -32,6 +33,18 @@ const THEME_DEFS = [
   { id: 'burma', label: 'Burma', sw: 'linear-gradient(135deg, #f5c640, #e8862c 60%, #6e3a1a)' },
   { id: 'luscious', label: 'Luscious', sw: 'linear-gradient(135deg, #1f1f24, #0e0e10 55%, #e85a4f)' },
   { id: 'fresh',    label: 'Fresh',    sw: 'linear-gradient(135deg, #FFFFFF, #d4eddf 55%, #1E6B45)' },
+  { id: 'gallery',  label: 'Gallery',  sw: 'linear-gradient(135deg, #f0ebe3, #c8553d 60%, #5a2218)' },
+  { id: 'editorial',label: 'Editorial',sw: 'linear-gradient(135deg, #f4f0e6, #2b2722 55%, #c1431f)' },
+  { id: 'maison',   label: 'Maison',   sw: 'linear-gradient(135deg, #f3ede1, #c9a24a 58%, #221d14)' },
+];
+
+// Enabled themes in selector (cafe, restaurant, humm, burma, luscious, gallery, editorial, maison)
+const THEME_DEFS = [
+  { id: 'cafe', label: 'Cafe', sw: 'linear-gradient(135deg, #f3ead7, #c08762 60%, #5b3a2a)' },
+  { id: 'restaurant', label: 'Restaurant', sw: 'linear-gradient(135deg, #0D0D0D, #1A1A1A 50%, #F5A800)' },
+  { id: 'humm', label: 'Humm', sw: 'linear-gradient(135deg, #f6efe3, #f4d4ca 55%, #7a9275)' },
+  { id: 'burma', label: 'Burma', sw: 'linear-gradient(135deg, #f5c640, #e8862c 60%, #6e3a1a)' },
+  { id: 'luscious', label: 'Luscious', sw: 'linear-gradient(135deg, #1f1f24, #0e0e10 55%, #e85a4f)' },
   { id: 'gallery',  label: 'Gallery',  sw: 'linear-gradient(135deg, #f0ebe3, #c8553d 60%, #5a2218)' },
   { id: 'editorial',label: 'Editorial',sw: 'linear-gradient(135deg, #f4f0e6, #2b2722 55%, #c1431f)' },
   { id: 'maison',   label: 'Maison',   sw: 'linear-gradient(135deg, #f3ede1, #c9a24a 58%, #221d14)' },
