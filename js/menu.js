@@ -1713,15 +1713,9 @@ function renderThemeFab() {
   fab.id = 'themeFab';
   fab.className = 'theme-fab';
   fab.setAttribute('aria-label','Choose your theme');
-  fab.innerHTML = '🎨<span class="theme-fab-text">Choose<br>theme</span>';
-  fab.title = 'You can change your themes here';
+  fab.innerHTML = '🎨';
+  fab.title = 'Choose your theme';
   document.body.appendChild(fab);
-
-  // Add helper arrow/label
-  const helper = document.createElement('div');
-  helper.className = 'theme-fab-helper';
-  helper.innerHTML = '↗ You can change your themes here';
-  document.body.appendChild(helper);
 
   const backdrop = document.createElement('div');
   backdrop.className = 'theme-backdrop';
