@@ -2,7 +2,9 @@
 
 // ===== Language & Analytics Support =====
 let currentLanguage = localStorage.getItem('menuLanguage') || 'en';
-const LANGUAGE_NAMES = { en: 'English', hi: 'हिन्दी' };
+const LANGUAGES = ['en', 'de', 'fr'];
+const LANGUAGE_NAMES = { en: 'English', de: 'Deutsch', fr: 'Français' };
+const LANGUAGE_FLAGS = { en: '🇬🇧', de: '🇩🇪', fr: '🇫🇷' };
 
 function getTranslation(item, field) {
   if (!item) return '';
@@ -60,9 +62,9 @@ const FALLBACK_DATA = {
   _demo: true,
   categories: [
     { id: '1', name: 'Signature Espresso', items: [
-      { id: 'a', name: 'Velvet Latte', desc: 'Double shot, oat milk, vanilla bean', price: '280', pop: true, image: IMG('velvet-latte'), images: [IMG('velvet-latte'), IMG('latte-closeup'), IMG('coffee-art')], tags: ['veg','df'], i18n: { hi: { name: 'मखमली लट्टे', desc: 'डबल शॉट, ओट दूध, वनीला बीन' } } },
-      { id: 'b', name: 'Honey Cortado', desc: 'Equal parts espresso & milk, raw honey', price: '240', pop: false, image: IMG('honey-cortado'), tags: ['veg'], i18n: { hi: { name: 'शहद कॉर्टाडो', desc: 'एस्प्रेसो और दूध समान भाग, कच्चा शहद' } } },
-      { id: 'c', name: 'Iced Brown Sugar Shaken', desc: 'Cold espresso, brown sugar syrup, cinnamon', price: '260', pop: true, image: IMG('iced-brown-sugar'), tags: ['veg','vegan','df'], i18n: { hi: { name: 'आइस्ड ब्राउन शुगर शेकन', desc: 'ठंडी एस्प्रेसो, ब्राउन शुगर सिरप, दालचीनी' } } },
+      { id: 'a', name: 'Velvet Latte', desc: 'Double shot, oat milk, vanilla bean', price: '280', pop: true, image: IMG('velvet-latte'), images: [IMG('velvet-latte'), IMG('latte-closeup'), IMG('coffee-art')], tags: ['veg','df'], i18n: { de: { name: 'Samtkaffee Latte', desc: 'Doppelter Shot, Hafermilch, Vanilleschote' }, fr: { name: 'Latte Velours', desc: 'Double shot, lait d\'avoine, gousse de vanille' } } },
+      { id: 'b', name: 'Honey Cortado', desc: 'Equal parts espresso & milk, raw honey', price: '240', pop: false, image: IMG('honey-cortado'), tags: ['veg'], i18n: { de: { name: 'Honig Cortado', desc: 'Gleiche Teile Espresso & Milch, roher Honig' }, fr: { name: 'Cortado au Miel', desc: 'Parties égales espresso & lait, miel brut' } } },
+      { id: 'c', name: 'Iced Brown Sugar Shaken', desc: 'Cold espresso, brown sugar syrup, cinnamon', price: '260', pop: true, image: IMG('iced-brown-sugar'), tags: ['veg','vegan','df'], i18n: { de: { name: 'Gekühlter Rohrzucker Shaker', desc: 'Kalter Espresso, Rohrzuckersirup, Zimt' }, fr: { name: 'Espresso Sucre Glacé', desc: 'Espresso froid, sirop de sucre brun, cannelle' } } },
       { id: 'd', name: 'Flat White', desc: 'Velvety microfoam over a ristretto double', price: '220', pop: false, image: IMG('flat-white'), tags: ['veg'] },
       { id: 'd2', name: 'Caramel Macchiato', desc: 'Steamed milk, vanilla, caramel drizzle', price: '290', pop: false, image: IMG('caramel-macchiato'), tags: ['veg'] },
       { id: 'd3', name: 'Spanish Latte', desc: 'Condensed milk, espresso, silky finish', price: '270', pop: true, image: IMG('spanish-latte'), tags: ['veg'] },
@@ -1567,18 +1569,20 @@ function openWaiterView(entries, total, cur) {
 // ===== Language switcher FAB =====
 function renderLanguageFab() {
   let fab = document.getElementById('langFab');
-  if (fab) return;
+  if (fab) fab.remove();
   fab = document.createElement('button');
   fab.id = 'langFab';
   fab.className = 'lang-fab';
-  fab.setAttribute('aria-label','Switch language');
-  fab.innerHTML = currentLanguage === 'en' ? '🇬🇧' : '🇮🇳';
+  fab.setAttribute('aria-label', `Switch language (${LANGUAGE_NAMES[currentLanguage]})`);
+  fab.innerHTML = LANGUAGE_FLAGS[currentLanguage];
+  fab.title = `Language: ${LANGUAGE_NAMES[currentLanguage]}`;
   document.body.appendChild(fab);
 
-  fab.addEventListener('click', () => {
-    currentLanguage = currentLanguage === 'en' ? 'hi' : 'en';
+  fab.addEventListener('click', (e) => {
+    e.stopPropagation();
+    const currentIdx = LANGUAGES.indexOf(currentLanguage);
+    currentLanguage = LANGUAGES[(currentIdx + 1) % LANGUAGES.length];
     localStorage.setItem('menuLanguage', currentLanguage);
-    fab.innerHTML = currentLanguage === 'en' ? '🇬🇧' : '🇮🇳';
     applyTheme();
   });
 }
