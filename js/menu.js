@@ -1713,7 +1713,7 @@ function renderThemeFab() {
   fab.id = 'themeFab';
   fab.className = 'theme-fab';
   fab.setAttribute('aria-label','Pick a theme');
-  fab.innerHTML = 'Pick a<br>theme';
+  fab.innerHTML = 'Pick a theme';
   fab.title = 'Pick a theme';
   document.body.appendChild(fab);
 
