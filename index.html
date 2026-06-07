@@ -8,6 +8,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Playfair+Display:wght@500;600;700;800;900&family=DM+Serif+Display&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="styles/admin.css" />
+<script>(function(){var t=localStorage.getItem('erp.theme');if(t)document.documentElement.setAttribute('data-theme',t);})()</script>
 </head>
 <body>
 <div class="bg-orb orb1"></div>
@@ -16,10 +17,11 @@
 
 <header class="topbar">
   <div class="brand">
-    <div class="brand-mark"></div>
     <span>Menu<b>Studio</b></span>
   </div>
   <div class="topbar-actions">
+    <button class="ghost-btn" onclick="var h=document.documentElement,n=h.getAttribute('data-theme')==='light'?'':'light';if(n)h.setAttribute('data-theme',n);else h.removeAttribute('data-theme');localStorage.setItem('erp.theme',n);this.textContent=n==='light'?'Dark Mode':'Light Mode'" id="themeToggle">Light Mode</button>
+    <a href="erp.html" style="text-decoration:none"><button class="ghost-btn">ERP</button></a>
     <button class="ghost-btn" id="analyticsBtn">📊 Analytics</button>
     <a href="kitchen.html" target="_blank" style="text-decoration:none"><button class="ghost-btn">🍳 Kitchen</button></a>
     <button class="ghost-btn" id="resetBtn">Reset</button>
@@ -205,7 +207,6 @@
   </div>
 </template>
 
-<script defer src="/_vercel/insights/script.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/lz-string@1.5.0/libs/lz-string.min.js"></script>
 <script src="js/admin.js"></script>
