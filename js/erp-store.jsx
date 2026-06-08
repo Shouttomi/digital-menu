@@ -17,7 +17,7 @@ function formatTime(t) { if (!t) return ''; const [h, m] = t.split(':'); const h
 // Expose utilities globally
 Object.assign(window, { generateId, todayStr, daysAgo, daysFromNow, formatCurrency, formatDate, formatTime, useERP, ERPContext });
 
-const ERP_KEY = 'erpStudio.v2';
+const ERP_KEY = 'erpStudio.v3';
 
 function getDefaultData() {
   return {
@@ -105,6 +105,76 @@ function getDefaultData() {
       amount: Math.round(15000 + Math.random() * 18000 + (i > 20 ? 5000 : 0) + ([5,6,12,13,19,20,26,27].includes(i) ? 8000 : 0)),
       orders: Math.round(30 + Math.random() * 40 + ([5,6,12,13,19,20,26,27].includes(i) ? 20 : 0)),
     })),
+
+    // Wastage / Spoilage
+    wastage: [
+      { id: generateId(), date: daysAgo(0), item: 'Whole Milk', category: 'Dairy', quantity: 2, unit: 'L', costPerUnit: 60, reason: 'expired', loggedBy: 'Priya Sharma' },
+      { id: generateId(), date: daysAgo(1), item: 'Sourdough Bread', category: 'Bakery', quantity: 3, unit: 'loaves', costPerUnit: 85, reason: 'spoiled', loggedBy: 'Arjun Patel' },
+      { id: generateId(), date: daysAgo(1), item: 'Avocados', category: 'Produce', quantity: 4, unit: 'pcs', costPerUnit: 45, reason: 'over-ripe', loggedBy: 'Arjun Patel' },
+      { id: generateId(), date: daysAgo(2), item: 'Eggs', category: 'Produce', quantity: 0.5, unit: 'dozen', costPerUnit: 96, reason: 'damaged', loggedBy: 'Rahul Kumar' },
+      { id: generateId(), date: daysAgo(3), item: 'Oat Milk', category: 'Dairy', quantity: 1, unit: 'L', costPerUnit: 180, reason: 'expired', loggedBy: 'Meera Reddy' },
+      { id: generateId(), date: daysAgo(3), item: 'Butter', category: 'Dairy', quantity: 0.5, unit: 'kg', costPerUnit: 480, reason: 'prep-error', loggedBy: 'Rahul Kumar' },
+      { id: generateId(), date: daysAgo(5), item: 'Espresso Beans', category: 'Beverages', quantity: 0.3, unit: 'kg', costPerUnit: 1200, reason: 'prep-error', loggedBy: 'Meera Reddy' },
+      { id: generateId(), date: daysAgo(6), item: 'Salmon Fillet', category: 'Meat & Fish', quantity: 0.5, unit: 'kg', costPerUnit: 1400, reason: 'expired', loggedBy: 'Arjun Patel' },
+      { id: generateId(), date: daysAgo(7), item: 'Dark Chocolate 70%', category: 'Dry Goods', quantity: 0.2, unit: 'kg', costPerUnit: 650, reason: 'damaged', loggedBy: 'Sneha Joshi' },
+    ],
+
+    // Cash Register
+    cashRegister: [
+      { id: generateId(), date: daysAgo(0), openingBalance: 5000, closingBalance: null, reconciled: false, entries: [
+        { id: generateId(), time: '09:15', type: 'in', amount: 450, method: 'cash', description: 'Table 3 — breakfast' },
+        { id: generateId(), time: '09:40', type: 'in', amount: 680, method: 'upi', description: 'Table 1 — coffees + pastry' },
+        { id: generateId(), time: '10:05', type: 'out', amount: 200, method: 'cash', description: 'Petty cash — milk from local store' },
+        { id: generateId(), time: '11:30', type: 'in', amount: 1250, method: 'card', description: 'Table 5 — brunch for 4' },
+        { id: generateId(), time: '12:00', type: 'in', amount: 320, method: 'upi', description: 'Takeaway — 2 lattes' },
+        { id: generateId(), time: '13:15', type: 'in', amount: 890, method: 'cash', description: 'Table 2 — lunch' },
+        { id: generateId(), time: '14:00', type: 'out', amount: 500, method: 'cash', description: 'Vegetable vendor — urgent restock' },
+      ]},
+      { id: generateId(), date: daysAgo(1), openingBalance: 4500, closingBalance: 6820, reconciled: true, entries: [
+        { id: generateId(), time: '09:00', type: 'in', amount: 380, method: 'cash', description: 'Walk-in — coffee + sandwich' },
+        { id: generateId(), time: '10:20', type: 'in', amount: 1540, method: 'upi', description: 'Online order batch' },
+        { id: generateId(), time: '11:00', type: 'out', amount: 300, method: 'cash', description: 'Auto fare — ingredient pickup' },
+        { id: generateId(), time: '13:00', type: 'in', amount: 2200, method: 'card', description: 'Corporate lunch — 6 pax' },
+        { id: generateId(), time: '15:30', type: 'in', amount: 750, method: 'cash', description: 'Afternoon walk-ins' },
+        { id: generateId(), time: '16:00', type: 'out', amount: 1250, method: 'cash', description: 'Petty cash deposit to bank' },
+      ]},
+    ],
+
+    // Recipes
+    recipes: [
+      { id: generateId(), name: 'Cappuccino', category: 'Beverages', servings: 1, sellingPrice: 180, ingredients: [
+        { item: 'Espresso Beans', qty: 18, unit: 'g', cost: 21.6 },
+        { item: 'Whole Milk', qty: 200, unit: 'ml', cost: 12 },
+        { item: 'Paper Cups (12oz)', qty: 1, unit: 'pcs', cost: 4 },
+      ]},
+      { id: generateId(), name: 'Avocado Toast', category: 'Food', servings: 1, sellingPrice: 280, ingredients: [
+        { item: 'Sourdough Bread', qty: 2, unit: 'slices', cost: 14.2 },
+        { item: 'Avocados', qty: 1, unit: 'pcs', cost: 45 },
+        { item: 'Eggs', qty: 1, unit: 'pcs', cost: 8 },
+        { item: 'Butter', qty: 10, unit: 'g', cost: 4.8 },
+      ]},
+      { id: generateId(), name: 'Chocolate Brownie', category: 'Desserts', servings: 8, sellingPrice: 150, ingredients: [
+        { item: 'Dark Chocolate 70%', qty: 200, unit: 'g', cost: 130 },
+        { item: 'Butter', qty: 150, unit: 'g', cost: 72 },
+        { item: 'Sugar', qty: 200, unit: 'g', cost: 8.4 },
+        { item: 'Eggs', qty: 3, unit: 'pcs', cost: 24 },
+        { item: 'All-Purpose Flour', qty: 100, unit: 'g', cost: 5.5 },
+      ]},
+      { id: generateId(), name: 'Oat Milk Latte', category: 'Beverages', servings: 1, sellingPrice: 220, ingredients: [
+        { item: 'Espresso Beans', qty: 18, unit: 'g', cost: 21.6 },
+        { item: 'Oat Milk', qty: 250, unit: 'ml', cost: 45 },
+        { item: 'Paper Cups (12oz)', qty: 1, unit: 'pcs', cost: 4 },
+      ]},
+      { id: generateId(), name: 'Grilled Salmon Bowl', category: 'Food', servings: 1, sellingPrice: 450, ingredients: [
+        { item: 'Salmon Fillet', qty: 150, unit: 'g', cost: 210 },
+        { item: 'Avocados', qty: 0.5, unit: 'pcs', cost: 22.5 },
+        { item: 'Eggs', qty: 1, unit: 'pcs', cost: 8 },
+      ]},
+    ],
+
+    // Attendance
+    attendance: [],
+    leaveBalances: [],
   };
 }
 
@@ -129,6 +199,38 @@ function populateShifts(data) {
       { id: generateId(), from: data.staff[5]?.name || data.staff[1].name, to: data.staff[3]?.name || data.staff[0].name, date: days[5], shiftFrom: 'afternoon', shiftTo: 'morning', status: 'approved', reason: 'Family event' },
     ];
   }
+
+  // Populate attendance for last 7 days
+  const activeStaff = data.staff.filter(s => s.status === 'active');
+  data.attendance = [];
+  for (let d = 6; d >= 0; d--) {
+    const dt = daysAgo(d);
+    activeStaff.forEach(s => {
+      const rand = Math.random();
+      let status, checkIn, checkOut;
+      if (d === 0) {
+        // Today — some haven't checked out
+        status = rand < 0.1 ? 'absent' : rand < 0.2 ? 'late' : 'present';
+        checkIn = status === 'absent' ? null : status === 'late' ? '10:' + String(Math.floor(Math.random()*50+10)).padStart(2,'0') : '09:' + String(Math.floor(Math.random()*20)).padStart(2,'0');
+        checkOut = null;
+      } else {
+        status = rand < 0.05 ? 'absent' : rand < 0.12 ? 'late' : rand < 0.15 ? 'half-day' : 'present';
+        checkIn = status === 'absent' ? null : status === 'late' ? '10:' + String(Math.floor(Math.random()*50+10)).padStart(2,'0') : '09:' + String(Math.floor(Math.random()*15)).padStart(2,'0');
+        checkOut = status === 'absent' ? null : status === 'half-day' ? '13:30' : '18:' + String(Math.floor(Math.random()*30)).padStart(2,'0');
+      }
+      data.attendance.push({ id: generateId(), staffId: s.id, staffName: s.name, date: dt, checkIn, checkOut, status, leaveType: status === 'absent' ? (rand < 0.03 ? 'sick' : 'casual') : null, notes: '' });
+    });
+  }
+
+  // Leave balances
+  data.leaveBalances = data.staff.map(s => ({
+    staffId: s.id, staffName: s.name,
+    casual: 12, sick: 6, earned: 15,
+    casualUsed: Math.floor(Math.random() * 5),
+    sickUsed: Math.floor(Math.random() * 3),
+    earnedUsed: Math.floor(Math.random() * 4),
+  }));
+
   return data;
 }
 

@@ -194,6 +194,26 @@ const NAV_ICONS = {
   reports: React.createElement('svg', { viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', strokeWidth: 2 },
     React.createElement('path', { d: 'M18 20V10M12 20V4M6 20v-6' })
   ),
+  wastage: React.createElement('svg', { viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', strokeWidth: 2 },
+    React.createElement('path', { d: 'M3 6h18M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6' }),
+    React.createElement('path', { d: 'M8 6V4a2 2 0 012-2h4a2 2 0 012 2v2' }),
+    React.createElement('line', { x1: 10, y1: 11, x2: 10, y2: 17 }),
+    React.createElement('line', { x1: 14, y1: 11, x2: 14, y2: 17 })
+  ),
+  recipes: React.createElement('svg', { viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', strokeWidth: 2 },
+    React.createElement('path', { d: 'M12 2C6.48 2 2 6 2 6v3c0 1.1.9 2 2 2h1c0 4.97 3.13 9.2 7 10.67V22h2v-.33C17.87 20.2 21 15.97 21 11h1c1.1 0 2-.9 2-2V6s-4.48-4-12-4z' })
+  ),
+  cashregister: React.createElement('svg', { viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', strokeWidth: 2 },
+    React.createElement('rect', { x: 2, y: 6, width: 20, height: 14, rx: 2 }),
+    React.createElement('path', { d: 'M2 10h20' }),
+    React.createElement('path', { d: 'M6 14h2M10 14h2' }),
+    React.createElement('path', { d: 'M6 18h12' })
+  ),
+  attendance: React.createElement('svg', { viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', strokeWidth: 2 },
+    React.createElement('rect', { x: 3, y: 4, width: 18, height: 18, rx: 2 }),
+    React.createElement('path', { d: 'M16 2v4M8 2v4M3 10h18' }),
+    React.createElement('path', { d: 'M9 16l2 2 4-4' })
+  ),
 };
 
 Object.assign(window, { Modal, SearchBox, StatCard, ConfirmDialog, FormField, SimpleBarChart, DonutChart, PieChart, StarRating, TabBar, NAV_ICONS });

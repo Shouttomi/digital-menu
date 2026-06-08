@@ -24,13 +24,17 @@ function ERPApp() {
       { id: 'inventory', label: 'Inventory', icon: NAV_ICONS.inventory },
       { id: 'tables', label: 'Tables & Reservations', icon: NAV_ICONS.tables },
       { id: 'suppliers', label: 'Suppliers & POs', icon: NAV_ICONS.suppliers },
+      { id: 'recipes', label: 'Recipe Costing', icon: NAV_ICONS.recipes },
+      { id: 'wastage', label: 'Wastage Tracker', icon: NAV_ICONS.wastage },
     ]},
     { section: 'People', items: [
       { id: 'staff', label: 'Staff & Shifts', icon: NAV_ICONS.staff },
+      { id: 'attendance', label: 'Attendance & Leave', icon: NAV_ICONS.attendance },
       { id: 'customers', label: 'Customers', icon: NAV_ICONS.customers },
     ]},
     { section: 'Finance', items: [
       { id: 'finance', label: 'Finance & Expenses', icon: NAV_ICONS.finance },
+      { id: 'cashregister', label: 'Cash Register', icon: NAV_ICONS.cashregister },
       { id: 'reports', label: 'Reports', icon: NAV_ICONS.reports },
     ]},
   ];
@@ -39,21 +43,29 @@ function ERPApp() {
     dashboard: { title: 'Dashboard', sub: 'Business overview at a glance' },
     inventory: { title: 'Inventory', sub: 'Track stock levels and reorder points' },
     staff: { title: 'Staff & Shifts', sub: 'Manage team, schedules, and shift swaps' },
+    attendance: { title: 'Attendance & Leave', sub: 'Check-in/out, leave balances, and monthly overview' },
     finance: { title: 'Finance & Expenses', sub: 'Revenue, expenses, and profit/loss' },
+    cashregister: { title: 'Cash Register', sub: 'Daily cash tracking, UPI/card splits, and reconciliation' },
     suppliers: { title: 'Suppliers & Purchase Orders', sub: 'Vendor management and order tracking' },
     tables: { title: 'Tables & Reservations', sub: 'Floor plan and guest bookings' },
     customers: { title: 'Customers', sub: 'CRM, loyalty tiers, and visit history' },
     reports: { title: 'Reports', sub: 'Comprehensive business analytics' },
+    wastage: { title: 'Wastage Tracker', sub: 'Log spoilage, track patterns, and reduce losses' },
+    recipes: { title: 'Recipe Costing', sub: 'Ingredient costs, margins, and prep planning' },
   };
 
   const meta = viewMeta[view] || viewMeta.dashboard;
   const { data } = useERP();
   const lowStock = data.inventory.filter(it => it.stock <= it.reorderLevel).length;
   const pendingSwaps = data.shiftSwaps.filter(s => s.status === 'pending').length;
+  const todayAbsent = (data.attendance || []).filter(a => a.date === todayStr() && a.status === 'absent').length;
+  const openRegister = (data.cashRegister || []).find(r => r.date === todayStr() && !r.reconciled);
 
   function getBadge(id) {
     if (id === 'inventory' && lowStock > 0) return lowStock;
     if (id === 'staff' && pendingSwaps > 0) return pendingSwaps;
+    if (id === 'attendance' && todayAbsent > 0) return todayAbsent;
+    if (id === 'cashregister' && openRegister) return '!';
     return null;
   }
 
@@ -61,11 +73,15 @@ function ERPApp() {
     dashboard: React.createElement(DashboardView),
     inventory: React.createElement(InventoryView),
     staff: React.createElement(StaffView),
+    attendance: React.createElement(AttendanceView),
     finance: React.createElement(FinanceView),
+    cashregister: React.createElement(CashRegisterView),
     suppliers: React.createElement(SuppliersView),
     tables: React.createElement(TablesView),
     customers: React.createElement(CustomersView),
     reports: React.createElement(ReportsView),
+    wastage: React.createElement(WastageView),
+    recipes: React.createElement(RecipesView),
   };
 
   return React.createElement('div', { className: 'erp-shell' },
