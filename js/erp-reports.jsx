@@ -23,7 +23,7 @@ function ReportsView() {
 
   // Staff summary
   const activeStaff = data.staff.filter(s => s.status === 'active');
-  const totalPayroll = activeStaff.reduce((s, st) => s + st.hourlyRate * 8, 0) * days;
+  const totalPayroll = activeStaff.reduce((s, st) => s + (st.monthlySalary || 0), 0);
 
   // Top customers
   const topCustomers = [...data.customers].sort((a, b) => b.totalSpent - a.totalSpent).slice(0, 5);

@@ -1,4 +1,4 @@
-// Menu — customer view
+// Menu - customer view
 
 // ===== Language & Analytics Support =====
 let currentLanguage = localStorage.getItem('menuLanguage') || 'en';
@@ -194,7 +194,7 @@ const THEME_DEMO_DATA = {
     ],
   },
   humm: {
-    name: 'Hum — Mezze & More', tagline: 'A taste of the Mediterranean',
+    name: 'Hum - Mezze & More', tagline: 'A taste of the Mediterranean',
     address: 'Linking Road, Bandra, Mumbai', phone: '+91 22 2640 5555',
     categories: [
       { id: 'h1', name: 'Mezze', items: [
@@ -251,7 +251,7 @@ const THEME_DEMO_DATA = {
         { id: 'ar2a', name: 'Kouign-Amann', desc: 'Caramelised layers, flaky, impossibly buttery', price: '260', pop: true, image: RIMG('kouign amann pastry'), tags: ['veg'] },
         { id: 'ar2b', name: 'Canelé', desc: 'Bordeaux classic, dark rum, vanilla', price: '120', pop: false, image: RIMG('canele bordeaux'), tags: ['veg'] },
         { id: 'ar2c', name: 'Butter Croissant', desc: 'Classic laminated, 72 crisp layers', price: '180', pop: true, image: IMG('almond-croissant'), tags: ['veg'] },
-        { id: 'ar2d', name: 'Seasonal Fruit Tart', desc: 'Changes with the market — ask us today', price: '320', pop: false, image: IMG('lemon-tart'), tags: ['veg'] },
+        { id: 'ar2d', name: 'Seasonal Fruit Tart', desc: 'Changes with the market - ask us today', price: '320', pop: false, image: IMG('lemon-tart'), tags: ['veg'] },
       ]},
       { id: 'ar3', name: 'Cakes', items: [
         { id: 'ar3a', name: 'Burnt Basque Cheesecake', desc: 'Creamy centre, caramelised top, per slice', price: '380', pop: true, image: RIMG('basque cheesecake burnt'), tags: ['veg'] },
@@ -570,7 +570,7 @@ function itemRendererFor(theme) {
 
 function renderCategories() {
   const render = itemRendererFor(data.theme);
-  const sub = { cafe: '— Selected with care —', restaurant: "Today's picks", bistro: 'Fresh today', urban: 'Tap to explore', humm: 'Click and check what we serve', modern: 'Pick your favourite', artisan: 'Crafted daily', burma: 'A taste of tradition', luscious: 'Hand-picked for you', fresh: 'Good for you', gallery: 'Tap any dish to feast', editorial: 'Considered, seasonal, small-batch', maison: 'Served as a course' }[data.theme] || '';
+  const sub = { cafe: '- Selected with care -', restaurant: "Today's picks", bistro: 'Fresh today', urban: 'Tap to explore', humm: 'Click and check what we serve', modern: 'Pick your favourite', artisan: 'Crafted daily', burma: 'A taste of tradition', luscious: 'Hand-picked for you', fresh: 'Good for you', gallery: 'Tap any dish to feast', editorial: 'Considered, seasonal, small-batch', maison: 'Served as a course' }[data.theme] || '';
   let anyVisible = false;
   const html = data.categories.map(cat => {
     const items = (cat.items || []).filter(passesFilter);
@@ -667,7 +667,7 @@ function renderHeroUrban() {
       </div>
     </div>
     <div class="hero-content">
-      <div class="eyebrow">— Welcome —</div>
+      <div class="eyebrow">- Welcome -</div>
       <h1 class="place-name">${escapeHTML(data.name)}</h1>
       <p class="place-tagline">${escapeHTML(data.tagline)}</p>
       <div class="place-meta-row">
@@ -705,7 +705,7 @@ function renderHeroLuscious() {
       <div class="top-meta">${escapeHTML(data.phone || '')}</div>
     </div>
     <div class="hero-content">
-      <div class="eyebrow">— Welcome to —</div>
+      <div class="eyebrow">- Welcome to -</div>
       <h1 class="place-name">${escapeHTML(data.name)}</h1>
       <p class="place-tagline">${escapeHTML(data.tagline)}</p>
       <div class="hero-social">
@@ -727,7 +727,7 @@ function renderHeroBurma() {
     <div class="hero-content">
       <h1 class="place-name">${escapeHTML(data.name)}</h1>
       <p class="place-tagline">${escapeHTML(data.tagline)}</p>
-      <div class="our-menu">— Our Menu —</div>
+      <div class="our-menu">- Our Menu -</div>
     </div>
     <div class="burma-bands">
       ${bands.map((c, i) => `<button class="burma-band" data-target="cat-${c.id}" style="--i:${i}">${escapeHTML(c.name).toUpperCase()}</button>`).join('')}
@@ -891,7 +891,7 @@ function renderHeroGallery() {
       <div class="top-meta">${escapeHTML(data.phone || '')}</div>
     </div>
     <div class="hero-content">
-      <div class="eyebrow">— The Menu —</div>
+      <div class="eyebrow">- The Menu -</div>
       <h1 class="place-name">${escapeHTML(data.name)}</h1>
       <p class="place-tagline">${escapeHTML(data.tagline)}</p>
       ${data.address ? `<div class="gallery-meta">📍 ${escapeHTML(data.address)}</div>` : ''}
@@ -951,7 +951,7 @@ function footerFor(theme) {
     luscious: `<footer class="footer">${escapeHTML(data.tagline || 'Welcome back')}</footer>`,
     fresh: `<footer class="footer">${escapeHTML(data.tagline || 'Eat well, live well')} · ${escapeHTML(data.address || '')}</footer>`,
     gallery: `<footer class="footer">${escapeHTML(data.address || '')} · ${escapeHTML(data.phone || '')}</footer>`,
-    editorial: `<footer class="footer">— Fin —</footer>`,
+    editorial: `<footer class="footer">- Fin -</footer>`,
     maison: `<footer class="footer">${escapeHTML(data.tagline || 'Merci')}</footer>`,
   })[theme] || '';
 }
@@ -1060,7 +1060,7 @@ function attachInteractions() {
     let activeIdx = 0;
     sections.forEach((s, i) => { if (s.offsetTop <= y) activeIdx = i; });
     // At (or near) the bottom, the last short section can't reach the activation
-    // line — force-select it so the final tab highlights correctly.
+    // line - force-select it so the final tab highlights correctly.
     const atBottom = window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 2;
     if (atBottom && sections.length) activeIdx = sections.length - 1;
     tabs.forEach((t, i) => t.classList.toggle('active', i === activeIdx));
@@ -1257,7 +1257,7 @@ function openDetail(iid) {
 
   sheet.querySelector('#detailClose').addEventListener('click', closeDetail);
 
-  // Pair chips — add to cart
+  // Pair chips - add to cart
   sheet.querySelectorAll('.pair-chip[data-pair-id]').forEach(chip => {
     chip.addEventListener('click', () => {
       const pid = chip.dataset.pairId;
@@ -1526,7 +1526,7 @@ function renderCartContent(sheet) {
         <div class="cart-total"><span>Total</span><b>${cur}${total.toFixed(2)}</b></div>
         ${data.chefWhatsApp ? `<button class="detail-btn primary whatsapp-btn" id="cartWhatsApp">📱 Order Now</button>` : ''}
         <button class="detail-btn ${data.chefWhatsApp ? 'ghost' : 'primary'}" id="cartShow">Show to waiter</button>
-        <p class="show-waiter-note">Not a paid order — ${data.chefWhatsApp ? 'order via WhatsApp or s' : 's'}how your phone at the counter to order these items.</p>
+        <p class="show-waiter-note">Not a paid order - ${data.chefWhatsApp ? 'order via WhatsApp or s' : 's'}how your phone at the counter to order these items.</p>
       </div>
     `;
   }
@@ -1575,7 +1575,7 @@ function sendOrderViaWhatsApp(entries, total, cur, menuData) {
   entries.forEach(({it, qty}) => {
     const itemName = it.name; // Always use English name
     const itemPrice = priceNum(it.price) * qty;
-    lines.push(`• ${itemName} × ${qty} — ${cur}${itemPrice.toFixed(0)}`);
+    lines.push(`• ${itemName} × ${qty} - ${cur}${itemPrice.toFixed(0)}`);
   });
 
   lines.push('');
@@ -1658,7 +1658,7 @@ function openWaiterView(entries, total, cur) {
         <span>${count} item${count !== 1 ? 's' : ''}</span>
         <b>${cur}${total.toFixed(0)}</b>
       </div>
-      <p class="waiter-note">Not a paid order — staff will confirm at your table.</p>
+      <p class="waiter-note">Not a paid order - staff will confirm at your table.</p>
     </div>`;
   document.body.appendChild(ov);
   document.body.style.overflow = 'hidden';
@@ -1814,7 +1814,7 @@ function observeReveal() {
   els.forEach(el => io.observe(el));
 }
 
-function attachTilt() { /* tilt/parallax disabled — kept noop so existing callers still work */ }
+function attachTilt() { /* tilt/parallax disabled - kept noop so existing callers still work */ }
 
 // Boot
 window.addEventListener('DOMContentLoaded', async () => {
@@ -1828,5 +1828,5 @@ window.addEventListener('DOMContentLoaded', async () => {
   const loader = document.getElementById('loader');
   loader.style.opacity = '0';
   setTimeout(() => loader.style.display = 'none', 500);
-  document.title = data.name ? `${data.name} — Menu` : 'Menu';
+  document.title = data.name ? `${data.name} - Menu` : 'Menu';
 });

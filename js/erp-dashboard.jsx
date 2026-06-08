@@ -28,9 +28,9 @@ function DashboardView() {
 
   // Activity feed
   const activities = [
-    { color: 'var(--success)', text: React.createElement(React.Fragment, null, React.createElement('b', null, 'Aarav Iyer'), ' checked in — 31st visit'), time: '2 min ago' },
-    { color: 'var(--purple)', text: React.createElement(React.Fragment, null, 'Shift swap ', React.createElement('b', null, 'approved'), ' — Meera ↔ Anita (Thu)'), time: '15 min ago' },
-    { color: 'var(--accent)', text: React.createElement(React.Fragment, null, 'PO #', React.createElement('b', null, 'Metro Coffee'), ' is in transit — 5kg beans'), time: '1 hr ago' },
+    { color: 'var(--success)', text: React.createElement(React.Fragment, null, React.createElement('b', null, 'Aarav Iyer'), ' checked in 31st visit'), time: '2 min ago' },
+    { color: 'var(--purple)', text: React.createElement(React.Fragment, null, 'Shift swap ', React.createElement('b', null, 'approved'), 'Meera ↔ Anita (Thu)'), time: '15 min ago' },
+    { color: 'var(--accent)', text: React.createElement(React.Fragment, null, 'PO #', React.createElement('b', null, 'Metro Coffee'), ' is in transit 5kg beans'), time: '1 hr ago' },
     { color: 'var(--warning)', text: React.createElement(React.Fragment, null, React.createElement('b', null, lowStock.length, ' items'), ' below reorder level'), time: '2 hrs ago' },
     { color: '#ff3da0', text: React.createElement(React.Fragment, null, 'Reservation: ', React.createElement('b', null, 'Corporate Group'), ' (8 pax) confirmed for tomorrow'), time: '3 hrs ago' },
     { color: 'var(--success)', text: React.createElement(React.Fragment, null, 'Revenue milestone: crossed ', React.createElement('b', null, formatCurrency(weekRev)), ' this week'), time: '5 hrs ago' },
@@ -59,7 +59,7 @@ function DashboardView() {
     // Two column: chart + expense donut
     React.createElement('div', { className: 'two-col', style: { marginBottom: 20 } },
       React.createElement('div', { className: 'section-card' },
-        React.createElement('h3', null, 'Revenue — Last 7 Days'),
+        React.createElement('h3', null, 'Revenue Last 7 Days'),
         React.createElement(SimpleBarChart, { data: chartData, height: 150 }),
         React.createElement('div', { style: { marginTop: 10, fontSize: 12, color: 'var(--text-muted)' } },
           'Week total: ', React.createElement('b', { style: { color: 'var(--text-primary)' } }, formatCurrency(weekRev)),

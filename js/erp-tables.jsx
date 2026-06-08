@@ -88,7 +88,7 @@ function TablesView() {
                 const next = { confirmed: 'cancelled', pending: 'confirmed', cancelled: 'pending' };
                 updateItem('reservations', r.id, { status: next[r.status] });
               } }, r.status)),
-              React.createElement('td', { style: { fontSize: 11, color: 'var(--text-dim)', maxWidth: 150 } }, r.notes || '—'),
+              React.createElement('td', { style: { fontSize: 11, color: 'var(--text-dim)', maxWidth: 150 } }, r.notes || '-'),
               React.createElement('td', null, React.createElement('div', { style: { display: 'flex', gap: 4 } },
                 React.createElement('button', { className: 'btn btn-ghost btn-sm', onClick: () => setResModal(r) }, 'Edit'),
                 React.createElement('button', { className: 'btn btn-danger btn-sm', onClick: () => deleteItem('reservations', r.id) }, '×')
@@ -206,7 +206,7 @@ function CustomersView() {
               React.createElement('td', { className: 'cell-mono', style: { fontWeight: 600, color: 'var(--success)' } }, formatCurrency(c.totalSpent)),
               React.createElement('td', null, formatDate(c.lastVisit)),
               React.createElement('td', null, React.createElement('span', { className: 'badge', style: { background: `${loyaltyColors[c.loyalty]}22`, color: loyaltyColors[c.loyalty] } }, c.loyalty)),
-              React.createElement('td', { style: { fontSize: 11, color: 'var(--text-dim)', maxWidth: 150 } }, c.notes || '—'),
+              React.createElement('td', { style: { fontSize: 11, color: 'var(--text-dim)', maxWidth: 150 } }, c.notes || '-'),
               React.createElement('td', null, React.createElement('div', { style: { display: 'flex', gap: 4 } },
                 React.createElement('button', { className: 'btn btn-ghost btn-sm', onClick: () => setModal(c) }, 'Edit'),
                 React.createElement('button', { className: 'btn btn-danger btn-sm', onClick: () => setConfirmDel(c.id) }, '×')

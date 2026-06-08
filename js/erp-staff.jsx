@@ -9,7 +9,7 @@ function StaffView() {
   const activeCount = data.staff.filter(s => s.status === 'active').length;
   const onLeave = data.staff.filter(s => s.status === 'on-leave').length;
   const pendingSwaps = data.shiftSwaps.filter(s => s.status === 'pending').length;
-  const totalPayroll = data.staff.filter(s => s.status === 'active').reduce((s, st) => s + st.hourlyRate * 8 * 26, 0);
+  const totalPayroll = data.staff.filter(s => s.status === 'active').reduce((s, st) => s + (st.monthlySalary || 0), 0);
 
   function handleSaveStaff(item) {
     if (item.id) { updateItem('staff', item.id, item); }
@@ -63,7 +63,7 @@ function StaffRoster({ staff, onEdit, onDelete, onAdd }) {
     React.createElement('div', { className: 'table-panel-body' },
       React.createElement('table', { className: 'data-table' },
         React.createElement('thead', null, React.createElement('tr', null,
-          ['', 'Name', 'Role', 'Phone', 'Rate/hr', 'Status', 'Joined', 'Actions'].map(h => React.createElement('th', { key: h }, h))
+          ['', 'Name', 'Role', 'Phone', 'Status', 'Actions'].map(h => React.createElement('th', { key: h }, h))
         )),
         React.createElement('tbody', null,
           filtered.map((s, i) => React.createElement('tr', { key: s.id },
@@ -71,11 +71,9 @@ function StaffRoster({ staff, onEdit, onDelete, onAdd }) {
             React.createElement('td', { className: 'cell-primary' }, s.name, React.createElement('div', { style: { fontSize: 11, color: 'var(--text-dim)' } }, s.email)),
             React.createElement('td', null, React.createElement('span', { className: 'badge badge-blue' }, s.role)),
             React.createElement('td', { style: { fontSize: 12 } }, s.phone),
-            React.createElement('td', { className: 'cell-mono' }, formatCurrency(s.hourlyRate)),
             React.createElement('td', null, React.createElement('span', { className: `badge ${s.status === 'active' ? 'badge-green' : s.status === 'on-leave' ? 'badge-yellow' : 'badge-red'}` },
               React.createElement('span', { className: `status-dot ${s.status === 'active' ? 'dot-green' : s.status === 'on-leave' ? 'dot-yellow' : 'dot-red'}` }), s.status
             )),
-            React.createElement('td', null, formatDate(s.joinDate)),
             React.createElement('td', null,
               React.createElement('div', { style: { display: 'flex', gap: 4 } },
                 React.createElement('button', { className: 'btn btn-ghost btn-sm', onClick: () => onEdit(s) }, 'Edit'),
@@ -165,7 +163,7 @@ function ShiftSwaps({ swaps, staff, onAction, onNewSwap }) {
 }
 
 function StaffModal({ item, onSave, onClose }) {
-  const [form, setForm] = useState(item ? { ...item } : { name: '', role: 'Server', phone: '', email: '', hourlyRate: 200, status: 'active', joinDate: todayStr() });
+  const [form, setForm] = useState(item ? { ...item } : { name: '', role: 'Server', phone: '', email: '', monthlySalary: 18000, status: 'active' });
   const set = (k, v) => setForm(f => ({ ...f, [k]: v }));
   const roles = ['Manager', 'Head Chef', 'Sous Chef', 'Barista', 'Server', 'Kitchen Staff', 'Cleaner', 'Cashier'];
 
@@ -180,10 +178,7 @@ function StaffModal({ item, onSave, onClose }) {
         React.createElement(FormField, { label: 'Phone' }, React.createElement('input', { value: form.phone, onChange: e => set('phone', e.target.value) })),
         React.createElement(FormField, { label: 'Email' }, React.createElement('input', { value: form.email, onChange: e => set('email', e.target.value) }))
       ),
-      React.createElement('div', { className: 'field-row' },
-        React.createElement(FormField, { label: 'Hourly Rate (₹)' }, React.createElement('input', { type: 'number', value: form.hourlyRate, onChange: e => set('hourlyRate', parseFloat(e.target.value) || 0) })),
-        React.createElement(FormField, { label: 'Join Date' }, React.createElement('input', { type: 'date', value: form.joinDate, onChange: e => set('joinDate', e.target.value) }))
-      )
+      React.createElement(FormField, { label: 'Monthly Salary (₹)' }, React.createElement('input', { type: 'number', value: form.monthlySalary, onChange: e => set('monthlySalary', parseFloat(e.target.value) || 0) }))
     ),
     React.createElement('div', { className: 'modal-footer' },
       React.createElement('button', { className: 'btn btn-ghost', onClick: onClose }, 'Cancel'),

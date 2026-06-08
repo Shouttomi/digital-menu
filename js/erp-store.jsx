@@ -17,7 +17,7 @@ function formatTime(t) { if (!t) return ''; const [h, m] = t.split(':'); const h
 // Expose utilities globally
 Object.assign(window, { generateId, todayStr, daysAgo, daysFromNow, formatCurrency, formatDate, formatTime, useERP, ERPContext });
 
-const ERP_KEY = 'erpStudio.v1';
+const ERP_KEY = 'erpStudio.v2';
 
 function getDefaultData() {
   return {
@@ -39,13 +39,13 @@ function getDefaultData() {
       { id: generateId(), name: 'Napkins', category: 'Packaging', stock: 300, unit: 'pcs', reorderLevel: 100, costPerUnit: 1.5, supplier: 'PackMart' },
     ],
     staff: [
-      { id: generateId(), name: 'Priya Sharma', role: 'Manager', phone: '+91 98765 43210', email: 'priya@aurora.cafe', hourlyRate: 450, status: 'active', joinDate: '2022-03-15' },
-      { id: generateId(), name: 'Arjun Patel', role: 'Head Chef', phone: '+91 98765 43211', email: 'arjun@aurora.cafe', hourlyRate: 400, status: 'active', joinDate: '2022-04-01' },
-      { id: generateId(), name: 'Meera Reddy', role: 'Barista', phone: '+91 98765 43212', email: 'meera@aurora.cafe', hourlyRate: 250, status: 'active', joinDate: '2023-01-10' },
-      { id: generateId(), name: 'Rahul Kumar', role: 'Sous Chef', phone: '+91 98765 43213', email: 'rahul@aurora.cafe', hourlyRate: 320, status: 'active', joinDate: '2023-06-15' },
-      { id: generateId(), name: 'Anita Singh', role: 'Server', phone: '+91 98765 43214', email: 'anita@aurora.cafe', hourlyRate: 200, status: 'active', joinDate: '2023-09-01' },
-      { id: generateId(), name: 'Dev Mehta', role: 'Server', phone: '+91 98765 43215', email: 'dev@aurora.cafe', hourlyRate: 200, status: 'active', joinDate: '2024-01-20' },
-      { id: generateId(), name: 'Sneha Joshi', role: 'Barista', phone: '+91 98765 43216', email: 'sneha@aurora.cafe', hourlyRate: 250, status: 'on-leave', joinDate: '2024-03-01' },
+      { id: generateId(), name: 'Priya Sharma', role: 'Manager', phone: '+91 98765 43210', email: 'priya@aurora.cafe', monthlySalary: 45000, status: 'active' },
+      { id: generateId(), name: 'Arjun Patel', role: 'Head Chef', phone: '+91 98765 43211', email: 'arjun@aurora.cafe', monthlySalary: 40000, status: 'active' },
+      { id: generateId(), name: 'Meera Reddy', role: 'Barista', phone: '+91 98765 43212', email: 'meera@aurora.cafe', monthlySalary: 22000, status: 'active' },
+      { id: generateId(), name: 'Rahul Kumar', role: 'Sous Chef', phone: '+91 98765 43213', email: 'rahul@aurora.cafe', monthlySalary: 32000, status: 'active' },
+      { id: generateId(), name: 'Anita Singh', role: 'Server', phone: '+91 98765 43214', email: 'anita@aurora.cafe', monthlySalary: 18000, status: 'active' },
+      { id: generateId(), name: 'Dev Mehta', role: 'Server', phone: '+91 98765 43215', email: 'dev@aurora.cafe', monthlySalary: 18000, status: 'active' },
+      { id: generateId(), name: 'Sneha Joshi', role: 'Barista', phone: '+91 98765 43216', email: 'sneha@aurora.cafe', monthlySalary: 22000, status: 'on-leave' },
     ],
     shifts: [], // populated below
     shiftSwaps: [],

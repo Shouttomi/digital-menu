@@ -73,7 +73,7 @@ function InventoryView() {
                 React.createElement('td', null, it.unit),
                 React.createElement('td', { className: 'cell-mono' }, it.reorderLevel),
                 React.createElement('td', { className: 'cell-mono' }, formatCurrency(it.costPerUnit)),
-                React.createElement('td', null, it.supplier || '—'),
+                React.createElement('td', null, it.supplier || '-'),
                 React.createElement('td', null, React.createElement('span', { className: `badge ${isLow ? 'badge-red' : 'badge-green'}` }, isLow ? 'Low' : 'OK')),
                 React.createElement('td', null,
                   React.createElement('div', { style: { display: 'flex', gap: 4 } },
@@ -112,7 +112,7 @@ function InventoryModal({ item, onSave, onClose, suppliers }) {
       React.createElement('div', { className: 'field-row' },
         React.createElement(FormField, { label: 'Cost per Unit (₹)' }, React.createElement('input', { type: 'number', value: form.costPerUnit, onChange: e => set('costPerUnit', parseFloat(e.target.value) || 0) })),
         React.createElement(FormField, { label: 'Supplier' }, React.createElement('select', { value: form.supplier, onChange: e => set('supplier', e.target.value) },
-          React.createElement('option', { value: '' }, '— Select —'),
+          React.createElement('option', { value: '' }, '- Select -'),
           suppliers.map(s => React.createElement('option', { key: s.id, value: s.name }, s.name))
         ))
       )
