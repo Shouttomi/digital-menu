@@ -56,8 +56,7 @@ function CashRegisterView() {
     ));
   }
 
-  const methodColors = { cash: '#18b08a', upi: '#6b5cff', card: '#6ab4ff' };
-  const methodIcons = { cash: '💵', upi: '📱', card: '💳' };
+  const methodColors = { cash: '#7d9b8e', upi: '#8a8db0', card: '#8fa3b5' };
   const totalMethodIn = byUpi + byCard + Math.max(byCash, 0);
 
   return React.createElement('div', null,
@@ -98,7 +97,7 @@ function CashRegisterView() {
               const pct = totalMethodIn > 0 ? Math.round((val / totalMethodIn) * 100) : 0;
               return React.createElement('div', { key: key },
                 React.createElement('div', { style: { display: 'flex', justifyContent: 'space-between', fontSize: 12, marginBottom: 3 } },
-                  React.createElement('span', { style: { color: 'var(--text-secondary)' } }, methodIcons[key], ' ', label),
+                  React.createElement('span', { style: { color: 'var(--text-secondary)' } }, label),
                   React.createElement('span', { style: { fontWeight: 600, fontFamily: "'Space Grotesk', monospace" } }, formatCurrency(val), ' (', pct, '%)')
                 ),
                 React.createElement('div', { className: 'progress-bar' },
@@ -212,7 +211,7 @@ function CashEntryModal({ type, onSave, onClose }) {
             key: m, className: `btn ${form.method === m ? 'btn-primary' : 'btn-ghost'} btn-sm`,
             onClick: () => set('method', m),
             style: { flex: 1, justifyContent: 'center' }
-          }, m === 'cash' ? '💵 Cash' : m === 'upi' ? '📱 UPI' : '💳 Card'))
+          }, m === 'cash' ? 'Cash' : m === 'upi' ? 'UPI' : 'Card'))
         )
       ),
       React.createElement(FormField, { label: 'Description' }, React.createElement('input', { type: 'text', value: form.description, onChange: e => set('description', e.target.value), placeholder: 'e.g. Table 5 — lunch for 4' }))

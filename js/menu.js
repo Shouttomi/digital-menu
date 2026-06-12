@@ -4,7 +4,7 @@
 let currentLanguage = localStorage.getItem('menuLanguage') || 'en';
 const LANGUAGES = ['en', 'de', 'fr'];
 const LANGUAGE_NAMES = { en: 'English', de: 'Deutsch', fr: 'Français' };
-const LANGUAGE_FLAGS = { en: '🇬🇧', de: '🇩🇪', fr: '🇫🇷' };
+const LANGUAGE_FLAGS = { en: 'EN', de: 'DE', fr: 'FR' };
 
 function getTranslation(item, field) {
   if (!item) return '';
@@ -397,29 +397,53 @@ const THEME_DEMO_DATA = {
   },
 };
 
+// ===== URL parameter capture & hiding (security) =====
+// Params are read ONCE on load, moved into sessionStorage, and stripped from
+// the address bar. The table number locks on first scan for this session, so
+// a guest can't order for another table by editing the URL afterwards.
+const SS_KEYS = { id: 'menu.session.id', table: 'menu.session.table', payload: 'menu.session.payload' };
+(function captureAndHideParams() {
+  try {
+    const params = new URLSearchParams(location.search);
+    const id = params.get('id');
+    const table = params.get('table');
+    const hashMatch = location.hash.match(/d=([^&]+)/);
+    if (id) sessionStorage.setItem(SS_KEYS.id, id);
+    // First scan wins: once a table is locked for this session, URL edits are ignored.
+    if (table && !sessionStorage.getItem(SS_KEYS.table)) {
+      sessionStorage.setItem(SS_KEYS.table, table.replace(/[^\w\- ]/g, '').slice(0, 12));
+    }
+    if (hashMatch) sessionStorage.setItem(SS_KEYS.payload, hashMatch[1]);
+    if (location.search || location.hash) {
+      history.replaceState(null, '', location.pathname);
+    }
+  } catch (e) { /* sessionStorage unavailable; fall back to demo data */ }
+})();
+function getMenuIdParam() { try { return sessionStorage.getItem(SS_KEYS.id); } catch (e) { return null; } }
+function getTableNumber() { try { return sessionStorage.getItem(SS_KEYS.table); } catch (e) { return null; } }
+function getSharedPayload() { try { return sessionStorage.getItem(SS_KEYS.payload); } catch (e) { return null; } }
+
 async function readData() {
-  const params = new URLSearchParams(location.search);
-  const id = params.get('id');
+  const id = getMenuIdParam();
   if (id) {
     try {
       const res = await fetch(`/api/menu/${encodeURIComponent(id)}`);
       if (res.ok) return await res.json();
     } catch (e) { console.warn('id fetch failed', e); }
   }
-  const hash = location.hash;
-  const m = hash.match(/d=([^&]+)/);
-  if (m) {
+  const payload = getSharedPayload();
+  if (payload) {
     try {
-      const json = LZString.decompressFromEncodedURIComponent(m[1]);
+      const json = LZString.decompressFromEncodedURIComponent(payload);
       return JSON.parse(json);
-    } catch (e) { console.warn('hash decode failed', e); }
+    } catch (e) { console.warn('payload decode failed', e); }
   }
   // Bare open (no id, no shared payload) = theme showcase / demo.
   return { ...FALLBACK_DATA };
 }
 
 let data = FALLBACK_DATA;
-let menuId = new URLSearchParams(location.search).get('id') || 'local';
+let menuId = getMenuIdParam() || 'local';
 let favorites = new Set();   // item ids
 let cart = new Map();        // item id -> qty
 let activeFilters = new Set(); // tag ids
@@ -461,9 +485,8 @@ function priceNum(p) {
   return isNaN(n) ? 0 : n;
 }
 function tagDots(it) {
-  const tags = it.tags || [];
-  if (!tags.length) return '';
-  return `<span class="tag-dots">${tags.map(t => `<span class="tag-dot ${t}" title="${TAG_DEFS.find(d=>d.id===t)?.label||t}"></span>`).join('')}</span>`;
+  // Dietary dots removed for a cleaner look; tags remain usable via the filter chips.
+  return '';
 }
 function favIcon(itId) {
   const on = favorites.has(itId);
@@ -534,7 +557,7 @@ function renderItemUrban(it, i) {
     ${favIcon(it.id)}
     ${itemImage(it)}
     <div class="item-info">
-      <h3 class="item-name">${escapeHTML(name)}${tagDots(it)}${it.pop ? '<span class="pop-badge">🔥 Popular</span>':''}</h3>
+      <h3 class="item-name">${escapeHTML(name)}${tagDots(it)}${it.pop ? '<span class="pop-badge">Popular</span>':''}</h3>
       ${desc ? `<p class="item-desc">${escapeHTML(desc)}</p>` : ''}
     </div>
     <div class="item-price-row">
@@ -604,7 +627,7 @@ function renderSearchBar() {
       </div>
     </div>
     <div class="filter-row" id="filterRow">
-      ${TAG_DEFS.map(t => `<button class="filter-chip" data-tag="${t.id}"><span class="dot tag-dot ${t.id}"></span>${t.label}</button>`).join('')}
+      ${TAG_DEFS.map(t => `<button class="filter-chip" data-tag="${t.id}">${t.label}</button>`).join('')}
     </div>
   `;
 }
@@ -652,7 +675,7 @@ function renderHeroBistro() {
       <h1 class="place-name">${escapeHTML(data.name)}</h1>
       <p class="place-tagline">${escapeHTML(data.tagline)}</p>
       <div class="place-meta-row">
-        ${data.address ? `<div class="meta-pill">📍 ${escapeHTML(data.address)}</div>` : ''}
+        ${data.address ? `<div class="meta-pill">${escapeHTML(data.address)}</div>` : ''}
       </div>
     </div>
   </section>`;
@@ -671,7 +694,7 @@ function renderHeroUrban() {
       <h1 class="place-name">${escapeHTML(data.name)}</h1>
       <p class="place-tagline">${escapeHTML(data.tagline)}</p>
       <div class="place-meta-row">
-        ${data.address ? `<div>📍 ${escapeHTML(data.address)}</div>` : ''}
+        ${data.address ? `<div>${escapeHTML(data.address)}</div>` : ''}
       </div>
     </div>
   </section>`;
@@ -894,7 +917,7 @@ function renderHeroGallery() {
       <div class="eyebrow">- The Menu -</div>
       <h1 class="place-name">${escapeHTML(data.name)}</h1>
       <p class="place-tagline">${escapeHTML(data.tagline)}</p>
-      ${data.address ? `<div class="gallery-meta">📍 ${escapeHTML(data.address)}</div>` : ''}
+      ${data.address ? `<div class="gallery-meta">${escapeHTML(data.address)}</div>` : ''}
     </div>
   </section>`;
 }
@@ -1226,7 +1249,7 @@ function openDetail(iid) {
         }).filter(Boolean);
         if (!pairItems.length) return '';
         return `<div class="detail-pairs-section">
-          <div class="detail-pairs-label">🔗 Pairs well with</div>
+          <div class="detail-pairs-label">Pairs well with</div>
           <div class="pairs-scroll">
             ${pairItems.map(p => `
               <div class="pair-chip" data-pair-id="${p.id}">
@@ -1524,7 +1547,7 @@ function renderCartContent(sheet) {
       </div>
       <div class="cart-foot">
         <div class="cart-total"><span>Total</span><b>${cur}${total.toFixed(2)}</b></div>
-        ${data.chefWhatsApp ? `<button class="detail-btn primary whatsapp-btn" id="cartWhatsApp">📱 Order Now</button>` : ''}
+        ${data.chefWhatsApp ? `<button class="detail-btn primary whatsapp-btn" id="cartWhatsApp">Order Now</button>` : ''}
         <button class="detail-btn ${data.chefWhatsApp ? 'ghost' : 'primary'}" id="cartShow">Show to waiter</button>
         <p class="show-waiter-note">Not a paid order - ${data.chefWhatsApp ? 'order via WhatsApp or s' : 's'}how your phone at the counter to order these items.</p>
       </div>
@@ -1566,8 +1589,10 @@ function sendOrderViaWhatsApp(entries, total, cur, menuData) {
   }
 
   // Build order message (always in English)
+  const tableNo = getTableNumber();
   const lines = [
-    `🍽️ *${escapeHTML(menuData.name || 'Order')}*`,
+    `*${escapeHTML(menuData.name || 'Order')}*`,
+    ...(tableNo ? [`Table: ${tableNo}`] : []),
     '',
     '*Items:*'
   ];
@@ -1581,8 +1606,8 @@ function sendOrderViaWhatsApp(entries, total, cur, menuData) {
   lines.push('');
   lines.push(`*Total: ${cur}${total.toFixed(0)}*`);
   lines.push('');
-  lines.push('📍 ' + (menuData.address || 'Location'));
-  lines.push('🕐 Ordered: ' + new Date().toLocaleTimeString('en-IN'));
+  lines.push(menuData.address || 'Location');
+  lines.push('Ordered: ' + new Date().toLocaleTimeString('en-IN'));
 
   const message = lines.join('\n');
 
@@ -1590,6 +1615,7 @@ function sendOrderViaWhatsApp(entries, total, cur, menuData) {
   const orders = JSON.parse(localStorage.getItem('whatsappOrders') || '[]');
   const newOrder = {
     number, message, cafeName: menuData.name,
+    table: getTableNumber() || null,
     timestamp: new Date().toISOString(),
     status: 'new'
   };
@@ -1621,10 +1647,10 @@ function showOrderConfirmation(cafeName, message) {
   dialog.style.cssText = 'background:#fff;border-radius:20px;padding:28px;max-width:380px;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,0.3)';
 
   dialog.innerHTML = `
-    <h3 style="margin:0 0 14px;font-size:20px;font-weight:700;color:#25D366">✓ Order Received</h3>
+    <h3 style="margin:0 0 14px;font-size:20px;font-weight:700;color:var(--accent-strong, var(--accent, #1a1a1a))">Order Received</h3>
     <p style="margin:0 0 12px;font-size:14px;line-height:1.5">Your order has been sent to ${escapeHTML(cafeName)}</p>
     <p style="margin:0;font-size:12px;color:#888">The chef will confirm your order shortly</p>
-    <button onclick="this.closest('div').parentElement.remove()" style="margin-top:16px;padding:12px 20px;background:#25D366;color:#fff;border:none;border-radius:8px;cursor:pointer;font-size:14px;font-weight:600">Close</button>
+    <button onclick="this.closest('div').parentElement.remove()" style="margin-top:16px;padding:12px 20px;background:var(--accent-strong, var(--accent, #1a1a1a));color:#fff;border:none;border-radius:8px;cursor:pointer;font-size:14px;font-weight:600">Close</button>
   `;
 
   backdrop.appendChild(dialog);
@@ -1757,7 +1783,7 @@ function renderThemeFab() {
 function availBadgeHTML(it) {
   if (!it) return '';
   if (it.avail === 'soldout') return '<span class="item-avail-badge avail-soldout-badge">Sold Out</span>';
-  if (it.avail === 'limited') return '<span class="item-avail-badge avail-limited-badge">⚡ Limited</span>';
+  if (it.avail === 'limited') return '<span class="item-avail-badge avail-limited-badge">Limited</span>';
   return '';
 }
 
@@ -1782,7 +1808,7 @@ function postProcessItems() {
       if (!el.querySelector('.item-avail-badge')) {
         const badge = document.createElement('span');
         badge.className = 'item-avail-badge avail-limited-badge';
-        badge.textContent = '⚡ Limited';
+        badge.textContent = 'Limited';
         const nameEl = el.querySelector('.item-name');
         if (nameEl) nameEl.appendChild(badge);
       }
@@ -1797,7 +1823,7 @@ function injectPromoBanner() {
   if (!promos.length) return;
   const strip = document.createElement('div');
   strip.id = 'promoBannerStrip';
-  strip.innerHTML = promos.map(p => `<div class="promo-strip-item"><span class="promo-strip-icon">${p.icon}</span><span>${p.msg}</span></div>`).join('') +
+  strip.innerHTML = promos.map(p => `<div class="promo-strip-item"><span>${p.msg}</span></div>`).join('') +
     `<button class="promo-strip-close" aria-label="Close">×</button>`;
   strip.querySelector('.promo-strip-close').addEventListener('click', () => strip.remove());
   const app = document.getElementById('app');
@@ -1819,7 +1845,7 @@ function attachTilt() { /* tilt/parallax disabled - kept noop so existing caller
 // Boot
 window.addEventListener('DOMContentLoaded', async () => {
   data = await readData();
-  menuId = new URLSearchParams(location.search).get('id') || (data.name || 'local').toLowerCase().replace(/\s+/g,'-');
+  menuId = getMenuIdParam() || (data.name || 'local').toLowerCase().replace(/\s+/g,'-');
   loadFavCart();
   applyTheme();
   injectPromoBanner();

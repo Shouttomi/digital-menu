@@ -1025,7 +1025,11 @@ body.theme-urban .footer {
   border: none;
   cursor: pointer;
   display: flex; align-items: center; justify-content: center;
-  font-size: 26px;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: #fff;
+  font-family: 'Inter', system-ui, sans-serif;
   box-shadow: 0 10px 30px rgba(0,0,0,0.3);
   transition: transform .2s ease;
 }
@@ -1160,24 +1164,8 @@ body.theme-urban .footer {
 }
 .filter-chip.active .dot { opacity: 1; }
 
-/* Dietary tag dots on item cards */
-.tag-dots {
-  display: inline-flex;
-  gap: 4px;
-  margin-left: 6px;
-  vertical-align: middle;
-}
-.tag-dot {
-  width: 7px; height: 7px;
-  border-radius: 50%;
-  display: inline-block;
-  box-shadow: 0 0 0 1.5px var(--surface);
-}
-.tag-dot.veg { background: #2eaa6a; }
-.tag-dot.vegan { background: #18b08a; }
-.tag-dot.gf { background: #d4a017; }
-.tag-dot.spicy { background: #e64a3b; }
-.tag-dot.df { background: #6ab4ff; }
+/* Dietary tag dots removed for a cleaner, professional look */
+.tag-dots { display: none; }
 
 /* Favorite heart on each item */
 .fav-btn {
@@ -1434,9 +1422,7 @@ body.theme-restaurant .detail-name { font-family: 'Bebas Neue', sans-serif; lett
   background: var(--surface-2);
   color: var(--text);
 }
-.detail-btn.primary.added {
-  background: #2eaa6a;
-}
+/* "Added" state keeps the theme's accent color (no green flash) */
 
 /* ============================================================
    CART FAB + CART SHEET
@@ -2835,15 +2821,7 @@ body.theme-maison .detail-name { font-family: 'Cormorant Garamond', serif; }
 .pair-chip-price { font-size: 12px; font-weight: 700; color: var(--accent, #c08762); }
 .pair-chip-add { font-size: 9px; font-weight: 700; color: var(--accent, #c08762); letter-spacing: .06em; text-transform: uppercase; }
 
-/* WhatsApp Integration */
-.whatsapp-btn {
-  background: #25D366 !important;
-  box-shadow: 0 8px 30px rgba(37, 211, 102, 0.35) !important;
-  color: #fff !important;
-}
-.whatsapp-btn:hover {
-  box-shadow: 0 12px 36px rgba(37, 211, 102, 0.45) !important;
-}
+/* Order Now button inherits the theme's primary button style */
 
 /* Order Confirmation Dialog */
 .order-confirmation-dialog {
@@ -2874,7 +2852,7 @@ body.theme-maison .detail-name { font-family: 'Cormorant Garamond', serif; }
   margin: 0 0 14px;
   font-size: 20px;
   font-weight: 700;
-  color: #25D366;
+  color: var(--accent-strong, var(--accent, #1a1a1a));
 }
 .order-confirmation-content p {
   margin: 0 0 12px;

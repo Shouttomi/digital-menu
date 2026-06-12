@@ -184,13 +184,10 @@
 
     /* Status variants */
     .order-card.new::before { background: var(--danger); }
-    .order-card.new { box-shadow: 0 0 30px rgba(255,71,87,0.08); }
 
     .order-card.cooking::before { background: var(--warning); }
-    .order-card.cooking { box-shadow: 0 0 30px rgba(255,194,0,0.06); }
 
     .order-card.ready::before { background: var(--success); }
-    .order-card.ready { box-shadow: 0 0 30px rgba(24,176,138,0.06); }
 
     /* Card header */
     .order-header {
@@ -316,16 +313,14 @@
     .btn-start {
       background: var(--warning);
       color: #07080c;
-      box-shadow: 0 4px 16px rgba(255,194,0,0.25);
     }
-    .btn-start:hover { box-shadow: 0 6px 24px rgba(255,194,0,0.35); }
+    .btn-start:hover { filter: brightness(1.05); }
 
     .btn-done {
       background: var(--success);
       color: #fff;
-      box-shadow: 0 4px 16px rgba(24,176,138,0.25);
     }
-    .btn-done:hover { box-shadow: 0 6px 24px rgba(24,176,138,0.35); }
+    .btn-done:hover { filter: brightness(1.05); }
 
     .btn-delay {
       background: rgba(255,71,87,0.12);
@@ -343,18 +338,6 @@
       justify-content: center;
       height: 60vh;
       text-align: center;
-    }
-
-    .empty-icon {
-      width: 72px; height: 72px;
-      border-radius: 20px;
-      background: rgba(255,107,61,0.08);
-      border: 1px solid rgba(255,107,61,0.15);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 32px;
-      margin-bottom: 20px;
     }
 
     .empty-state h2 {
@@ -397,7 +380,6 @@
     [data-theme="light"] .btn-start { color: #07080c; }
     [data-theme="light"] .btn-done { color: #fff; }
     [data-theme="light"] .btn-delay { background: rgba(255,71,87,0.08); border-color: rgba(255,71,87,0.15); }
-    [data-theme="light"] .empty-icon { background: rgba(255,107,61,0.06); border-color: rgba(255,107,61,0.1); }
   </style>
 </head>
 <body>
@@ -430,7 +412,6 @@
 
   <div class="container" id="ordersContainer">
     <div class="empty-state">
-      <div class="empty-icon">🍳</div>
       <h2>No orders yet</h2>
       <p>Waiting for kitchen orders...</p>
     </div>
@@ -546,7 +527,6 @@
       if (sorted.length === 0) {
         container.innerHTML =
           '<div class="empty-state">' +
-            '<div class="empty-icon">🍳</div>' +
             '<h2>No orders yet</h2>' +
             '<p>Waiting for kitchen orders...</p>' +
           '</div>';
@@ -579,7 +559,7 @@
                 '<div class="order-id">' + order.id + '</div>' +
                 '<div class="order-badge" data-status>' + order.status.toUpperCase() + '</div>' +
               '</div>' +
-              '<div class="order-time">Received ' + formatTime(order.timestamp) + '</div>' +
+              '<div class="order-time">' + (order.table ? 'Table ' + order.table + ' · ' : '') + 'Received ' + formatTime(order.timestamp) + '</div>' +
               '<div class="order-items">' +
                 items.map(item =>
                   '<div class="item">' +
@@ -617,7 +597,7 @@
           const timerEl = card.querySelector('[data-timer]');
           if (timerEl) {
             timerEl.className = 'order-timer ' + timerClass;
-            timerEl.innerHTML = '<span class="timer-icon">⏱</span>' + timerText;
+            timerEl.textContent = timerText;
           }
           const statusEl = card.querySelector('[data-status]');
           if (statusEl) statusEl.textContent = order.status.toUpperCase();

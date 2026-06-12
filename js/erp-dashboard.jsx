@@ -22,7 +22,7 @@ function DashboardView() {
   // Expense breakdown
   const expCats = {};
   data.expenses.forEach(e => { expCats[e.category] = (expCats[e.category] || 0) + e.amount; });
-  const expColors = { Ingredients: '#ff6b3d', Salaries: '#6b5cff', Rent: '#ff3da0', Utilities: '#ffc200', Maintenance: '#18b08a', Marketing: '#6ab4ff', Insurance: '#ff4757', Miscellaneous: '#8b8e9b' };
+  const expColors = { Ingredients: '#c08762', Salaries: '#8a8db0', Rent: '#a98a9c', Utilities: '#b3a16e', Maintenance: '#7d9b8e', Marketing: '#8fa3b5', Insurance: '#b08585', Miscellaneous: '#8b8e9b' };
   const expSegments = Object.entries(expCats).sort((a, b) => b[1] - a[1]).map(([cat, val]) => ({ label: cat, value: val, color: expColors[cat] || '#6b6e7c' }));
   const totalExp = expSegments.reduce((s, e) => s + e.value, 0);
 
@@ -32,7 +32,7 @@ function DashboardView() {
     { color: 'var(--purple)', text: React.createElement(React.Fragment, null, 'Shift swap ', React.createElement('b', null, 'approved'), 'Meera ↔ Anita (Thu)'), time: '15 min ago' },
     { color: 'var(--accent)', text: React.createElement(React.Fragment, null, 'PO #', React.createElement('b', null, 'Metro Coffee'), ' is in transit 5kg beans'), time: '1 hr ago' },
     { color: 'var(--warning)', text: React.createElement(React.Fragment, null, React.createElement('b', null, lowStock.length, ' items'), ' below reorder level'), time: '2 hrs ago' },
-    { color: '#ff3da0', text: React.createElement(React.Fragment, null, 'Reservation: ', React.createElement('b', null, 'Corporate Group'), ' (8 pax) confirmed for tomorrow'), time: '3 hrs ago' },
+    { color: 'var(--purple)', text: React.createElement(React.Fragment, null, 'Reservation: ', React.createElement('b', null, 'Corporate Group'), ' (8 pax) confirmed for tomorrow'), time: '3 hrs ago' },
     { color: 'var(--success)', text: React.createElement(React.Fragment, null, 'Revenue milestone: crossed ', React.createElement('b', null, formatCurrency(weekRev)), ' this week'), time: '5 hrs ago' },
   ];
 

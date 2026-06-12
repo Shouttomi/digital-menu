@@ -269,7 +269,7 @@ function renderItem(it, cat) {
   pairsWrap.className = 'pairs-with-wrap';
   function refreshPairsBtn() {
     const n = (it.pairsWith || []).length;
-    pairsWrap.innerHTML = `<button class="icon-btn pairs-chip${n ? ' pairs-chip-on' : ''}">🔗${n ? ' Pairs ('+n+')' : ' Pairs with'}</button>`;
+    pairsWrap.innerHTML = `<button class="icon-btn pairs-chip${n ? ' pairs-chip-on' : ''}">${n ? 'Pairs ('+n+')' : 'Pairs with'}</button>`;
     pairsWrap.querySelector('button').addEventListener('click', () => openPairsDropdown(pairsWrap, it, refreshPairsBtn));
   }
   refreshPairsBtn();
@@ -287,7 +287,7 @@ function openPairsDropdown(wrap, it, onUpdate) {
     ${allItems.length === 0
       ? '<p style="font-size:11px;color:#8b8e9b;margin:4px 0">Add more items first</p>'
       : allItems.map(oi => `<label class="pairs-opt"><input type="checkbox" value="${oi.name.replace(/"/g,'&quot;')}"${(it.pairsWith||[]).includes(oi.name)?' checked':''}/> ${oi.name}</label>`).join('')}
-    <button class="ghost-btn" style="width:100%;margin-top:8px;font-size:11px;padding:6px" id="pairsDone">Done ✓</button>`;
+    <button class="ghost-btn" style="width:100%;margin-top:8px;font-size:11px;padding:6px" id="pairsDone">Done</button>`;
   wrap.style.position = 'relative';
   wrap.appendChild(dd);
   dd.querySelectorAll('input[type=checkbox]').forEach(cb => {
@@ -432,7 +432,7 @@ function renderAnalyticsModal() {
   const demoHours = [12,28,24,18,22,37,30,42,51,39,23,14];
   const peakHours = Array.from({length:12},(_,i) => ({ h:i+8, v: hasData ? (hourCounts[i+8]||0) : demoHours[i] }));
   const maxH = Math.max(...peakHours.map(h=>h.v), 1);
-  const catColors = ['#ff6b3d','#ff3da0','#6b5cff','#18b08a','#ffc200','#6ab4ff'];
+  const catColors = ['#c08762','#8a8db0','#7d9b8e','#b3a16e','#8fa3b5','#a98a9c'];
   const catRevs = state.categories.map((cat,i) => {
     const rev = hasData ? (cat.items||[]).reduce((s,it) => s+(sorted.find(x=>x.id===it.id)?.rev||0),0) : [37,28,19,16][i]||10;
     return { name: cat.name, rev, color: catColors[i%catColors.length] };
@@ -452,7 +452,7 @@ function renderAnalyticsModal() {
       <button class="icon-btn" id="analyticsClose" style="font-size:20px;width:36px;height:36px">×</button>
     </div>
     <div class="studio-modal-body">
-      ${!hasData ? `<div class="analytics-demo-note">📊 <b>Demo figures shown.</b> Real revenue data will appear as customers interact with your menu. <button id="loadDemoBtn" class="insight-cta-link">Load sample data →</button></div>` : ''}
+      ${!hasData ? `<div class="analytics-demo-note"><b>Demo figures shown.</b> Real revenue data will appear as customers interact with your menu. <button id="loadDemoBtn" class="insight-cta-link">Load sample data →</button></div>` : ''}
       <div class="kpi-row">
         <div class="kpi-card kpi-revenue"><div class="kpi-lbl">Revenue</div><div class="kpi-val">${hasData ? fmt(totalRevenue) : fmt(184200)}</div><div class="kpi-delta delta-up">↑ 14% vs last week</div></div>
         <div class="kpi-card kpi-orders"><div class="kpi-lbl">Orders</div><div class="kpi-val">${hasData ? totalOrders : 378}</div><div class="kpi-delta delta-up">↑ 12% vs last week</div></div>
@@ -489,9 +489,9 @@ function renderAnalyticsModal() {
       </div>
       <div class="analytics-section-title">Insights &amp; Nudges</div>
       <div class="insights-list">
-        <div class="insight-row"><span class="insight-icon">🔥</span><div class="insight-text"><b>Velvet Latte + Cinnamon Roll</b> are co-ordered frequently. Enable a "Pairs well with" chip in the item detail sheet?</div></div>
-        <div class="insight-row"><span class="insight-icon">⏰</span><div class="insight-text"><b>4pm–5pm is your peak hour.</b> A Happy Hour promo at 3:30pm could push orders 20–30% higher. <button class="insight-cta-link" id="goToPromos">Create Promo →</button></div></div>
-        <div class="insight-row"><span class="insight-icon">🔁</span><div class="insight-text"><b>34% of guests returned</b> this week. Adding a loyalty hint to your menu footer can accelerate this.</div></div>
+        <div class="insight-row"><div class="insight-text"><b>Velvet Latte + Cinnamon Roll</b> are co-ordered frequently. Enable a "Pairs well with" chip in the item detail sheet?</div></div>
+        <div class="insight-row"><div class="insight-text"><b>4pm–5pm is your peak hour.</b> A Happy Hour promo at 3:30pm could push orders 20–30% higher. <button class="insight-cta-link" id="goToPromos">Create Promo →</button></div></div>
+        <div class="insight-row"><div class="insight-text"><b>34% of guests returned</b> this week. Adding a loyalty hint to your menu footer can accelerate this.</div></div>
       </div>
       <div style="display:flex;gap:10px;margin-top:20px">
         <button class="ghost-btn" id="clearAnalyticsBtn">Clear data</button>
@@ -522,10 +522,10 @@ $('analyticsBtn')?.addEventListener('click', renderAnalyticsModal);
 
 // ===== Promotions =====
 const PROMO_TYPES_DEF = [
-  { id:'happy-hour', icon:'⏰', label:'Happy Hour'  },
-  { id:'pct-off',    icon:'%',  label:'% Off'       },
-  { id:'free-item',  icon:'🎁', label:'Free Item'   },
-  { id:'combo',      icon:'✨', label:'Combo Deal'  },
+  { id:'happy-hour', icon:'', label:'Happy Hour'  },
+  { id:'pct-off',    icon:'', label:'% Off'       },
+  { id:'free-item',  icon:'', label:'Free Item'   },
+  { id:'combo',      icon:'', label:'Combo Deal'  },
 ];
 function getPromos() { return state.promos || []; }
 function savePromos(p) { state.promos = p; persist(); }
@@ -550,14 +550,14 @@ function renderPromosModal(modal) {
       <button class="icon-btn" id="promosClose" style="font-size:20px;width:36px;height:36px">×</button>
     </div>
     <div class="studio-modal-body">
-      ${active.length ? `<div class="promo-live-preview"><div class="promo-live-lbl">Live on your menu now</div>${active.map(p=>`<div class="promo-banner-mock">${p.icon} ${p.msg}</div>`).join('')}</div>` : ''}
+      ${active.length ? `<div class="promo-live-preview"><div class="promo-live-lbl">Live on your menu now</div>${active.map(p=>`<div class="promo-banner-mock">${p.msg}</div>`).join('')}</div>` : ''}
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
         <div class="analytics-section-title" style="margin:0">Your Promotions</div>
         <button class="primary-btn small" id="showAddPromo">+ New Promo</button>
       </div>
       <div id="promoList">
         ${promos.length===0 ? '<p class="muted" style="text-align:center;padding:16px 0">No promotions yet.</p>' :
-          promos.map((p,i)=>`<div class="promo-row"><span class="promo-row-icon">${p.icon}</span>
+          promos.map((p,i)=>`<div class="promo-row">
             <div class="promo-row-info"><div class="promo-row-name">${p.name}</div><div class="promo-row-detail">${p.detail||p.msg.slice(0,48)}</div></div>
             <button class="ghost-btn danger" style="font-size:11px;padding:4px 10px" data-del="${i}">Remove</button>
             <button class="promo-toggle-btn${p.active?' promo-toggle-on':''}" data-tog="${i}">${p.active?'ON':'OFF'}</button>
@@ -565,23 +565,23 @@ function renderPromosModal(modal) {
       </div>
       <div class="add-promo-form" id="addPromoForm" style="display:none">
         <div class="analytics-section-title" style="margin-bottom:10px">Create a Promotion</div>
-        <div class="promo-type-row">${PROMO_TYPES_DEF.map(t=>`<button class="promo-type-btn${t.id==='happy-hour'?' selected':''}" data-type="${t.id}"><span style="font-size:18px">${t.icon}</span><small>${t.label}</small></button>`).join('')}</div>
-        <div class="field-group" style="margin-top:12px"><label class="field-label">Banner Message</label><input type="text" class="field-input" id="promoMsg" placeholder="☕ Happy Hour — 20% off all espresso 3–5pm!"/></div>
+        <div class="promo-type-row">${PROMO_TYPES_DEF.map(t=>`<button class="promo-type-btn${t.id==='happy-hour'?' selected':''}" data-type="${t.id}"><small>${t.label}</small></button>`).join('')}</div>
+        <div class="field-group" style="margin-top:12px"><label class="field-label">Banner Message</label><input type="text" class="field-input" id="promoMsg" placeholder="Happy Hour — 20% off all espresso 3–5pm!"/></div>
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
           <div class="field-group"><label class="field-label">Time Range</label><input type="text" class="field-input" id="promoTime" placeholder="3pm – 5pm"/></div>
           <div class="field-group"><label class="field-label">Condition</label><input type="text" class="field-input" id="promoCond" placeholder="On orders above ₹500"/></div>
         </div>
         <div id="promoBannerPreview" class="promo-banner-mock" style="display:none;margin-top:8px"></div>
         <div style="display:flex;gap:10px;margin-top:14px">
-          <button class="primary-btn" id="savePromoBtn">✓ Add Promotion</button>
+          <button class="primary-btn" id="savePromoBtn">Add Promotion</button>
           <button class="ghost-btn" id="cancelPromoBtn">Cancel</button>
         </div>
       </div>
       <div class="analytics-section-title" style="margin-top:20px;margin-bottom:10px">Ideas for You</div>
-      ${[{icon:'⏰',idea:'Happy Hour 4–6pm — 15% off all cold drinks',why:'Your slowest hour is 7pm; pulling orders earlier helps.'},
-         {icon:'🎂',idea:'Birthday Month — free muffin with any brunch',why:'Drives loyalty and repeat visits.'},
-         {icon:'💼',idea:'Work-from-cafe bundle — coffee + snack = ₹399',why:'Weekday afternoons are underutilised.'}].map(p=>`
-        <div class="promo-idea-row"><span style="font-size:18px;flex-shrink:0">${p.icon}</span>
+      ${[{idea:'Happy Hour 4–6pm — 15% off all cold drinks',why:'Your slowest hour is 7pm; pulling orders earlier helps.'},
+         {idea:'Birthday Month — free muffin with any brunch',why:'Drives loyalty and repeat visits.'},
+         {idea:'Work-from-cafe bundle — coffee + snack = ₹399',why:'Weekday afternoons are underutilised.'}].map(p=>`
+        <div class="promo-idea-row">
           <div style="flex:1"><div class="promo-row-name">${p.idea}</div><div class="promo-row-detail">${p.why}</div></div>
           <button class="ghost-btn" style="font-size:11px;padding:5px 12px" data-idea="${p.idea}">Use →</button>
         </div>`).join('')}

@@ -167,7 +167,7 @@ function AttendanceView() {
             React.createElement('div', { style: { display: 'flex', gap: 4 } },
               !checkIn && React.createElement('button', { className: 'btn btn-primary btn-sm', onClick: () => markCheckIn(s.id) }, 'Check In'),
               checkIn && !checkOut && React.createElement('button', { className: 'btn btn-ghost btn-sm', onClick: () => markCheckOut(s.id) }, 'Check Out'),
-              rec && React.createElement('button', { className: 'btn btn-ghost btn-sm', onClick: () => setLeaveModal(s.id), title: 'Mark Leave' }, '📋')
+              rec && React.createElement('button', { className: 'btn btn-ghost btn-sm', onClick: () => setLeaveModal(s.id), title: 'Mark Leave' }, 'Leave')
             )
           );
         })
