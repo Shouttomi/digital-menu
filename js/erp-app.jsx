@@ -1,4 +1,4 @@
-// ERP App Shell — Sidebar + Routing
+// ERP App Shell - Sidebar + Routing
 function ERPApp() {
   const [view, setView] = useState(() => {
     return localStorage.getItem('erp.activeView') || 'dashboard';

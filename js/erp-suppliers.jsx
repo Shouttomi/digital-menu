@@ -1,4 +1,4 @@
-// ERP Operations — Suppliers & Purchase Orders
+// ERP Operations - Suppliers & Purchase Orders
 function SuppliersView() {
   const { data, addItem, updateItem, deleteItem } = useERP();
   const [tab, setTab] = useState('suppliers');

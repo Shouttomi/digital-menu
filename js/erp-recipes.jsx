@@ -42,8 +42,8 @@ function RecipesView() {
       React.createElement('div', { className: 'kpi-grid' },
         React.createElement(StatCard, { label: 'Total Recipes', value: recipes.length, accent: 'accent-cyan' }),
         React.createElement(StatCard, { label: 'Avg Margin', value: avgMargin + '%', deltaDir: avgMargin >= 60 ? 'up' : 'down', delta: avgMargin >= 60 ? 'Healthy' : 'Needs review', accent: avgMargin >= 60 ? 'accent-green' : 'accent-yellow' }),
-        React.createElement(StatCard, { label: 'Best Margin', value: bestMargin ? bestMargin.name : '—', delta: bestMargin ? bestMargin.marginPct + '%' : '', deltaDir: 'up', accent: 'accent-green' }),
-        React.createElement(StatCard, { label: 'Lowest Margin', value: worstMargin ? worstMargin.name : '—', delta: worstMargin ? worstMargin.marginPct + '%' : '', deltaDir: 'down', accent: 'accent-red' })
+        React.createElement(StatCard, { label: 'Best Margin', value: bestMargin ? bestMargin.name : '-', delta: bestMargin ? bestMargin.marginPct + '%' : '', deltaDir: 'up', accent: 'accent-green' }),
+        React.createElement(StatCard, { label: 'Lowest Margin', value: worstMargin ? worstMargin.name : '-', delta: worstMargin ? worstMargin.marginPct + '%' : '', deltaDir: 'down', accent: 'accent-red' })
       ),
 
       // Recipe cards grid
@@ -62,7 +62,7 @@ function RecipesView() {
           // Ingredients list
           React.createElement('div', { style: { display: 'flex', flexDirection: 'column', gap: 4, marginBottom: 10 } },
             r.ingredients.map((ig, i) => React.createElement('div', { key: i, style: { display: 'flex', justifyContent: 'space-between', fontSize: 12 } },
-              React.createElement('span', { style: { color: 'var(--text-secondary)' } }, ig.item, ' — ', ig.qty, ig.unit),
+              React.createElement('span', { style: { color: 'var(--text-secondary)' } }, ig.item, ' - ', ig.qty, ig.unit),
               React.createElement('span', { style: { color: 'var(--text-muted)', fontFamily: "'Space Grotesk', monospace" } }, formatCurrency(ig.cost))
             ))
           ),

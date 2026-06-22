@@ -1,9 +1,9 @@
-// Menu Studio — Admin
+// Menu Studio - Admin
 const STORE_KEY = 'menuStudio.v1';
 
 const IMG = (name) => `static/images/${name}.jpg`;
 
-// Ensure new fields exist on all items — backward-compat with saved menus
+// Ensure new fields exist on all items - backward-compat with saved menus
 function ensureItemFields(s) {
   if (!s) return s;
   (s.categories || []).forEach(c =>
@@ -355,7 +355,7 @@ function renderQR() {
   // api.qrserver.com supports very long URLs and needs no library.
   img.src = `https://api.qrserver.com/v1/create-qr-code/?size=260x260&margin=8&data=${encodeURIComponent(url)}`;
   img.onerror = () => {
-    img.alt = 'QR generator offline — use Copy Link instead';
+    img.alt = 'QR generator offline - use Copy Link instead';
   };
 }
 
@@ -448,7 +448,7 @@ function renderAnalyticsModal() {
   <div class="studio-modal-panel">
     <div class="studio-modal-header">
       <div><h2 class="studio-modal-title">Revenue Command</h2>
-        <p class="studio-modal-sub">${hasData ? `${totalOrders} tracked orders` : 'Demo data — real data appears as customers order'}</p></div>
+        <p class="studio-modal-sub">${hasData ? `${totalOrders} tracked orders` : 'Demo data - real data appears as customers order'}</p></div>
       <button class="icon-btn" id="analyticsClose" style="font-size:20px;width:36px;height:36px">×</button>
     </div>
     <div class="studio-modal-body">
@@ -566,7 +566,7 @@ function renderPromosModal(modal) {
       <div class="add-promo-form" id="addPromoForm" style="display:none">
         <div class="analytics-section-title" style="margin-bottom:10px">Create a Promotion</div>
         <div class="promo-type-row">${PROMO_TYPES_DEF.map(t=>`<button class="promo-type-btn${t.id==='happy-hour'?' selected':''}" data-type="${t.id}"><small>${t.label}</small></button>`).join('')}</div>
-        <div class="field-group" style="margin-top:12px"><label class="field-label">Banner Message</label><input type="text" class="field-input" id="promoMsg" placeholder="Happy Hour — 20% off all espresso 3–5pm!"/></div>
+        <div class="field-group" style="margin-top:12px"><label class="field-label">Banner Message</label><input type="text" class="field-input" id="promoMsg" placeholder="Happy Hour - 20% off all espresso 3–5pm!"/></div>
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
           <div class="field-group"><label class="field-label">Time Range</label><input type="text" class="field-input" id="promoTime" placeholder="3pm – 5pm"/></div>
           <div class="field-group"><label class="field-label">Condition</label><input type="text" class="field-input" id="promoCond" placeholder="On orders above ₹500"/></div>
@@ -578,9 +578,9 @@ function renderPromosModal(modal) {
         </div>
       </div>
       <div class="analytics-section-title" style="margin-top:20px;margin-bottom:10px">Ideas for You</div>
-      ${[{idea:'Happy Hour 4–6pm — 15% off all cold drinks',why:'Your slowest hour is 7pm; pulling orders earlier helps.'},
-         {idea:'Birthday Month — free muffin with any brunch',why:'Drives loyalty and repeat visits.'},
-         {idea:'Work-from-cafe bundle — coffee + snack = ₹399',why:'Weekday afternoons are underutilised.'}].map(p=>`
+      ${[{idea:'Happy Hour 4–6pm - 15% off all cold drinks',why:'Your slowest hour is 7pm; pulling orders earlier helps.'},
+         {idea:'Birthday Month - free muffin with any brunch',why:'Drives loyalty and repeat visits.'},
+         {idea:'Work-from-cafe bundle - coffee + snack = ₹399',why:'Weekday afternoons are underutilised.'}].map(p=>`
         <div class="promo-idea-row">
           <div style="flex:1"><div class="promo-row-name">${p.idea}</div><div class="promo-row-detail">${p.why}</div></div>
           <button class="ghost-btn" style="font-size:11px;padding:5px 12px" data-idea="${p.idea}">Use →</button>

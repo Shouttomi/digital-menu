@@ -109,7 +109,7 @@ function ShiftSchedule({ shifts, staff }) {
           ),
           (sh.schedule || []).map((day, di) => React.createElement('div', { className: 'shift-cell', key: di },
             React.createElement('div', { className: `shift-chip shift-${day.shift}` },
-              day.shift === 'morning' ? '7–3' : day.shift === 'afternoon' ? '12–8' : day.shift === 'evening' ? '4–12' : '— Off'
+              day.shift === 'morning' ? '7–3' : day.shift === 'afternoon' ? '12–8' : day.shift === 'evening' ? '4–12' : '- Off'
             )
           ))
         ))

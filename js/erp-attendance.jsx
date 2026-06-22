@@ -144,11 +144,11 @@ function AttendanceView() {
             React.createElement('div', { style: { display: 'flex', gap: 16, alignItems: 'center', fontSize: 12 } },
               React.createElement('div', { style: { textAlign: 'center' } },
                 React.createElement('div', { style: { fontSize: 9, color: 'var(--text-faint)', textTransform: 'uppercase', fontWeight: 700, letterSpacing: '0.08em' } }, 'In'),
-                React.createElement('div', { style: { fontFamily: "'Space Grotesk', monospace", fontWeight: 600, color: checkIn ? 'var(--success)' : 'var(--text-faint)' } }, checkIn ? formatTime(checkIn) : '—')
+                React.createElement('div', { style: { fontFamily: "'Space Grotesk', monospace", fontWeight: 600, color: checkIn ? 'var(--success)' : 'var(--text-faint)' } }, checkIn ? formatTime(checkIn) : '-')
               ),
               React.createElement('div', { style: { textAlign: 'center' } },
                 React.createElement('div', { style: { fontSize: 9, color: 'var(--text-faint)', textTransform: 'uppercase', fontWeight: 700, letterSpacing: '0.08em' } }, 'Out'),
-                React.createElement('div', { style: { fontFamily: "'Space Grotesk', monospace", fontWeight: 600, color: checkOut ? 'var(--danger)' : 'var(--text-faint)' } }, checkOut ? formatTime(checkOut) : '—')
+                React.createElement('div', { style: { fontFamily: "'Space Grotesk', monospace", fontWeight: 600, color: checkOut ? 'var(--danger)' : 'var(--text-faint)' } }, checkOut ? formatTime(checkOut) : '-')
               ),
               // Hours worked
               checkIn && checkOut && React.createElement('div', { style: { textAlign: 'center' } },
@@ -200,7 +200,7 @@ function AttendanceView() {
                   React.createElement('td', { className: 'cell-mono', style: { color: 'var(--danger)' } }, s.absentDays),
                   React.createElement('td', { className: 'cell-mono', style: { color: 'var(--warning)' } }, s.lateDays),
                   React.createElement('td', { className: 'cell-mono', style: { color: 'var(--purple)' } }, s.halfDays),
-                  React.createElement('td', { className: 'cell-mono' }, s.avgHrs > 0 ? s.avgHrs + 'h' : '—'),
+                  React.createElement('td', { className: 'cell-mono' }, s.avgHrs > 0 ? s.avgHrs + 'h' : '-'),
                   React.createElement('td', null,
                     React.createElement('div', { style: { display: 'flex', alignItems: 'center', gap: 8 } },
                       React.createElement('div', { className: 'progress-bar', style: { flex: 1, minWidth: 60 } },

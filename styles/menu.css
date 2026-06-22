@@ -58,7 +58,7 @@ img { display: block; max-width: 100%; }
   color: rgba(255,255,255,0.3); font-size: 32px;
 }
 
-/* Background marquee — repeated company name drifting */
+/* Background marquee - repeated company name drifting */
 .bg-stage {
   position: fixed; inset: 0;
   z-index: 0;
@@ -244,7 +244,7 @@ body.theme-fresh .row-d { top:80%; font-size:80px;  animation: marquee-r 90s lin
 }
 
 /* ============================================================
-   THEME: CAFE — cream, serif, cozy
+   THEME: CAFE - cream, serif, cozy
    ============================================================ */
 body.theme-cafe {
   background: #f5ecdb;
@@ -432,7 +432,7 @@ body.theme-cafe .footer {
 }
 
 /* ============================================================
-   THEME: RESTAURANT — dark luxe, gold
+   THEME: RESTAURANT - dark luxe, gold
    ============================================================ */
 body.theme-restaurant {
   background: #0D0D0D;
@@ -440,7 +440,7 @@ body.theme-restaurant {
   font-family: 'Inter', sans-serif;
 }
 
-/* — Hero — */
+/* - Hero - */
 body.theme-restaurant .hero {
   position: relative;
   min-height: 460px;
@@ -533,7 +533,7 @@ body.theme-restaurant .rest-cta {
 }
 body.theme-restaurant .rest-cta:hover { background: #FFC200; transform: translateY(-2px); }
 
-/* — Category nav tabs — */
+/* - Category nav tabs - */
 body.theme-restaurant .category-tabs {
   position: sticky; top: 0; z-index: 10;
   background: rgba(13,13,13,0.95);
@@ -562,7 +562,7 @@ body.theme-restaurant .tab.active {
   border-color: #F5A800; font-weight: 800;
 }
 
-/* — Categories & items — */
+/* - Categories & items - */
 body.theme-restaurant .category { padding: 40px 20px 10px; }
 body.theme-restaurant .category-title {
   font-family: 'Bebas Neue', sans-serif;
@@ -639,7 +639,7 @@ body.theme-restaurant .footer {
 }
 
 /* ============================================================
-   THEME: BISTRO — fresh mint, clean
+   THEME: BISTRO - fresh mint, clean
    ============================================================ */
 body.theme-bistro {
   background: #e8f4f0;
@@ -797,7 +797,7 @@ body.theme-bistro .footer {
 }
 
 /* ============================================================
-   THEME: URBAN — white/coral, modern bold
+   THEME: URBAN - white/coral, modern bold
    ============================================================ */
 body.theme-urban {
   background: #fff5f1;
@@ -1186,7 +1186,7 @@ body.theme-urban .footer {
 .fav-btn svg { width: 16px; height: 16px; stroke: #333; fill: none; stroke-width: 2; }
 .fav-btn.on { background: #ff4b6e; }
 .fav-btn.on svg { fill: #fff; stroke: #fff; }
-/* Themes where the image is on the right — move heart to the right */
+/* Themes where the image is on the right - move heart to the right */
 body.theme-cafe .fav-btn,
 body.theme-artisan .fav-btn { left: auto; right: 10px; }
 /* Humm: heart anchored to item row right edge, no background */
@@ -1655,7 +1655,7 @@ body.theme-restaurant .detail-name { font-family: 'Bebas Neue', sans-serif; lett
 }
 
 /* ============================================================
-   THEME: HUMM — Mediterranean editorial café
+   THEME: HUMM - Mediterranean editorial café
    ============================================================ */
 body.theme-humm { color: #1A1A18; font-family: 'Inter', sans-serif; background: #F5F0E8 !important; }
 
@@ -2012,7 +2012,7 @@ body.theme-humm .humm-footer {
 }
 
 /* ============================================================
-   THEME: MODERN — clean white, orange CTAs (food-app)
+   THEME: MODERN - clean white, orange CTAs (food-app)
    ============================================================ */
 body.theme-modern { color: #1a1a1a; font-family: 'Inter', sans-serif; }
 body.theme-modern .hero { padding: 30px 22px 30px; background: transparent; }
@@ -2074,7 +2074,7 @@ body.theme-modern .item::after {
 }
 
 /* ============================================================
-   THEME: ARTISAN — cream/peach, big serif
+   THEME: ARTISAN - cream/peach, big serif
    ============================================================ */
 body.theme-artisan { color: #1c1410; font-family: 'Inter', sans-serif; }
 body.theme-artisan .hero { padding: 50px 24px 30px; text-align: center; position: relative; }
@@ -2125,7 +2125,7 @@ body.theme-artisan .item .item-image::before {
 }
 
 /* ============================================================
-   THEME: BURMA — bold yellow/orange stacked sections
+   THEME: BURMA - bold yellow/orange stacked sections
    ============================================================ */
 body.theme-burma { color: #3a1e08; font-family: 'Inter', sans-serif; }
 body.theme-burma .hero { padding: 40px 24px 30px; position: relative; }
@@ -2198,7 +2198,7 @@ body.theme-burma .burma-band:nth-child(4) { background: #d97520; color: #fde2a5;
 body.theme-burma .burma-band:nth-child(5) { background: #b85820; color: #fde2a5; }
 
 /* ============================================================
-   THEME: LUSCIOUS — dark slate, coral coffee-shop
+   THEME: LUSCIOUS - dark slate, coral coffee-shop
    ============================================================ */
 body.theme-luscious { color: #f5ece0; font-family: 'Inter', sans-serif; }
 body.theme-luscious .hero {
@@ -2268,7 +2268,7 @@ body.theme-luscious .social-dot svg { width: 18px; height: 18px; }
 body.theme-luscious .hero-address { margin-top: 16px; font-size: 12px; color: #9a948a; letter-spacing: 0.06em; }
 
 /* ============================================================
-   THEME: FRESH — light delivery app, forest green + white
+   THEME: FRESH - light delivery app, forest green + white
    ============================================================ */
 body.theme-fresh { --accent: #1E6B45; --accent-strong: #155335; --surface: #FFFFFF; --surface-2: #F4FAF7; --text: #1A1A1A; --muted: #888888; --shadow: 0 4px 20px rgba(0,0,0,0.08); }
 body.theme-fresh {
@@ -2416,7 +2416,7 @@ body.theme-burma .detail-name { font-family: 'DM Serif Display', serif; text-tra
 @keyframes bg-orbit   { 0% { transform: translate(0,0); } 25% { transform: translate(26px,18px); } 50% { transform: translate(0,36px); } 75% { transform: translate(-26px,18px); } 100% { transform: translate(0,0); } }
 @keyframes bg-bubble  { 0%,100% { transform: translateY(0) scale(1); }          50% { transform: translateY(-30px) scale(1.1); } }
 
-/* CAFE — warm caramel + amber, slow drifting steam */
+/* CAFE - warm caramel + amber, slow drifting steam */
 body.theme-cafe .bg-grad {
   background:
     radial-gradient(42% 42% at 18% 12%, rgba(192,135,98,0.45), transparent 62%),
@@ -2425,7 +2425,7 @@ body.theme-cafe .bg-grad {
   animation: bg-drift 18s ease-in-out infinite;
 }
 
-/* RESTAURANT — gold flare pulsing in the dark */
+/* RESTAURANT - gold flare pulsing in the dark */
 body.theme-restaurant .bg-grad {
   background:
     radial-gradient(44% 44% at 22% 16%, rgba(245,168,0,0.30), transparent 58%),
@@ -2434,7 +2434,7 @@ body.theme-restaurant .bg-grad {
   animation: bg-pulse 9s ease-in-out infinite;
 }
 
-/* BISTRO — mint + teal swaying side to side */
+/* BISTRO - mint + teal swaying side to side */
 body.theme-bistro .bg-grad {
   background:
     radial-gradient(44% 44% at 20% 22%, rgba(31,111,92,0.30), transparent 60%),
@@ -2443,7 +2443,7 @@ body.theme-bistro .bg-grad {
   animation: bg-sway 16s ease-in-out infinite;
 }
 
-/* URBAN — coral + sunset zooming */
+/* URBAN - coral + sunset zooming */
 body.theme-urban .bg-grad {
   background:
     radial-gradient(44% 44% at 20% 20%, rgba(255,122,89,0.42), transparent 60%),
@@ -2452,7 +2452,7 @@ body.theme-urban .bg-grad {
   animation: bg-zoom 14s ease-in-out infinite;
 }
 
-/* HUMM — Mediterranean blush + olive, gentle float */
+/* HUMM - Mediterranean blush + olive, gentle float */
 body.theme-humm .bg-grad {
   background:
     radial-gradient(46% 46% at 16% 12%, rgba(242,176,166,0.55), transparent 60%),
@@ -2461,7 +2461,7 @@ body.theme-humm .bg-grad {
   animation: bg-float 20s ease-in-out infinite;
 }
 
-/* MODERN — multi-hue glow cycling through colors */
+/* MODERN - multi-hue glow cycling through colors */
 body.theme-modern .bg-grad {
   background:
     radial-gradient(44% 44% at 80% 0%, rgba(249,115,22,0.30), transparent 58%),
@@ -2470,7 +2470,7 @@ body.theme-modern .bg-grad {
   animation: bg-hue 24s linear infinite;
 }
 
-/* ARTISAN — peach + terracotta slowly rotating */
+/* ARTISAN - peach + terracotta slowly rotating */
 body.theme-artisan .bg-grad {
   background:
     radial-gradient(40% 40% at 24% 14%, rgba(244,224,208,0.85), transparent 58%),
@@ -2479,7 +2479,7 @@ body.theme-artisan .bg-grad {
   animation: bg-rotate 60s linear infinite;
 }
 
-/* BURMA — golden gradient shimmering top to bottom */
+/* BURMA - golden gradient shimmering top to bottom */
 body.theme-burma .bg-stage { background-size: 100% 200%; animation: bg-shimmer 16s ease-in-out infinite alternate; }
 body.theme-burma .bg-grad {
   background:
@@ -2489,7 +2489,7 @@ body.theme-burma .bg-grad {
   animation: bg-pulse 11s ease-in-out infinite;
 }
 
-/* LUSCIOUS — coral glow orbiting in deep slate */
+/* LUSCIOUS - coral glow orbiting in deep slate */
 body.theme-luscious .bg-grad {
   background:
     radial-gradient(42% 42% at 22% 14%, rgba(232,90,79,0.32), transparent 58%),
@@ -2498,7 +2498,7 @@ body.theme-luscious .bg-grad {
   animation: bg-orbit 18s ease-in-out infinite;
 }
 
-/* FRESH — green + lime bubbling up */
+/* FRESH - green + lime bubbling up */
 body.theme-fresh .bg-grad {
   background:
     radial-gradient(40% 40% at 12% 8%, rgba(30,107,69,0.20), transparent 56%),
@@ -2512,7 +2512,7 @@ body.theme-fresh .bg-grad {
 }
 
 /* ============================================================
-   NEW THEMES — shared transparency hooks
+   NEW THEMES - shared transparency hooks
    ============================================================ */
 body.theme-gallery, body.theme-editorial, body.theme-maison { background: transparent !important; }
 body.theme-gallery .hero, body.theme-editorial .hero, body.theme-maison .hero { background-color: transparent; }
@@ -2521,7 +2521,7 @@ body.theme-gallery .category-tabs, body.theme-editorial .category-tabs, body.the
 }
 
 /* ============================================================
-   THEME: GALLERY — photo-forward grid, captions over images
+   THEME: GALLERY - photo-forward grid, captions over images
    ============================================================ */
 body.theme-gallery {
   --accent: #c8553d; --accent-strong: #a23b27; --surface: #ffffff; --surface-2: #f2ece3;
@@ -2596,7 +2596,7 @@ body.theme-gallery .footer { padding: 44px 24px; text-align: center; color: var(
 @media (max-width: 380px) { body.theme-gallery .items { gap: 8px; } }
 
 /* ============================================================
-   THEME: EDITORIAL — magazine column, serif headlines, numbers
+   THEME: EDITORIAL - magazine column, serif headlines, numbers
    ============================================================ */
 body.theme-editorial {
   --accent: #c1431f; --accent-strong: #9c3417; --surface: #fbf8f1; --surface-2: #efe9da;
@@ -2643,7 +2643,7 @@ body.theme-editorial .tab.active::after { content: ''; position: absolute; left:
 body.theme-editorial .category { padding: 34px 22px 6px; }
 body.theme-editorial .category-title { font-family: 'Playfair Display', serif; font-size: 36px; font-weight: 800; letter-spacing: -0.02em; margin: 0; color: var(--text); }
 body.theme-editorial .category-sub { font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted); border-top: 2px solid var(--text); padding-top: 8px; margin: 10px 0 22px; }
-/* items — alternating photo/text columns */
+/* items - alternating photo/text columns */
 body.theme-editorial .items { display: flex; flex-direction: column; gap: 26px; }
 body.theme-editorial .item {
   display: grid; grid-template-columns: 1fr 128px; gap: 18px; align-items: start;
@@ -2669,7 +2669,7 @@ body.theme-editorial .item:nth-child(even) .fav-btn { left: 6px; right: auto; }
 body.theme-editorial .footer { padding: 50px 24px; text-align: center; font-family: 'Playfair Display', serif; font-style: italic; color: var(--muted); font-size: 16px; }
 
 /* ============================================================
-   THEME: MAISON — fine-dining tasting, gold, dotted leaders
+   THEME: MAISON - fine-dining tasting, gold, dotted leaders
    ============================================================ */
 body.theme-maison {
   --accent: #b8923a; --accent-strong: #9c7a2c; --surface: #fbf7ee; --surface-2: #f0e8d6;
@@ -2719,7 +2719,7 @@ body.theme-maison .tab.active { color: var(--accent-strong); }
 body.theme-maison .category { padding: 38px 24px 10px; text-align: center; }
 body.theme-maison .category-title { font-family: 'Cormorant Garamond', serif; font-size: 34px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; margin: 0 0 2px; color: var(--text); }
 body.theme-maison .category-sub { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 16px; color: var(--muted); margin: 0 0 26px; }
-/* items — centered, dotted leaders */
+/* items - centered, dotted leaders */
 body.theme-maison .items { display: flex; flex-direction: column; gap: 30px; max-width: 540px; margin: 0 auto; }
 body.theme-maison .item { position: relative; cursor: pointer; text-align: center; }
 body.theme-maison .m-photo { width: 132px; height: 132px; border-radius: 50%; margin: 0 auto 14px; background-size: cover; background-position: center; box-shadow: 0 14px 32px rgba(60,45,15,0.22); }

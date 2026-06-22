@@ -58,7 +58,7 @@ function WastageView() {
       React.createElement(StatCard, { label: 'Total Waste Cost', value: formatCurrency(totalCost), accent: 'accent-red' }),
       React.createElement(StatCard, { label: 'Items Wasted', value: totalItems, accent: 'accent-orange' }),
       React.createElement(StatCard, { label: 'Avg / Day', value: formatCurrency(Math.round(totalCost / days)), accent: 'accent-yellow' }),
-      React.createElement(StatCard, { label: 'Top Reason', value: Object.entries(byReason).sort((a, b) => b[1] - a[1])[0]?.[0] ? reasonLabels[Object.entries(byReason).sort((a, b) => b[1] - a[1])[0][0]] : '—', accent: 'accent-purple' })
+      React.createElement(StatCard, { label: 'Top Reason', value: Object.entries(byReason).sort((a, b) => b[1] - a[1])[0]?.[0] ? reasonLabels[Object.entries(byReason).sort((a, b) => b[1] - a[1])[0][0]] : '-', accent: 'accent-purple' })
     ),
 
     // Daily trend chart

@@ -1,4 +1,4 @@
-// ERP Data Store — localStorage persistence + default demo data
+// ERP Data Store - localStorage persistence + default demo data
 const { useState, useEffect, useCallback, createContext, useContext } = React;
 
 const ERPContext = createContext(null);
@@ -82,19 +82,19 @@ function getDefaultData() {
     ],
     customers: [
       { id: generateId(), name: 'Kavita Nair', phone: '+91 98001 11111', email: 'kavita@gmail.com', visits: 23, totalSpent: 18400, lastVisit: daysAgo(3), loyalty: 'Gold', notes: 'Prefers window seating' },
-      { id: generateId(), name: 'Ravi Menon', phone: '+91 98001 22222', email: 'ravi.m@outlook.com', visits: 45, totalSpent: 34200, lastVisit: daysAgo(1), loyalty: 'Platinum', notes: 'Regular — flat white, no sugar' },
-      { id: generateId(), name: 'Preethi Das', phone: '+91 98001 55555', email: 'preethi@gmail.com', visits: 8, totalSpent: 5600, lastVisit: daysAgo(7), loyalty: 'Silver', notes: 'Vegan — always asks for oat milk' },
+      { id: generateId(), name: 'Ravi Menon', phone: '+91 98001 22222', email: 'ravi.m@outlook.com', visits: 45, totalSpent: 34200, lastVisit: daysAgo(1), loyalty: 'Platinum', notes: 'Regular - flat white, no sugar' },
+      { id: generateId(), name: 'Preethi Das', phone: '+91 98001 55555', email: 'preethi@gmail.com', visits: 8, totalSpent: 5600, lastVisit: daysAgo(7), loyalty: 'Silver', notes: 'Vegan - always asks for oat milk' },
       { id: generateId(), name: 'Sameer Gupta', phone: '+91 98001 66666', email: 'sameer.g@yahoo.com', visits: 15, totalSpent: 12800, lastVisit: daysAgo(2), loyalty: 'Gold', notes: '' },
       { id: generateId(), name: 'Nisha Jain', phone: '+91 98001 77777', email: 'nisha.j@gmail.com', visits: 3, totalSpent: 2100, lastVisit: daysAgo(14), loyalty: 'Bronze', notes: 'New customer, tried brunch menu' },
       { id: generateId(), name: 'Aarav Iyer', phone: '+91 98001 88888', email: '', visits: 31, totalSpent: 24600, lastVisit: todayStr(), loyalty: 'Platinum', notes: 'Brings laptop, stays 3-4 hrs' },
     ],
     expenses: [
       { id: generateId(), date: daysAgo(0), category: 'Ingredients', description: 'Weekly produce order', amount: 12400, method: 'Bank Transfer' },
-      { id: generateId(), date: daysAgo(1), category: 'Utilities', description: 'Electricity bill — June', amount: 8500, method: 'Online' },
-      { id: generateId(), date: daysAgo(2), category: 'Salaries', description: 'Staff salaries — first half', amount: 85000, method: 'Bank Transfer' },
+      { id: generateId(), date: daysAgo(1), category: 'Utilities', description: 'Electricity bill - June', amount: 8500, method: 'Online' },
+      { id: generateId(), date: daysAgo(2), category: 'Salaries', description: 'Staff salaries - first half', amount: 85000, method: 'Bank Transfer' },
       { id: generateId(), date: daysAgo(3), category: 'Maintenance', description: 'Espresso machine servicing', amount: 4500, method: 'Cash' },
-      { id: generateId(), date: daysAgo(5), category: 'Rent', description: 'Monthly rent — June', amount: 120000, method: 'Bank Transfer' },
-      { id: generateId(), date: daysAgo(6), category: 'Marketing', description: 'Instagram ads — weekly', amount: 3500, method: 'Online' },
+      { id: generateId(), date: daysAgo(5), category: 'Rent', description: 'Monthly rent - June', amount: 120000, method: 'Bank Transfer' },
+      { id: generateId(), date: daysAgo(6), category: 'Marketing', description: 'Instagram ads - weekly', amount: 3500, method: 'Online' },
       { id: generateId(), date: daysAgo(7), category: 'Ingredients', description: 'Coffee beans restock', amount: 6000, method: 'UPI' },
       { id: generateId(), date: daysAgo(8), category: 'Insurance', description: 'Quarterly fire insurance', amount: 15000, method: 'Bank Transfer' },
       { id: generateId(), date: daysAgo(10), category: 'Miscellaneous', description: 'New menu printing', amount: 2200, method: 'Cash' },
@@ -122,19 +122,19 @@ function getDefaultData() {
     // Cash Register
     cashRegister: [
       { id: generateId(), date: daysAgo(0), openingBalance: 5000, closingBalance: null, reconciled: false, entries: [
-        { id: generateId(), time: '09:15', type: 'in', amount: 450, method: 'cash', description: 'Table 3 — breakfast' },
-        { id: generateId(), time: '09:40', type: 'in', amount: 680, method: 'upi', description: 'Table 1 — coffees + pastry' },
-        { id: generateId(), time: '10:05', type: 'out', amount: 200, method: 'cash', description: 'Petty cash — milk from local store' },
-        { id: generateId(), time: '11:30', type: 'in', amount: 1250, method: 'card', description: 'Table 5 — brunch for 4' },
-        { id: generateId(), time: '12:00', type: 'in', amount: 320, method: 'upi', description: 'Takeaway — 2 lattes' },
-        { id: generateId(), time: '13:15', type: 'in', amount: 890, method: 'cash', description: 'Table 2 — lunch' },
-        { id: generateId(), time: '14:00', type: 'out', amount: 500, method: 'cash', description: 'Vegetable vendor — urgent restock' },
+        { id: generateId(), time: '09:15', type: 'in', amount: 450, method: 'cash', description: 'Table 3 - breakfast' },
+        { id: generateId(), time: '09:40', type: 'in', amount: 680, method: 'upi', description: 'Table 1 - coffees + pastry' },
+        { id: generateId(), time: '10:05', type: 'out', amount: 200, method: 'cash', description: 'Petty cash - milk from local store' },
+        { id: generateId(), time: '11:30', type: 'in', amount: 1250, method: 'card', description: 'Table 5 - brunch for 4' },
+        { id: generateId(), time: '12:00', type: 'in', amount: 320, method: 'upi', description: 'Takeaway - 2 lattes' },
+        { id: generateId(), time: '13:15', type: 'in', amount: 890, method: 'cash', description: 'Table 2 - lunch' },
+        { id: generateId(), time: '14:00', type: 'out', amount: 500, method: 'cash', description: 'Vegetable vendor - urgent restock' },
       ]},
       { id: generateId(), date: daysAgo(1), openingBalance: 4500, closingBalance: 6820, reconciled: true, entries: [
-        { id: generateId(), time: '09:00', type: 'in', amount: 380, method: 'cash', description: 'Walk-in — coffee + sandwich' },
+        { id: generateId(), time: '09:00', type: 'in', amount: 380, method: 'cash', description: 'Walk-in - coffee + sandwich' },
         { id: generateId(), time: '10:20', type: 'in', amount: 1540, method: 'upi', description: 'Online order batch' },
-        { id: generateId(), time: '11:00', type: 'out', amount: 300, method: 'cash', description: 'Auto fare — ingredient pickup' },
-        { id: generateId(), time: '13:00', type: 'in', amount: 2200, method: 'card', description: 'Corporate lunch — 6 pax' },
+        { id: generateId(), time: '11:00', type: 'out', amount: 300, method: 'cash', description: 'Auto fare - ingredient pickup' },
+        { id: generateId(), time: '13:00', type: 'in', amount: 2200, method: 'card', description: 'Corporate lunch - 6 pax' },
         { id: generateId(), time: '15:30', type: 'in', amount: 750, method: 'cash', description: 'Afternoon walk-ins' },
         { id: generateId(), time: '16:00', type: 'out', amount: 1250, method: 'cash', description: 'Petty cash deposit to bank' },
       ]},
@@ -209,7 +209,7 @@ function populateShifts(data) {
       const rand = Math.random();
       let status, checkIn, checkOut;
       if (d === 0) {
-        // Today — some haven't checked out
+        // Today - some haven't checked out
         status = rand < 0.1 ? 'absent' : rand < 0.2 ? 'late' : 'present';
         checkIn = status === 'absent' ? null : status === 'late' ? '10:' + String(Math.floor(Math.random()*50+10)).padStart(2,'0') : '09:' + String(Math.floor(Math.random()*20)).padStart(2,'0');
         checkOut = null;

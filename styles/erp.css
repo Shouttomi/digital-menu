@@ -39,7 +39,7 @@
   --cyan: #3a8ec7;
 }
 
-/* ===== ERP — Menu Studio ===== */
+/* ===== ERP - Menu Studio ===== */
 *, *::before, *::after { box-sizing: border-box; }
 html, body { margin: 0; padding: 0; height: 100%; }
 body {
@@ -433,7 +433,7 @@ body {
 .table-seats { font-size: 10px; color: var(--text-dim); }
 .table-status-label { font-size: 9px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; }
 
-/* Responsive — slide-out drawer on tablet & phone */
+/* Responsive - slide-out drawer on tablet & phone */
 @media (max-width: 900px) {
   .erp-menu-btn { display: flex; }
   .erp-nav-backdrop { display: block; }

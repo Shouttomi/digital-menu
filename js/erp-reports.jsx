@@ -71,8 +71,8 @@ function ReportsView() {
       React.createElement('h3', null, 'Revenue Trend'),
       React.createElement(SimpleBarChart, { data: condensed, height: 150 }),
       React.createElement('div', { style: { display: 'flex', gap: 20, marginTop: 12, fontSize: 12, color: 'var(--text-muted)' } },
-        React.createElement('span', null, 'Best day: ', React.createElement('b', { style: { color: 'var(--success)' } }, formatDate(bestDay.date), ' — ', formatCurrency(bestDay.amount))),
-        worstDay.amount < Infinity && React.createElement('span', null, 'Slowest: ', React.createElement('b', { style: { color: 'var(--danger)' } }, formatDate(worstDay.date), ' — ', formatCurrency(worstDay.amount)))
+        React.createElement('span', null, 'Best day: ', React.createElement('b', { style: { color: 'var(--success)' } }, formatDate(bestDay.date), ' - ', formatCurrency(bestDay.amount))),
+        worstDay.amount < Infinity && React.createElement('span', null, 'Slowest: ', React.createElement('b', { style: { color: 'var(--danger)' } }, formatDate(worstDay.date), ' - ', formatCurrency(worstDay.amount)))
       )
     ),
 
