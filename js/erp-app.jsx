@@ -4,7 +4,17 @@ function ERPApp() {
     return localStorage.getItem('erp.activeView') || 'dashboard';
   });
   const [theme, setTheme] = useState(() => localStorage.getItem('erp.theme') || '');
+  const [navOpen, setNavOpen] = useState(false);
   const { resetData } = useERP();
+
+  // Close the mobile drawer whenever the view changes
+  React.useEffect(() => { setNavOpen(false); }, [view]);
+
+  // Lock body scroll while the drawer is open on mobile
+  React.useEffect(() => {
+    document.body.classList.toggle('nav-open', navOpen);
+    return () => document.body.classList.remove('nav-open');
+  }, [navOpen]);
 
   useEffect(() => {
     if (theme) document.documentElement.setAttribute('data-theme', theme);
@@ -85,8 +95,13 @@ function ERPApp() {
   };
 
   return React.createElement('div', { className: 'erp-shell' },
+    // Mobile drawer backdrop
+    React.createElement('div', {
+      className: `erp-nav-backdrop ${navOpen ? 'show' : ''}`,
+      onClick: () => setNavOpen(false)
+    }),
     // Sidebar
-    React.createElement('aside', { className: 'erp-sidebar' },
+    React.createElement('aside', { className: `erp-sidebar ${navOpen ? 'open' : ''}` },
       React.createElement('div', { className: 'erp-sidebar-brand' },
         React.createElement('div', null,
           React.createElement('span', null, 'Menu', React.createElement('b', null, 'Studio')),
@@ -120,8 +135,21 @@ function ERPApp() {
     React.createElement('div', { className: 'erp-main' },
       React.createElement('header', { className: 'erp-header' },
         React.createElement('div', { className: 'erp-header-left' },
-          React.createElement('h1', null, meta.title),
-          React.createElement('p', null, meta.sub)
+          React.createElement('button', {
+            className: 'erp-menu-btn',
+            'aria-label': 'Open menu',
+            onClick: () => setNavOpen(o => !o)
+          },
+            React.createElement('svg', { viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', strokeWidth: 2, strokeLinecap: 'round' },
+              React.createElement('line', { x1: 3, y1: 6, x2: 21, y2: 6 }),
+              React.createElement('line', { x1: 3, y1: 12, x2: 21, y2: 12 }),
+              React.createElement('line', { x1: 3, y1: 18, x2: 21, y2: 18 })
+            )
+          ),
+          React.createElement('div', { className: 'erp-header-titles' },
+            React.createElement('h1', null, meta.title),
+            React.createElement('p', null, meta.sub)
+          )
         ),
         React.createElement('div', { className: 'erp-header-actions' },
           React.createElement('button', { className: 'btn btn-ghost btn-sm', onClick: () => setTheme(t => t === 'light' ? '' : 'light') }, theme === 'light' ? 'Dark Mode' : 'Light Mode'),

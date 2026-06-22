@@ -126,7 +126,33 @@ body {
 }
 @media (max-width: 800px) {
   .studio { grid-template-columns: 1fr; padding: 20px; }
-  .topbar { padding: 14px 20px; }
+  .topbar {
+    padding: 12px 16px; gap: 10px;
+    flex-wrap: wrap;
+  }
+  .topbar-actions {
+    width: 100%; gap: 8px;
+    overflow-x: auto; -webkit-overflow-scrolling: touch;
+    scrollbar-width: none; padding-bottom: 2px;
+  }
+  .topbar-actions::-webkit-scrollbar { display: none; }
+  .topbar-actions .ghost-btn,
+  .topbar-actions .primary-btn { flex-shrink: 0; padding: 9px 14px; font-size: 13px; white-space: nowrap; }
+  .topbar-actions a { flex-shrink: 0; }
+  .panel { padding: 18px; border-radius: 18px; }
+  .panel-header h1 { font-size: 22px; }
+  .panel-header h2 { font-size: 19px; }
+}
+@media (max-width: 560px) {
+  .studio { padding: 14px; gap: 16px; }
+  /* Stack each menu item so name/desc/price aren't crushed */
+  .item-row { grid-template-columns: 52px 1fr; grid-template-areas: 'thumb fields' 'remove remove'; }
+  .item-thumb { width: 52px; height: 52px; grid-area: thumb; }
+  .item-row .remove-item { grid-area: remove; justify-self: end; }
+  .item-fields { grid-area: fields; }
+  /* Scale the phone preview down to fit narrow screens */
+  .phone-shell { width: 270px; height: 558px; }
+  .phone-shell iframe { transform: scale(0.63); }
 }
 
 .panel {
