@@ -57,6 +57,7 @@ function CashRegisterView() {
   }
 
   const methodColors = { cash: '#7d9b8e', upi: '#8a8db0', card: '#8fa3b5' };
+  const methodIcons = { cash: '', upi: '', card: '' };
   const totalMethodIn = byUpi + byCard + Math.max(byCash, 0);
 
   return React.createElement('div', null,
@@ -176,7 +177,7 @@ function CashRegisterView() {
                   React.createElement('td', { className: 'cell-mono' }, formatCurrency(r.openingBalance)),
                   React.createElement('td', { className: 'cell-mono', style: { color: 'var(--success)' } }, '+', formatCurrency(rIn)),
                   React.createElement('td', { className: 'cell-mono', style: { color: 'var(--danger)' } }, '−', formatCurrency(rOut)),
-                  React.createElement('td', { className: 'cell-mono', style: { fontWeight: 700 } }, r.closingBalance != null ? formatCurrency(r.closingBalance) : '-'),
+                  React.createElement('td', { className: 'cell-mono', style: { fontWeight: 700 } }, r.closingBalance != null ? formatCurrency(r.closingBalance) : '—'),
                   React.createElement('td', null, React.createElement('span', { className: r.reconciled ? 'badge badge-green' : 'badge badge-yellow' }, r.reconciled ? '✓ Closed' : 'Open')),
                   React.createElement('td', { style: { fontSize: 12, color: 'var(--text-muted)' } }, r.entries.length)
                 );
@@ -214,7 +215,7 @@ function CashEntryModal({ type, onSave, onClose }) {
           }, m === 'cash' ? 'Cash' : m === 'upi' ? 'UPI' : 'Card'))
         )
       ),
-      React.createElement(FormField, { label: 'Description' }, React.createElement('input', { type: 'text', value: form.description, onChange: e => set('description', e.target.value), placeholder: 'e.g. Table 5 - lunch for 4' }))
+      React.createElement(FormField, { label: 'Description' }, React.createElement('input', { type: 'text', value: form.description, onChange: e => set('description', e.target.value), placeholder: 'e.g. Table 5 — lunch for 4' }))
     ),
     React.createElement('div', { className: 'modal-footer' },
       React.createElement('button', { className: 'btn btn-ghost', onClick: onClose }, 'Cancel'),

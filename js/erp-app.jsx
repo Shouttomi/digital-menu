@@ -89,7 +89,7 @@ function ERPApp() {
     React.createElement('aside', { className: 'erp-sidebar' },
       React.createElement('div', { className: 'erp-sidebar-brand' },
         React.createElement('div', null,
-          React.createElement('span', null, 'Menu', React.createElement('b', null, 'Studio')),
+          React.createElement('span', null, 'Rasoi', React.createElement('b', null, 'Desk')),
           React.createElement('small', null, 'ERP')
         )
       ),
